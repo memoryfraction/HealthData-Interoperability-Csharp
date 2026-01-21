@@ -1,8 +1,8 @@
 # HealthData-Interoperability-Csharp
 
-Professional implementation of **HL7 FHIR** standards using **C#** and **.NET 8**. This repository acts as a progressive portfolio, demonstrating end-to-end healthcare data interoperability—from foundational RESTful CRUD to advanced architectural patterns.
+Professional implementation of **HL7 FHIR** standards using **C#** and **.NET 10**. This repository acts as a progressive portfolio, demonstrating end-to-end healthcare data interoperability—from foundational RESTful CRUD to advanced architectural patterns.
 
-[![.NET](https://img.shields.io/badge/.NET-8.0-512bd4)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -10,11 +10,9 @@ Professional implementation of **HL7 FHIR** standards using **C#** and **.NET 8*
 
 ## 📌 Project Overview
 
-In the modern healthcare landscape, data interoperability is the backbone of patient-centered care. This project showcases my technical proficiency in the **Fire.ly SDK**, building robust applications that speak the universal language of health data.
+In the modern healthcare landscape, data interoperability is critical. This project serves as a comprehensive showcase of my expertise in building FHIR-compliant applications using the **Fire.ly SDK**, ranging from basic RESTful interactions to advanced resource validation and complex search patterns.
 
 It is structured as a **multi-project solution**, where each module addresses a specific real-world interoperability challenge.
-
-
 
 ---
 
@@ -30,37 +28,45 @@ It is structured as a **multi-project solution**, where each module addresses a 
 
 ---
 
-## 🚀 Key Technical Features
+## 🚀 Learning Path & Features
 
-### 1. Foundation (Phase 1)
-* **FHIR Client Orchestration**: Production-ready `FhirClient` configuration with custom timeouts and headers.
-* **Resource Handling**: Deep dive into the `Patient` resource model and JSON/XML serialization.
-* **Safe Parsing**: Handling polymorphic FHIR types and terminology with the Fire.ly SDK.
+### Phase 1: The Foundation (Completed)
+Based on the foundational principles of the [Fire.ly SDK](https://fire.ly/), I have implemented:
+* **FHIR Client Setup**: Configuring the `FhirClient` with appropriate headers and settings.
+* **Basic CRUD Operations**: Reading, creating, and searching for `Patient` resources.
+* **Data Parsing**: Handling FHIR-specific JSON/XML serialization.
+* **Error Handling**: Managing `OperationOutcome` and HTTP status codes in a healthcare context.
 
-### 2. Engineering Best Practices
-* **Asynchronous Patterns**: Extensive use of `async/await` for non-blocking I/O.
-* **Robust Error Handling**: Decoding `OperationOutcome` to provide meaningful feedback from the FHIR server.
-* **Configuration-Driven**: Environment-based settings for FHIR Server endpoints (HAPI, Fire.ly, Azure).
+**Execution Result:**
+<p align="left">
+  <img src="./screenshots/Screenshot_1.jpg" alt="FHIR Client Execution Output" width="750">
+  <br>
+  <em>Figure 1: Console output demonstrating Patient creation and search on .NET 10.0</em>
+</p>
+
+### Phase 2: Advanced Interoperability (In Progress)
+* [ ] **Complex Search**: Implementing chained parameters and `_include`/`_revinclude`.
+* [ ] **Resource Profiling**: Validating resources against specific StructureDefinitions.
+* [ ] **Bundle Management**: Handling large datasets using FHIR Bundles and pagination.
 
 ---
 
 ## 🛠 Tech Stack
 
-* **Language**: C# 12 / .NET 8
-* **Core SDK**: [Fire.ly SDK (Hl7.Fhir.R4)](https://github.com/FirelyTeam/firely-net-sdk)
-* **Testing**: xUnit (Planned for future modules)
-* **Ecosystem**: Public FHIR Test Servers (HAPI / Fire.ly)
+* **Language**: C# 12 / .NET 10 (LTS)
+* **FHIR SDK**: [Fire.ly SDK (Hl7.Fhir.R4)](https://github.com/FirelyTeam/firely-net-sdk)
+* **Tools**: Postman, Public Test Servers (HAPI FHIR / Fire.ly Server)
 
 ---
 
 ## 📖 Getting Started
 
 ### Prerequisites
-* .NET 8.0 SDK
-* A FHIR Test Server (Default: `https://server.fire.ly/r4`)
+* .NET 10.0 SDK or later
+* An IDE (Visual Studio 2022, VS Code, or JetBrains Rider)
 
-### Setup
+### Installation & Run
 1. **Clone the Repository**
    ```bash
-   git clone [https://github.com/YourUsername/HealthData-Interoperability-Csharp.git](https://github.com/YourUsername/HealthData-Interoperability-Csharp.git)
+   git clone [https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git](https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git)
    cd HealthData-Interoperability-Csharp
