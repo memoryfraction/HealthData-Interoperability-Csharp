@@ -39,7 +39,7 @@ Based on the foundational principles of the [Fire.ly SDK](https://fire.ly/), I h
 
 **Execution Result:**
 <p align="left">
-  <img src="./screenshots/Screenshot_1.jpg" alt="FHIR Client Execution Output" width="750">
+  <img src="https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/01-Basic-FHIR-Client-printscreen.jpg" alt="FHIR Client Execution Output" width="750">
   <br>
   <em>Figure 1: Console output demonstrating Patient creation and search on .NET 10.0</em>
 </p>
