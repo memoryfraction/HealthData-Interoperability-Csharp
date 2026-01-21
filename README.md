@@ -1,6 +1,6 @@
 # HealthData-Interoperability-Csharp
 
-Professional implementation of **HL7 FHIR** standards using **C#** and **.NET 10**. This repository acts as a progressive portfolio, demonstrating end-to-end healthcare data interoperability—from foundational RESTful CRUD to advanced architectural patterns.
+Implementation of **HL7 FHIR** standards using **C#** and **.NET 10**. This repository acts as a progressive portfolio, demonstrating end-to-end healthcare data interoperability—from foundational RESTful CRUD to advanced architectural patterns.
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
