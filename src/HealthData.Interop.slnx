@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="1-Basic-Client/HealthData.Interop.BasicClient.csproj" />
+  <Project Path="02-Advanced-Query/02-Advanced-Query.csproj" />
+  <Project Path="1-Basic-Client/01-Basic-FHIR-Client.csproj" />
 </Solution>
