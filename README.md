@@ -59,6 +59,16 @@ Based on the foundational principles of the [Fire.ly SDK](https://fire.ly/), I h
 
 ---
 
+## 📚 References & Resources
+
+To build and extend this project, the following resources were instrumental:
+
+* **Foundational Tutorial**: [Make your first FHIR client within one hour](https://fire.ly/blog/make-your-first-fhir-client-within-one-hour/) - A primary guide for setting up the initial .NET FHIR client.
+* **Fire.ly SDK Documentation**: [Official .NET SDK Docs](https://docs.fire.ly/projects/Firely-NET-SDK/) - Detailed guidance on serialization, search, and validation.
+* **HL7 FHIR R4 Specification**: [FHIR Search Specs](https://www.hl7.org/fhir/search.html) - Understanding the logic behind chained parameters and includes.
+
+---
+
 ## 📖 Getting Started
 
 ### Prerequisites
