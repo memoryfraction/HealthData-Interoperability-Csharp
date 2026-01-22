@@ -20,7 +20,7 @@ It is structured as a **multi-project solution**, where each module addresses a 
 
 | Module | Level | Focus | Status |
 | :--- | :--- | :--- | :--- |
-| **[01-Basic-FHIR-Client](./src/01-Basic-FHIR-Client)** | 🟢 Beginner | Foundation: SDK Setup, Patient Search, CRUD operations. | **Completed** |
+| **[01-Basic-FHIR-Client](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/1-Basic-Client)** | 🟢 Beginner | Foundation: SDK Setup, Patient Search, CRUD operations. | **Completed** |
 | **[02-Advanced-Query](./src/02-Advanced-Query)** | 🟡 Intermediate | Complex Search: Chained params, `_include`, `_revinclude`. | *Planned* |
 | **[03-Resource-Validator](./src/03-Resource-Validator)** | 🟡 Intermediate | Data Quality: Validation against Profiles (US Core / IG). | *Planned* |
 | **[04-Data-Mapping-ETL](./src/04-Data-Mapping)** | 🔴 Advanced | Integration: Converting legacy CSV/JSON to FHIR Bundles. | *Planned* |
