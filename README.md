@@ -44,12 +44,19 @@ Based on the foundational principles of the [Fire.ly SDK](https://fire.ly/), I h
   <em>Figure 1: Console output demonstrating Patient creation and search on .NET 10.0</em>
 </p>
 
+**Execution Result:**
+<p align="left">
+  <img src="https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02-Advanced-Query%20Result.jpg?raw=true" alt="Advanced Query Execution Output" width="750">
+  <br>
+  <em>Figure 2: Advanced search results showing Chained Params and Included resources.</em>
+</p>
+---
+
 ### Phase 2: Advanced Interoperability (In Progress)
-* [ ] **Complex Search**: Implementing chained parameters and `_include`/`_revinclude`.
 * [ ] **Resource Profiling**: Validating resources against specific StructureDefinitions.
 * [ ] **Bundle Management**: Handling large datasets using FHIR Bundles and pagination.
 
----
+
 
 ## 🛠 Tech Stack
 
