@@ -22,7 +22,7 @@ It is structured as a **multi-project solution**, where each module addresses a 
 | :--- | :--- | :--- | :--- |
 | **[01-Basic-FHIR-Client](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/1-Basic-Client)** | 🟢 Beginner | Foundation: SDK Setup, Patient Search, CRUD operations. | **Completed** |
 | **[02-Advanced-Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/02-Advanced-Query)** | 🟡 Intermediate | Complex Search: Chained params, `_include`, `_revinclude`. | **Completed** |
-| **[03-Resource-Validator](./src/03-Resource-Validator)** | 🟡 Intermediate | Data Quality: Validation against Profiles (US Core / IG). | *Planned* |
+| **[03-Resource-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/03-Resource-Validator)** | 🟡 Intermediate | Data Quality: Validation against Profiles (US Core / IG). | **Completed** |
 | **[04-Data-Mapping-ETL](./src/04-Data-Mapping)** | 🔴 Advanced | Integration: Converting legacy CSV/JSON to FHIR Bundles. | *Planned* |
 | **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | 🔴 Advanced | Security: OAuth2 Auth & Launch Context. | *Planned* |
 
@@ -51,6 +51,25 @@ Based on the foundational principles of the [Fire.ly SDK](https://fire.ly/), I h
   <em>Figure 2: Advanced search results showing Chained Params and Included resources.</em>
 </p>
 ---
+
+## Phase 03: FHIR Resource Validator (The Data Firewall)
+### What does this code actually do?
+In healthcare, "bad data" (like an invalid birth date) isn't just a bug—it's a clinical risk. This module implements a **Medical Data Firewall** using the Firely SDK.
+
+Instead of writing hundreds of manual `if-else` statements, this code:
+1. **Loads the "Official Law"**: It connects to `specification.zip` (the HL7 FHIR R4 standard definitions).
+2. **Performs Semantic Audit**: It validates resources against complex medical rules, such as:
+   - **Date Logic**: Identifying that `1990-13-45` is an impossible date.
+   - **Data Integrity**: Checking if a `Telecom` entry is missing its required value.
+
+### Why is this important?
+- **Ensures Interoperability**: Guarantees that the data you produce will be accepted by other FHIR-compliant systems (like Epic or Cerner).
+- **Automated Governance**: Automatically enforces cardinality (required fields) and value sets (allowed codes).
+
+### Output Breakdown
+If you see an **[ERROR]** in the console, **it means the code is working perfectly!** It successfully "caught" the invalid data before it could reach a database.
+
+![Validation Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/phase03-validation-result.png.jpg)
 
 ### Phase 2: Advanced Interoperability (In Progress)
 * [ ] **Resource Profiling**: Validating resources against specific StructureDefinitions.
