@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="02-Advanced-Query/02-Advanced-Query.csproj" />
   <Project Path="03-Resource-Validator/03-Resource-Validator.csproj" Id="9e989700-6e5e-4b58-a2fa-a44c742e4a66" />
+  <Project Path="04-Data-Mapping-ETL/04-Data-Mapping-ETL.csproj" Id="8c9964d5-b64d-4327-8db0-ab9a6f358789" />
   <Project Path="1-Basic-Client/01-Basic-FHIR-Client.csproj" />
 </Solution>
