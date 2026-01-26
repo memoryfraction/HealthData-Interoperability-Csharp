@@ -23,14 +23,14 @@ It is structured as a **multi-project solution**, where each module addresses a 
 | **[01-Basic-FHIR-Client](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/1-Basic-Client)** | 🟢 Beginner | Foundation: SDK Setup, Patient Search, CRUD operations. | **Completed** |
 | **[02-Advanced-Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/02-Advanced-Query)** | 🟡 Intermediate | Complex Search: Chained params, `_include`, `_revinclude`. | **Completed** |
 | **[03-Resource-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/03-Resource-Validator)** | 🟡 Intermediate | Data Quality: Validation against Profiles (US Core / IG). | **Completed** |
-| **[04-Data-Mapping-ETL](./src/04-Data-Mapping)** | 🔴 Advanced | Integration: Converting legacy CSV/JSON to FHIR Bundles. | *Planned* |
+| **[04-Data-Mapping-ETL](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/04-Data-Mapping-ETL)** | 🔴 Advanced | Integration: Converting legacy CSV/JSON to FHIR Bundles. | **Completed** |
 | **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | 🔴 Advanced | Security: OAuth2 Auth & Launch Context. | *Planned* |
 
 ---
 
 ## 🚀 Learning Path & Features
 
-### Phase 1: The Foundation (Completed)
+## Phase 1: The Foundation (Completed)
 Based on the foundational principles of the [Fire.ly SDK](https://fire.ly/), I have implemented:
 * **FHIR Client Setup**: Configuring the `FhirClient` with appropriate headers and settings.
 * **Basic CRUD Operations**: Reading, creating, and searching for `Patient` resources.
@@ -71,14 +71,26 @@ If you see an **[ERROR]** in the console, **it means the code is working perfect
 
 ![Validation Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/phase03-validation-result.png.jpg)
 
+## 04-Data-Mapping-ETL (Legacy Integration)
+This module demonstrates a professional-grade ETL pipeline to migrate legacy CSV patient data into a FHIR R4 ecosystem.
+* **Idempotency (幂等性)**: Implemented via **Conditional PUT**, ensuring that re-running the job updates existing records instead of creating duplicates.
+* **Atomic Transactions**: Uses `Bundle.BundleType.Transaction` to guarantee data integrity.
+* **Automated Verification**: The system automatically queries the server post-upload to confirm `VersionId` and `LastUpdated` metadata.
+
+**Execution Result:**
+<p align="left">
+  <img src="https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/04-Data-Mapping-ETL-result.jpg?raw=true" alt="ETL Result" width="750">
+  <br>
+  <em>Figure 4: ETL process showing successful load and automated verification.</em>
+</p>
+
+
 ### Phase 2: Advanced Interoperability (In Progress)
-* [ ] **Resource Profiling**: Validating resources against specific StructureDefinitions.
 * [ ] **Bundle Management**: Handling large datasets using FHIR Bundles and pagination.
 
 
 
 ## 🛠 Tech Stack
-
 * **Language**: C# 12 / .NET 10 (LTS)
 * **FHIR SDK**: [Fire.ly SDK (Hl7.Fhir.R4)](https://github.com/FirelyTeam/firely-net-sdk)
 * **Tools**: Postman, Public Test Servers (HAPI FHIR / Fire.ly Server)
