@@ -24,7 +24,7 @@ It is structured as a **multi-project solution**, where each module addresses a 
 | **[02-Advanced-Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/02-Advanced-Query)** | 🟡 Intermediate | Complex Search: Chained params, `_include`, `_revinclude`. | **Completed** |
 | **[03-Resource-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/03-Resource-Validator)** | 🟡 Intermediate | Data Quality: Validation against Profiles (US Core / IG). | **Completed** |
 | **[04-Data-Mapping-ETL](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/04-Data-Mapping-ETL)** | 🔴 Advanced | Integration: Converting legacy CSV/JSON to FHIR Bundles. | **Completed** |
-| **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | 🔴 Advanced | Security: OAuth2 Auth & Launch Context. | *Planned* |
+| **[05-SMART-on-FHIR](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/05-SMART-on-FHIR)** | 🔴 Advanced | Security: OAuth2 Auth & Launch Context. | **Completed** |
 
 ---
 
@@ -84,9 +84,26 @@ This module demonstrates a professional-grade ETL pipeline to migrate legacy CSV
   <em>Figure 4: ETL process showing successful load and automated verification.</em>
 </p>
 
+## 05-SMART-on-FHIR (Interoperability & Security)
+This module demonstrates how to securely ingest data into a **(g)(10) certified** healthcare ecosystem using the **SMART on FHIR** framework.
+* **US Core Compliance**: Unlike basic ETL, this module maps data strictly to the **US Core Patient Profile**, ensuring the resources meet federal interoperability standards (ONC g10).
+* **JWT-Ready Architecture**: Implements a strategic "Bypass & Document" approach—validating mapping logic via Open Endpoints while architecting the system to be compatible with **OAuth2 Access Tokens**.
+* **Security Implementation**: Demonstrates the theoretical workflow of **SMART App Launch**, including the use of **Scopes** (e.g., `patient/*.read`) to manage granular data access.
+
+
+
+### 💡 04 vs 05: The Evolution
+* **Module 04 (ETL)**: Focuses on **Data Quality**. How to clean messy legacy data and ensure idempotency using **Conditional PUT**.
+* **Module 05 (SMART)**: Focuses on **Compliance & Security**. How to follow the **US Core Implementation Guide** and handle authorized access in a regulated ecosystem.
+
+**Execution Result:**
+<p align="left">
+  <img src="https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/05%20SMART%20ON%20FHIR%20RESULT.jpg?raw=true" alt="SMART on FHIR Result" width="750">
+  <br>
+  <em>Figure 5: Successful ingestion into a SMART-compatible sandbox with US Core profile validation.</em>
+</p>
 
 ### Phase 2: Advanced Interoperability (In Progress)
-* [ ] **Bundle Management**: Handling large datasets using FHIR Bundles and pagination.
 
 
 
