@@ -23,8 +23,9 @@ In the 2026 healthcare landscape, data interoperability is the backbone of digit
 
 | Module | Focus | Strategic Value | Status |
 | :--- | :--- | :--- | :--- |
-| **[04-Data-Mapping-ETL](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/04-Data-Mapping-ETL)** | **Legacy Integration** | **Idempotent Migration**: Uses Conditional PUT to prevent duplicate records in distributed systems. | **Completed** |
+| **[06-AI-Data-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/06-AI-Data-Validator)** | **AI Governance** | **Semantic Cleansing**: Uses Local LLMs to normalize "noisy" legacy data while ensuring zero-PII leakage. | **Completed** |
 | **[05-SMART-on-FHIR](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: Maps data strictly to **US Core Patient Profiles** for certified EHR access. | **Completed** |
+| **[04-Data-Mapping-ETL](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/04-Data-Mapping-ETL)** | **Legacy Integration** | **Idempotent Migration**: Uses Conditional PUT to prevent duplicate records in distributed systems. | **Completed** |
 | **[03-Resource-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/03-Resource-Validator)** | **Clinical Risk Control** | **Medical Data Firewall**: Prevents "garbage in" scenarios by validating against official HL7 semantic rules. | **Completed** |
 | **[02-Advanced-Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/02-Advanced-Query)** | **Optimization** | **Performance**: Complex search patterns using Chained params and `_include` to reduce API roundtrips. | **Completed** |
 
@@ -32,22 +33,63 @@ In the 2026 healthcare landscape, data interoperability is the backbone of digit
 
 ## 🚀 Technical Deep Dive
 
-### 04: Legacy-to-FHIR Migration (Data Integrity)
-Standard POST operations often create fragmented duplicates. This module implements:
-* **Conditional PUT Logic:** Ensures system **Idempotency**—guaranteeing that re-running the job updates existing records instead of polluting the registry.
-* **Atomic Transactions:** Uses `BundleType.Transaction` to ensure that clinical records are saved as a single, consistent unit.
-* **Impact:** Solves the #1 issue in legacy data migration: redundant patient identity clusters.
+### 06: AI-Assisted Semantic Validation (Privacy & Precision)
+Traditional Regex-based ETL often fails when encountering human-typed "noisy" data (e.g., "malee", "Jhon Doe"). This module implements a **Hybrid AI Pipeline** to bridge the gap between unstructured legacy records and FHIR R4 resources.
+
+* **PII/PHI Security (Privacy-First)**: Unlike cloud AI, this engine utilizes **Local LLMs (Llama 3 via Ollama)**, ensuring no Patient Identifiable Information (PII) leaves the clinical network.
+* **Handling AI Unpredictability**:
+    * **Regex Filtering**: A robust C# regex layer strips away conversational "filler" text from AI responses to ensure valid JSON parsing.
+    * **Clinical Guardrails**: All AI-generated fields are cross-checked by deterministic C# logic (e.g., rejecting future birth dates) to prevent "hallucinations".
+
+**Execution Result:**
+![06-AI-Data-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/06-AI-Data-Validator_result.jpg?raw=true)
+
+---
 
 ### 05: US Core & SMART Compliance (Cures Act Standards)
 Under the **21st Century Cures Act**, interoperability is a legal mandate. This module demonstrates:
-* **Profile-Strict Validation:** Every resource is cross-referenced against the **US Core Implementation Guide**.
-* **Granular Auth Architecture:** Prepared for **SMART App Launch**, demonstrating scope-based access (e.g., `patient/*.read`) to adhere to the Principle of Least Privilege.
-* **Result:** Provides a blueprint for apps seeking **(g)(10) certification**.
+* **Profile-Strict Validation**: Every resource is cross-referenced against the **US Core Implementation Guide**.
+* **Granular Auth Architecture**: Prepared for **SMART App Launch**, demonstrating scope-based access (e.g., `patient/*.read`).
+
+**Execution Result:**
+![05-SMART-on-FHIR Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/05%20SMART%20ON%20FHIR%20RESULT.jpg?raw=true)
+
+---
+
+### 04: Legacy-to-FHIR Migration (Data Integrity)
+Standard POST operations often create fragmented duplicates. This module implements:
+* **Conditional PUT Logic:** Ensures system **Idempotency**—guaranteeing that re-running the job updates existing records instead of polluting the registry.
+* **Atomic Transactions**: Uses `BundleType.Transaction` to ensure that clinical records are saved as a single, consistent unit.
+
+**Execution Result:**
+![04-Data-Mapping-ETL Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/04-Data-Mapping-ETL-result.jpg?raw=true)
+
+---
+
+### 03: Resource Validator (Clinical Risk Control)
+Ensuring data quality at the point of entry. This module implements:
+* **Rule-Based Validation**: Using the Firely SDK to validate resources against base FHIR profiles and custom invariants.
+* **Error Reporting**: Detailed OperationOutcome generation for debugging malformed clinical data.
+
+**Execution Result:**
+![03-Resource-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/03-Resource-Validator-result.jpg?raw=true)
+
+---
+
+### 02: Advanced Query (Search Optimization)
+Complex clinical data retrieval requires more than basic CRUD.
+* **Chained Parameters**: Querying resources based on the properties of related resources.
+* **_include & _revinclude**: Optimizing data fetching to reduce network roundtrips.
+
+**Execution Result:**
+![02-Advanced-Query Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02-Advanced-Query-result.jpg?raw=true)
 
 ---
 
 ## 🛠 Tech Stack (2026 Standards)
 * **Backend:** C# 12 / .NET 10 (LTS)
+* **AI Orchestration:** [Microsoft Semantic Kernel](https://github.com/microsoft/semantic-kernel)
+* **Local Inference:** [Ollama](https://ollama.com/) (Llama 3 8B)
 * **Standard:** HL7 FHIR R4 (Backwards compatible with R5)
 * **SDK:** [Firely SDK (Hl7.Fhir.R4)](https://github.com/FirelyTeam/firely-net-sdk)
 * **Security:** SMART on FHIR / OAuth2 (JWT-Ready Architecture)
