@@ -26,8 +26,7 @@ In the 2026 healthcare landscape, data interoperability is the backbone of digit
 | **[06-AI-Data-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/06-AI-Data-Validator)** | **AI Governance** | **Semantic Cleansing**: Uses Local LLMs to normalize "noisy" legacy data while ensuring zero-PII leakage. | **Completed** |
 | **[05-SMART-on-FHIR](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: Maps data strictly to **US Core Patient Profiles** for certified EHR access. | **Completed** |
 | **[04-Data-Mapping-ETL](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/04-Data-Mapping-ETL)** | **Legacy Integration** | **Idempotent Migration**: Uses Conditional PUT to prevent duplicate records in distributed systems. | **Completed** |
-| **[03-Resource-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/03-Resource-Validator)** | **Clinical Risk Control** | **Medical Data Firewall**: Prevents "garbage in" scenarios by validating against official HL7 semantic rules. | **Completed** |
-| **[02-Advanced-Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/02-Advanced-Query)** | **Optimization** | **Performance**: Complex search patterns using Chained params and `_include` to reduce API roundtrips. | **Completed** |
+| **[03-Resource-Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/tree/main/src/03-Resource-Validator)** | **Clinical Risk Control** | **Medical Data Firewall**: Prevents "garbage in" scenarios by validating against HL7 semantic rules. | **Completed** |
 
 ---
 
@@ -36,10 +35,17 @@ In the 2026 healthcare landscape, data interoperability is the backbone of digit
 ### 06: AI-Assisted Semantic Validation (Privacy & Precision)
 Traditional Regex-based ETL often fails when encountering human-typed "noisy" data (e.g., "malee", "Jhon Doe"). This module implements a **Hybrid AI Pipeline** to bridge the gap between unstructured legacy records and FHIR R4 resources.
 
-* **PII/PHI Security (Privacy-First)**: Unlike cloud AI, this engine utilizes **Local LLMs (Llama 3 via Ollama)**, ensuring no Patient Identifiable Information (PII) leaves the clinical network.
-* **Handling AI Unpredictability**:
-    * **Regex Filtering**: A robust C# regex layer strips away conversational "filler" text from AI responses to ensure valid JSON parsing.
-    * **Clinical Guardrails**: All AI-generated fields are cross-checked by deterministic C# logic (e.g., rejecting future birth dates) to prevent "hallucinations".
+#### 🔴 Industry Pain Points Solved
+* **Semantic Ambiguity**: Legacy data often contains "fuzzy" errors (typos, inconsistent gender codes) that deterministic code cannot resolve.
+* **The Privacy Paradox**: Standard AI integrations (like GPT-4) risk leaking Protected Health Information (PHI) to cloud providers, violating HIPAA/GDPR.
+* **Model Instability**: LLMs are non-deterministic and can "hallucinate" invalid JSON structures or medical facts.
+
+#### 💡 Innovation: Localized Hybrid AI
+* **Local Inference (Privacy-First)**: Powered by **Ollama (Llama 3 8B)** running entirely on-premise. PHI never leaves the secure clinical network.
+* **AI-Powered Mapping**: Uses **Semantic Kernel** to intelligently map messy CSV strings into structured FHIR-ready DTOs.
+* **Deterministic Guardrails**:
+    * **Regex Shield**: Automatically strips conversational AI "chatter" to extract clean JSON.
+    * **Clinical Verification**: Hard-coded C# logic validates AI output (e.g., checking for future birth dates) before resource generation.
 
 **Execution Result:**
 ![06-AI-Data-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/06-AI-Data-Validator_result.jpg?raw=true)
@@ -58,7 +64,7 @@ Under the **21st Century Cures Act**, interoperability is a legal mandate. This 
 
 ### 04: Legacy-to-FHIR Migration (Data Integrity)
 Standard POST operations often create fragmented duplicates. This module implements:
-* **Conditional PUT Logic:** Ensures system **Idempotency**—guaranteeing that re-running the job updates existing records instead of polluting the registry.
+* **Conditional PUT Logic**: Ensures system **Idempotency**—guaranteeing that re-running the job updates existing records instead of polluting the registry.
 * **Atomic Transactions**: Uses `BundleType.Transaction` to ensure that clinical records are saved as a single, consistent unit.
 
 **Execution Result:**
@@ -87,19 +93,12 @@ Complex clinical data retrieval requires more than basic CRUD.
 ---
 
 ## 🛠 Tech Stack (2026 Standards)
-* **Backend:** C# 12 / .NET 10 (LTS)
-* **AI Orchestration:** [Microsoft Semantic Kernel](https://github.com/microsoft/semantic-kernel)
-* **Local Inference:** [Ollama](https://ollama.com/) (Llama 3 8B)
-* **Standard:** HL7 FHIR R4 (Backwards compatible with R5)
-* **SDK:** [Firely SDK (Hl7.Fhir.R4)](https://github.com/FirelyTeam/firely-net-sdk)
-* **Security:** SMART on FHIR / OAuth2 (JWT-Ready Architecture)
-
----
-
-## 📚 Industry References
-* [ONC (g)(10) Standardized API Criterion](https://www.healthit.gov/test-method/standardized-api-patient-and-population-services)
-* [HL7 US Core Implementation Guide (v6.1.0/v7.0.0)](https://hl7.org/fhir/us/core/)
-* [Firely SDK Documentation](https://docs.fire.ly/projects/Firely-NET-SDK/)
+* **Backend**: C# 12 / .NET 10 (LTS)
+* **AI Orchestration**: [Microsoft Semantic Kernel](https://github.com/microsoft/semantic-kernel)
+* **Local Inference**: [Ollama](https://ollama.com/) (Llama 3 8B)
+* **Standard**: HL7 FHIR R4 (Backwards compatible with R5)
+* **SDK**: [Firely SDK (Hl7.Fhir.R4)](https://github.com/FirelyTeam/firely-net-sdk)
+* **Security**: SMART on FHIR / OAuth2 (JWT-Ready Architecture)
 
 ---
 
