@@ -1,0 +1,6 @@
+﻿Raw_ID,Patient_Name,Birth_Date,Gender,Contact_Info,Notes
+P001,Jhon Doe,1980/05/12,malee,555-0199,Patient has mild hypertention
+P002,Alisia Smith,Jan 12 1992,F,alic-smith-web,Spelling error in name
+P003,Zhang San,1975-13-01,male,13800138000,Invalid month in date
+P004,Bob Brown,7/4/1965,M,,Missing contact info
+P005,Unknown User,2026-01-01,unknown,none,Future birth date - should be flagged

@@ -15,11 +15,10 @@
  * 2. Console lists verified patient names and version IDs. (控制台列出验证过的患者姓名和版本号)
  */
 
-using System.Globalization;
 using CsvHelper;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
-using _04_Data_Mapping_ETL;
+using System.Globalization;
 
 namespace _04_Data_Mapping_ETL
 {
