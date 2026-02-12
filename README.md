@@ -13,6 +13,34 @@
 ## 📌 Strategic Mission & Industry Context
 In the 2026 healthcare landscape, data interoperability is no longer an option but a federal mandate under the **21st Century Cures Act**. This project is a production-ready implementation of a **Healthcare Interoperability Engine**, specifically engineered to bridge the gap between fragmented legacy clinical data and the standardized **HL7 FHIR R4/R5** ecosystem.
 
+```mermaid
+graph TD
+    subgraph Data_Sources [Legacy Data Ingestion]
+        DS1[(Large-scale CSV/JSON)]
+        DS2[(Legacy SQL DB)]
+    end
+
+    subgraph Core_Engine [.NET 10 Interoperability Engine]
+        direction TB
+        M06[06-AI-Validator: Semantic Normalization]
+        M03[03-Resource-Validator: Firely SDK]
+        M04[04-Data-Mapping-ETL: Idempotent Migration]
+        
+        M06 --> M03
+        M03 --> M04
+    end
+
+    subgraph Access_Layer [Security & Retrieval]
+        M05[05-SMART-on-FHIR: US Core Auth]
+        M02[02-Advanced-Query: Chained Search]
+    end
+
+    Data_Sources --> M06
+    M04 --> M05
+    M05 --> FHIR_Server[(Target FHIR Server)]
+    FHIR_Server <--> M02
+```
+
 ### 🛡️ Professional Value Proposition
 * **AI-Enhanced Semantic Governance:** Solves the "Fuzzy Data" problem where traditional ETL fails, using privacy-preserving Local LLMs.
 * **Regulatory-First Architecture:** Built strictly against **US Core Implementation Guides** and **ONC (g)(10)** requirements.
