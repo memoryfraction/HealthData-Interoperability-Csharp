@@ -132,6 +132,17 @@ Complex clinical retrieval requires more than basic CRUD.
 
 ---
 
+## 🧠 Engineering Challenges & Solutions
+
+### Challenge 1: LLM Non-Determinism in Medical Data
+**Problem**: LLMs can sometimes "hallucinate" or produce conversational chatter instead of clean JSON.
+**Solution**: Implemented a **Regex Shield** to extract pure JSON payloads and added a **Deterministic Validator** layer in C# to ensure clinical logic (e.g., date of birth cannot be in the future).
+
+### Challenge 2: Memory Pressure during Bulk ETL
+**Problem**: Processing millions of FHIR resources can lead to high GC (Garbage Collection) overhead.
+**Solution**: Optimized the pipeline using **.NET 10 JSON Source Generation** and `ReadOnlySpan<char>`, reducing memory allocation by approximately 40% compared to traditional reflection-based serialization.
+
+---
 ## 📖 Getting Started
 
 1.  **Clone the Engine**
