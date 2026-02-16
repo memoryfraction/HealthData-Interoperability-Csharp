@@ -160,7 +160,7 @@ Complex clinical retrieval requires more than basic CRUD.
 ---
 
 ## 👤 Contact & Collaboration
-**Rong Fan** - Full-Stack Developer | HealthTech Specialist
+**Rong(Rex) Fan** - Full-Stack Developer | HealthTech Specialist
 * **LinkedIn**: [rongfan1031](https://www.linkedin.com/in/rongfan1031/)
 * **Focus**: Building High-Performance, Compliant Healthcare Systems.
 
