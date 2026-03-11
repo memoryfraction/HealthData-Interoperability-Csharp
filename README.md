@@ -158,7 +158,7 @@ Complex clinical retrieval requires more than basic CRUD.
 ---
 
 ## 👤 Contact & Collaboration
-**Rong(Rex) Fan** - Full-Stack Developer | HealthTech Specialist
+**Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
 * **LinkedIn**: [rongfan1031](https://www.linkedin.com/in/rongfan1031/)
 * **Focus**: Building High-Performance, Compliant Healthcare Systems.
 
