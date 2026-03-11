@@ -5,7 +5,6 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Compliance](https://img.shields.io/badge/Cures_Act-Certified-blue.svg)](https://www.healthit.gov/topic/laws-regulation-and-policy/notice-proposed-rulemaking-ht-1)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
 
 ---
