@@ -59,6 +59,27 @@ graph TD
 ---
 
 ## 🚀 Technical Deep Dive: Solving 2026's MedTech Challenges
+### 🧩 07: 07-HIPAA-Compliance-Demo
+As healthcare data interoperability becomes a federal mandate under the 21st Century Cures Act, ensuring HIPAA compliance is non-negotiable for protecting Protected Health Information (PHI). This module demonstrates a production-grade compliance framework, combining role-based access control (RBAC) and patient consent validation to meet HIPAA’s Minimum Necessary Standard and ONC (g)(10) requirements.
+
+#### 🔴 The Compliance Pain Points
+* **Overly Permissive Access**: Generic auth systems often grant broad PHI access, violating HIPAA’s least privilege principle and increasing breach risk.
+* **Missing Audit Trails**: Inadequate logging of PHI access/denial actions makes compliance audits difficult and exposes organizations to penalties.
+* **Consent Mismanagement**: Failure to validate patient consent for PHI use leads to regulatory violations and erosion of patient trust.
+* **Uncontrolled PHI Exposure**: Lack of field-level redaction exposes sensitive data (e.g., social security numbers, medical history) to unauthorized roles.
+
+#### 💡The Compliance Solution: HIPAA-Centric Access Control
+* **Granular 8-Role RBAC Model**: Tailored to clinical workflows, including SysAdmin, Physician, Nurse, FrontDesk, Biller, Insurance, Patient, and Auditor—each with strictly bounded access scopes.
+* **Least Privilege Enforcement**: No super-admin accounts, bulk PHI export/delete functionality is hard-disabled, and access is limited to only the data needed for job functions.
+* **Field-Level PHI Redaction**: Sensitive fields (e.g., PHI, financial data) are automatically hidden for roles without authorization, ensuring only necessary data is visible.
+* **Patient Consent Validation**: Tightly integrated with FHIR Consent resources to verify patient authorization for PHI access, including purpose-of-use validation.
+* **Immutable Audit Logging**: Every PHI access, denial, and modification is recorded with timestamp, user identity, and action details—fully compliant with HIPAA’s audit requirements.
+
+**Execution Result:**
+
+![07-Compliance Demo Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/07%20Compliance%20demo%20result.jpg?raw=true)
+
+---
 
 ### 🧩 06: AI-Assisted Semantic Validation (Privacy-First)
 Traditional Regex-based ETL often fails when encountering human-typed "noisy" data (e.g., "Mmale", "Jhon Doe"). This module implements a **Hybrid AI Pipeline** to bridge the gap between unstructured legacy records and FHIR R4 resources.
