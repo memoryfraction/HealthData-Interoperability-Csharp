@@ -4,8 +4,6 @@
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
-[![Compliance](https://img.shields.io/badge/Cures_Act-Certified-blue.svg)](https://www.healthit.gov/topic/laws-regulation-and-policy/notice-proposed-rulemaking-ht-1)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
 
 ---
@@ -42,7 +40,7 @@ graph TD
 ```
 
 ### 🛡️ Professional Value Proposition
-* **AI-Enhanced Semantic Governance:** Solves the "Fuzzy Data" problem where traditional ETL fails, using privacy-preserving Local LLMs.
+* **AI Assisted Data Normalization:** Solves the "Fuzzy Data" problem where traditional ETL fails, using privacy-preserving Local LLMs.
 * **Regulatory-First Architecture:** Built strictly against **US Core Implementation Guides** and **ONC (g)(10)** requirements.
 * **Enterprise .NET 10 Stack:** Demonstrates mastery of high-throughput features like **Interceptors**, **JSON Source Generation**, and **Native AOT compatibility** for edge medical devices.
 
@@ -52,11 +50,11 @@ graph TD
 
 | Module | Technical Focus | Strategic Business Value | Status |
 | :--- | :--- | :--- | :--- |
-| **[06-AI-Data-Validator](./src/06-AI-Data-Validator)** | **AI Semantic ETL** | **Data Cleansing**: Uses Local LLMs to normalize "noisy" legacy data with zero-PII leakage. | ✅ **Production Ready** |
-| **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: Mapping data to **US Core Patient Profiles** for certified EHR access. | ✅ **Production Ready** |
-| **[04-Data-Mapping-ETL](./src/04-Data-Mapping-ETL)** | **Legacy Integration** | **Data Integrity**: Uses Conditional PUT to prevent duplicates in high-concurrency migrations. | ✅ **Production Ready** |
-| **[03-Resource-Validator](./src/03-Resource-Validator)** | **Risk Management** | **Clinical Firewall**: Prevents "Garbage-In" scenarios via strict HL7 semantic validation. | ✅ **Production Ready** |
-| **[02-Advanced-Query](./src/02-Advanced-Query)** | **Search Optimization** | **Performance**: Reduces network round-trips via Chained Parameters & `_include` logic. | ✅ **Production Ready** |
+| **[06-AI-Data-Validator](./src/06-AI-Data-Validator)** | **AI Semantic ETL** | **Data Cleansing**: Uses Local LLMs to normalize "noisy" legacy data with zero-PII leakage. | ✅ **Technical Demonstration Project** |
+| **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: Mapping data to **US Core Patient Profiles** for certified EHR access. | ✅ **Technical Demonstration Project** |
+| **[04-Data-Mapping-ETL](./src/04-Data-Mapping-ETL)** | **Legacy Integration** | **Data Integrity**: Uses Conditional PUT to prevent duplicates in high-concurrency migrations. | ✅ **Technical Demonstration Project** |
+| **[03-Resource-Validator](./src/03-Resource-Validator)** | **Risk Management** | **Clinical Firewall**: Prevents "Garbage-In" scenarios via strict HL7 semantic validation. | ✅ **Technical Demonstration Project** |
+| **[02-Advanced-Query](./src/02-Advanced-Query)** | **Search Optimization** | **Performance**: Reduces network round-trips via Chained Parameters & `_include` logic. | ✅ **Technical Demonstration Project** |
 
 ---
 
@@ -160,7 +158,7 @@ Complex clinical retrieval requires more than basic CRUD.
 ---
 
 ## 👤 Contact & Collaboration
-**Rong(Rex) Fan** - Full-Stack Developer | HealthTech Specialist
+**Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
 * **LinkedIn**: [rongfan1031](https://www.linkedin.com/in/rongfan1031/)
 * **Focus**: Building High-Performance, Compliant Healthcare Systems.
 
