@@ -69,15 +69,37 @@ As healthcare data interoperability becomes a federal mandate under the 21st Cen
 * **Uncontrolled PHI Exposure**: Lack of field-level redaction exposes sensitive data (e.g., social security numbers, medical history) to unauthorized roles.
 
 #### 💡The Compliance Solution: HIPAA-Centric Access Control
-* **Granular 8-Role RBAC Model**: Tailored to clinical workflows, including SysAdmin, Physician, Nurse, FrontDesk, Biller, Insurance, Patient, and Auditor—each with strictly bounded access scopes.
+* **Granular 8-Role RBAC Model**:  Tailored to clinical workflows, including SysAdmin, Physician, Nurse, FrontDesk, Biller, Insurance, Patient, and Auditor—each with strictly bounded access scopes.
 * **Least Privilege Enforcement**: No super-admin accounts, bulk PHI export/delete functionality is hard-disabled, and access is limited to only the data needed for job functions.
-* **Field-Level PHI Redaction**: Sensitive fields (e.g., PHI, financial data) are automatically hidden for roles without authorization, ensuring only necessary data is visible.
+* **Field-Level PHI Redaction**:  Sensitive fields (e.g., PHI, financial data) are automatically hidden for roles without authorization, ensuring only necessary data is visible.
 * **Patient Consent Validation**: Tightly integrated with FHIR Consent resources to verify patient authorization for PHI access, including purpose-of-use validation.
-* **Immutable Audit Logging**: Every PHI access, denial, and modification is recorded with timestamp, user identity, and action details—fully compliant with HIPAA’s audit requirements.
+* **Immutable Audit Logging**:    Every PHI access, denial, and modification is recorded with timestamp, user identity, and action details—fully compliant with HIPAA’s audit requirements.
 
 **Execution Result:**
 
 ![07-Compliance Demo Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/07%20Compliance%20demo%20result.jpg?raw=true)
+
+
+The following is the patient data Consent (Authorization) process design diagram:
+```mermaid
+flowchart TD 
+A["User requests FHIR PHI access"] 
+B{"Check JWT role & identity scope"} 
+
+A --> B 
+B -->|Clinic Staff| C["Load Patient FHIR Consent Resource"] 
+B -->|Patient Self| Z["Verify JWT patientId match owner"] 
+
+C --> D{"Validate consent status & use purpose"} 
+D -->|Approved & Valid Purpose| E["Allow full PHI access"] 
+D -->|Denied/Expired/Mismatch| F["Reject & block PHI access"] 
+
+E --> G["Write HIPAA access audit log"] 
+F --> H["Write HIPAA denial audit log"] 
+
+Z --> I["Enforce self-only data isolation rule"] 
+I --> E
+```
 
 ---
 
