@@ -202,8 +202,8 @@ Complex clinical retrieval requires more than basic CRUD.
 
 ## 👤 Contact & Collaboration
 **Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
-* **LinkedIn**: [rongfan1031](https://www.linkedin.com/in/rongfan1031/)
-* **Upwork**: [Upwork](upwork.com/freelancers/~0130de8f5f5eeebb0f)
+* **LinkedIn**: [Rex Linkedin](https://www.linkedin.com/in/rongfan1031/)
+* **Upwork**: [Rex Upwork](upwork.com/freelancers/~0130de8f5f5eeebb0f)
 * **Focus**: Building High-Performance, Compliant Healthcare Systems. W-9 available, no sponsorship needed in US
 
 ---
