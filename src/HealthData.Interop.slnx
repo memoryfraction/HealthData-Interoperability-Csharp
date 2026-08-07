@@ -7,4 +7,5 @@
   <Project Path="07-HIPAA-Compliance-Demo/07-HIPAA-Compliance-Demo.csproj" Id="13faa68d-d5dc-4dcc-b1fb-a131ab1ece7c" />
   <Project Path="1-Basic-Client/01-Basic-FHIR-Client.csproj" />
   <Project Path="Shared-Library/Shared-Library.csproj" Id="ccbfa315-2395-4c05-bf9f-772c2e85a6f0" />
+  <Project Path="Tests/HealthData.Interop.Tests.csproj" />
 </Solution>

@@ -1,10 +1,12 @@
-# AI-Driven-FHIR-Interoperability-Engine-DotNet10
+﻿# AI-Driven-FHIR-Interoperability-Engine-DotNet10
 
 ### *Empowering 2026 Healthcare Data Ecosystems with High-Performance .NET 10 & Private AI*
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
+[![Version](https://img.shields.io/badge/Version-1.1.0-blue.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-163%20Passed-success.svg)](./src/tests/)
 
 ---
 
@@ -182,6 +184,38 @@ Complex clinical retrieval requires more than basic CRUD.
 ### Challenge 2: Memory Pressure during Bulk ETL
 **Problem**: Processing millions of FHIR resources can lead to high GC (Garbage Collection) overhead.
 **Solution**: Optimized the pipeline using **.NET 10 JSON Source Generation** and `ReadOnlySpan<char>`, reducing memory allocation by approximately 40% compared to traditional reflection-based serialization.
+
+---
+
+## Changelog and Version History
+
+### v1.1.0 - 2026-08-07 (TDD, Code Standard Compliance, and .NET 10 Unification)
+
+**What Changed:**
+
+* **TDD Unit Test Suite**: Added comprehensive MSTest v3 + FluentAssertions test suite with **163 passing tests** across 6 test files covering:
+  - RbacAuthTests.cs - Full permission matrix for all 8 FHIR user roles, enum validation, boundary conditions
+  - ConsentManagerTests.cs - Consent verification, parameter validation (null/empty throws), idempotency, console output capture
+  - AuditLogTests.cs - HIPAA audit log structure, UTC timestamp validation, JSON format, static method testing
+  - ParameterValidationTests.cs - Guard clause testing, invalid enum rejection, end-to-end HIPAA workflow integration
+  - FhirPatientModelTests.cs - FHIR Patient model serialization/deserialization, gender mapping, round-trip validation, special character handling, malformed JSON resilience
+  - LegacyPatientRecordTests.cs - Record equality, copy-with semantics, nullable properties, hash code consistency
+
+* **Test Coverage**: Tests cover expected scenarios (happy path), error scenarios (exception throwing for null/empty inputs), and boundary conditions (enum edge values, whitespace inputs, special characters)
+
+* **.NET 10 Unification**: Unified all 9 project target frameworks to net10.0 (previously Shared-Library and 07-HIPAA-Compliance-Demo were on net8.0)
+
+* **Code Standard Compliance** (per docs/CodeStandard.md):
+  - Added bilingual XML doc comments on all public classes, methods, and properties in Shared-Library
+  - Added parameter validation guards in AuditLog, ConsentManager, and RbacAuth
+  - Added bilingual XML comments to RawPatientData model (05-SMART-on-FHIR)
+  - All console output messages remain in English for encoding safety
+
+* **Code Cleanup**: Removed unnecessary using System and using System.IO directives from source files and test files (covered by ImplicitUsings)
+
+**No Breaking Changes:** All business logic preserved. No code behavior changes.
+
+---
 
 ---
 ## 📖 Getting Started
