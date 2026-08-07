@@ -13,6 +13,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest" Version="3.8.3" />
     <PackageReference Include="FluentAssertions" Version="8.5.0" />
+    <!-- Explicit FHIR reference: FhirPatientModelTests uses Hl7.Fhir.Model directly rather than
+         relying on it arriving transitively through the 04-Data-Mapping-ETL project reference. -->
+    <PackageReference Include="Hl7.Fhir.R4" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>

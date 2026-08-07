@@ -43,7 +43,7 @@ public sealed class AuditLogParameterValidationTests
     public void Record_EmptyUserId_ShouldThrow()
     {
         Action act = () => AuditLog.Record("", "Physician", "1.2.3.4", "Patient", "P1", "READ");
-        act.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("userId");
+        act.Should().Throw<ArgumentException>().And.ParamName.Should().Be("userId");
     }
 
     /// <summary>
@@ -241,7 +241,10 @@ public sealed class RbacAuthParameterValidationTests
 /// Verifies that CodeStandard.md requirement "all public methods must begin with parameter validation" is met.
 /// 验证CodeStandard.md要求"所有public方法必须以参数验证开始"已满足。
 /// </summary>
+// [EN] Redirects Console.Out to capture output; must not run in parallel with other Console-capturing tests.
+// [CN] 重定向Console.Out以捕获输出；不能与其他捕获Console的测试并行运行。
 [TestClass]
+[DoNotParallelize]
 public sealed class SharedLibraryParameterValidationIntegrationTests
 {
     /// <summary>

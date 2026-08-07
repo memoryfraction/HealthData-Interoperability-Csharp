@@ -51,13 +51,17 @@ namespace Shared_Library
         }
 
         /// <summary>
-        /// [EN] Validates that a string argument is not null or empty.
-        /// [CN] 验证字符串参数不为null或空。
+        /// [EN] Validates that a string argument is neither null nor empty.
+        /// Throws ArgumentNullException for null and ArgumentException for empty, matching BCL conventions.
+        /// [CN] 验证字符串参数既不为null也不为空。
+        /// null抛出ArgumentNullException，空字符串抛出ArgumentException，符合BCL惯例。
         /// </summary>
         private static void GuardAgainstNullOrEmpty(string? value, string name)
         {
-            if (string.IsNullOrEmpty(value))
-                throw new ArgumentNullException(name, $"Parameter '{name}' must not be null or empty.");
+            if (value is null)
+                throw new ArgumentNullException(name, $"Parameter '{name}' must not be null.");
+            if (value.Length == 0)
+                throw new ArgumentException($"Parameter '{name}' must not be empty.", name);
         }
     }
 }

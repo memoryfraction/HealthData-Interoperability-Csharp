@@ -10,7 +10,10 @@ namespace HealthData.Interop.Tests.AuditLogTests;
 /// Verifies HIPAA audit log recording: who, when, what action, what resource, and IP address.
 /// 验证HIPAA审计日志记录：谁、何时、什么操作、什么资源、IP地址。
 /// </summary>
+// [EN] Redirects Console.Out to capture output; must not run in parallel with other Console-capturing tests.
+// [CN] 重定向Console.Out以捕获输出；不能与其他捕获Console的测试并行运行。
 [TestClass]
+[DoNotParallelize]
 public sealed class AuditLogTests
 {
     /// <summary>

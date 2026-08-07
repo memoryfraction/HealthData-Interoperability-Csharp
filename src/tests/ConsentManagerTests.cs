@@ -10,7 +10,10 @@ namespace HealthData.Interop.Tests.ConsentManagerTests;
 /// Verifies patient consent validation logic with parameter validation, happy path, and error scenarios.
 /// 验证患者授权验证逻辑，包括参数验证、期望路径和错误场景。
 /// </summary>
+// [EN] Redirects Console.Out to capture output; must not run in parallel with other Console-capturing tests.
+// [CN] 重定向Console.Out以捕获输出；不能与其他捕获Console的测试并行运行。
 [TestClass]
+[DoNotParallelize]
 public sealed class ConsentManagerTests
 {
     /// <summary>
@@ -92,18 +95,18 @@ public sealed class ConsentManagerTests
     }
 
     /// <summary>
-    /// [EN] Error scenario: Verify CheckConsent throws ArgumentNullException for empty patient ID.
-    /// [CN] 错误场景：验证 CheckConsent 对空患者ID抛出ArgumentNullException。
+    /// [EN] Error scenario: Verify CheckConsent throws ArgumentException for empty patient ID.
+    /// [CN] 错误场景：验证 CheckConsent 对空患者ID抛出ArgumentException。
     /// </summary>
     [TestMethod]
-    public void CheckConsent_WithEmptyPatientId_ShouldThrowArgumentNullException()
+    public void CheckConsent_WithEmptyPatientId_ShouldThrowArgumentException()
     {
         // Arrange
         var manager = new ConsentManager();
 
         // Act & Assert
         Action act = () => manager.CheckConsent("", "TREATMENT");
-        act.Should().Throw<ArgumentNullException>("Empty patient ID should trigger parameter validation");
+        act.Should().Throw<ArgumentException>("Empty patient ID should trigger parameter validation");
     }
 
     /// <summary>
