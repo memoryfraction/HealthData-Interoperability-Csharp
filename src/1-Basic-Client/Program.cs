@@ -17,7 +17,7 @@ internal static class Program
         try
         {
             // Create patient resource on the server
-            await service.CreatePatientAsync("John", "Doe", "Male", "1990-01-01", "123456790");
+            await service.CreatePatientAsync(new[] { "John", "James" }, "Doe", "Male", "1990-01-01", "123456790");
 
             // Search for patients with the name "John"
             var results = await service.SearchPatientsByNameAsync("John");

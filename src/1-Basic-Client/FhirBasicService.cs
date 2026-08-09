@@ -25,9 +25,9 @@ public sealed class FhirBasicService
     /// [EN] Create a Patient resource on the FHIR server.
     /// [CN] 在FHIR服务器上创建Patient资源。
     /// </summary>
-    public async Task<Patient> CreatePatientAsync(string firstName, string familyName, string gender, string birthDate, string identifierValue)
+    public async Task<Patient> CreatePatientAsync(IReadOnlyList<string> givenNames, string familyName, string gender, string birthDate, string identifierValue)
     {
-        Guard.NotNullOrEmpty(firstName, nameof(firstName));
+        Guard.NotNull(givenNames, nameof(givenNames));
         Guard.NotNullOrEmpty(familyName, nameof(familyName));
         Guard.NotNullOrEmpty(gender, nameof(gender));
         Guard.NotNullOrEmpty(birthDate, nameof(birthDate));
@@ -39,7 +39,7 @@ public sealed class FhirBasicService
             {
                 new HumanName
                 {
-                    Given = new[] { firstName },
+                    Given = givenNames,
                     Family = familyName
                 }
             },

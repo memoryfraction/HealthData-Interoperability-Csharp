@@ -10,7 +10,7 @@ namespace Shared_Library;
 /// - Mapperly generates compile-time code replacing hand-written property copying
 /// - Gender normalization centralized via [UserMapping]
 /// - Name/Telecom constructed inline via static helpers (two source props -> one FHIR prop)
-/// - PostProcess adds Identifier + Meta tags with runtime configuration
+/// - PostProcess adds Identifier (optional) + Meta tags with runtime configuration
 /// - Zero reflection overhead — mapping is resolved at compile time
 /// 
 /// [CN] 基于Mapperly的源代码生成器，将遗留记录转换为FHIR R4 Patient资源。
@@ -26,6 +26,7 @@ public partial class FhirPatientMapper
     private readonly bool _usCoreProfile;
     private readonly bool _addTestDataTag;
     private readonly bool _testNameMarkers;
+    private readonly bool _addIdentifier;
 
     /// <summary>
     /// [EN] Create a new FhirPatientMapper with the specified configuration.
@@ -35,16 +36,19 @@ public partial class FhirPatientMapper
     /// <param name="usCoreProfile">[EN] Whether to add US Core profile / [CN] 是否添加US Core配置档</param>
     /// <param name="addTestDataTag">[EN] Whether to add test-data Meta tag / [CN] 是否添加测试数据Meta标签</param>
     /// <param name="testNameMarkers">[EN] Whether MapLegacy appends "-Test"/"[TEST]" name markers (module 04 sandbox convention) / [CN] MapLegacy是否为姓名追加"-Test"/"[TEST]"测试标记（模块04沙盒约定）</param>
+    /// <param name="addIdentifier">[EN] Whether to attach a business Identifier in PostProcess (default true; Module 05 passes false for pre-refactor output parity) / [CN] 是否在PostProcess中附加业务Identifier（默认true；模块05传false以保持重构前输出一致）</param>
     public FhirPatientMapper(
         string? idSystem = null,
         bool usCoreProfile = false,
         bool addTestDataTag = true,
-        bool testNameMarkers = false)
+        bool testNameMarkers = false,
+        bool addIdentifier = true)
     {
         _idSystem = string.IsNullOrWhiteSpace(idSystem) ? DefaultIdSystem : idSystem;
         _usCoreProfile = usCoreProfile;
         _addTestDataTag = addTestDataTag;
         _testNameMarkers = testNameMarkers;
+        _addIdentifier = addIdentifier;
     }
 
     /// <summary>
@@ -75,6 +79,11 @@ public partial class FhirPatientMapper
         // [CN] 模块05将导入的患者标记为Active（保持重构前的行为）。
         patient.Active = true;
         patient.Name = new List<HumanName> { BuildHumanName(source.FirstName, source.LastName) };
+
+        // [EN] Module 05 pre-refactor created Patients without a business Identifier.
+        // PostProcess attaches one only when enabled (default); Module 05 disables it via addIdentifier: false.
+        // [CN] 模块05重构前创建的Patient不带业务Identifier。
+        // 仅在启用时（默认）由PostProcess附加；模块05通过addIdentifier:false关闭。
         var legacyId = $"{source.FirstName.Trim()}_{source.LastName.Trim()}";
         PostProcess(patient, legacyId);
         return patient;
@@ -109,7 +118,7 @@ public partial class FhirPatientMapper
     // ====== Post-processing (runtime config injection) ======
 
     /// <summary>
-    /// [EN] Attach Identifier with configurable system URI and optional US Core / test-data Meta.
+    /// [EN] Attach Identifier (when enabled) with configurable system URI and optional US Core / test-data Meta.
     /// [CN] 附加标识符和可选US Core/测试数据Meta。
     /// </summary>
     public virtual void PostProcess(Patient patient, string legacyId)
@@ -117,8 +126,11 @@ public partial class FhirPatientMapper
         Guard.NotNull(patient, nameof(patient));
         Guard.NotNullOrEmpty(legacyId, nameof(legacyId));
 
-        patient.Identifier ??= new List<Identifier>();
-        patient.Identifier.Add(new Identifier(_idSystem, legacyId));
+        if (_addIdentifier)
+        {
+            patient.Identifier ??= new List<Identifier>();
+            patient.Identifier.Add(new Identifier(_idSystem, legacyId));
+        }
 
         var tags = new List<Coding>();
         if (_addTestDataTag)

@@ -203,7 +203,7 @@ Complex clinical retrieval requires more than basic CRUD.
 
 * **Mapperly Source Generator**: Fixed and configured Mapperly (Riok.Mapperly v4.1.1) for compile-time mapping:
   - Resolved ObjectFactory signature errors (RMG022) and abstract member issues (CS0621)
-  - Gender normalization via [UserMapping] with centralized GenderNormalizer
+  - Gender normalization via [UserMapping] with centralized GenderNormalizer (fixes Module 05 female→Male mapping bug)
   - Static helpers (BuildHumanName, BuildTelecom) for inline Name/Telecom construction
 
 * **Guard Helper Unification**: Consolidated parameter validation across Shared-Library using internal Guard class (NotNull, NotNullOrEmpty) per CodeStandard.md requirements
@@ -212,7 +212,13 @@ Complex clinical retrieval requires more than basic CRUD.
 
 * **Project Reference Updates**: Updated csproj files (Modules 04, 05) with proper Shared-Library project references
 
-**No Breaking Changes:** All business logic preserved. Program.cs entry points delegate to service classes without behavioral changes.
+**Behavior Notes (intentional, review-highlighted):**
+
+* **Data-integrity fix (Module 05 gender)**: The pre-refactor `record.Gender?.ToLower().Contains("male")` check matched the substring in "female" (fe-"male") and imported female patients as `Male`. Centralized `GenderNormalizer` now maps `female`/`f`/`woman` → `Female` and unrecognized/empty values → `Unknown`. This is a deliberate bug fix, not a regression.
+
+* **Module 05 output parity**: Pre-refactor Module 05 created Patients without a business Identifier. `MapRaw` now attaches an Identifier only when enabled (default), and Module 05 passes `addIdentifier: false` so created resources match pre-refactor output.
+
+* Everything else: business logic preserved; Program.cs entry points delegate to service classes without behavioral changes.
 
 ---
 

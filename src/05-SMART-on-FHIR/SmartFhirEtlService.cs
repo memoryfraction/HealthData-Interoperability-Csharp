@@ -26,7 +26,11 @@ public sealed class SmartFhirEtlService
     {
         Guard.NotNull(client, nameof(client));
         _client = client;
-        _mapper = new FhirPatientMapper(usCoreProfile: true, addTestDataTag: false);
+        // [EN] Module 05 pre-refactor created Patients without a business Identifier;
+        // keep output parity by disabling the synthetic name-based Identifier.
+        // [CN] 模块05重构前创建的Patient不带业务Identifier；
+        // 关闭基于姓名拼接的合成Identifier以保持输出一致。
+        _mapper = new FhirPatientMapper(usCoreProfile: true, addTestDataTag: false, addIdentifier: false);
     }
 
     /// <summary>
@@ -75,26 +79,5 @@ public sealed class SmartFhirEtlService
         }
 
         return count;
-    }
-}
-
-/// <summary>
-/// [EN] Parameter validation helpers.
-/// [CN] 参数验证辅助方法。
-/// </summary>
-internal static class Guard
-{
-    public static void NotNull(object? value, string name)
-    {
-        if (value is null)
-            throw new ArgumentNullException(name, $"Parameter '{name}' must not be null.");
-    }
-
-    public static void NotNullOrEmpty(string? value, string name)
-    {
-        if (value is null)
-            throw new ArgumentNullException(name, $"Parameter '{name}' must not be null.");
-        if (value.Length == 0)
-            throw new ArgumentException($"Parameter '{name}' must not be empty.", name);
     }
 }

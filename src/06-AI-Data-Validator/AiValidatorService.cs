@@ -144,7 +144,7 @@ public static class ClinicalGuardrails
         if (string.IsNullOrEmpty(dto.name))
             return false;
 
-        if (DateTime.TryParse(dto.dob, out DateTime dobDate) && dobDate > DateTime.UtcNow)
+        if (DateTime.TryParse(dto.dob, out DateTime dobDate) && dobDate > DateTime.Now)
             return false;
 
         return true;

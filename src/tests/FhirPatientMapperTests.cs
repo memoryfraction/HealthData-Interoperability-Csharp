@@ -7,7 +7,7 @@ namespace HealthData.Interop.Tests.MapperTests;
 
 /// <summary>
 /// [EN] FhirPatientMapper mapping tests — LegacyPatientRecord and RawPatientData to FHIR Patient.
-/// Covers: normal mapping, PostProcess configuration (US Core, test data tag, identifier system),
+/// Covers: normal mapping, PostProcess configuration (US Core, test data tag, identifier system, addIdentifier switch),
 /// null/empty parameter validation, and static helper methods.
 /// [CN] FhirPatientMapper 映射测试——LegacyPatientRecord和RawPatientData到FHIR Patient。
 /// </summary>
@@ -94,6 +94,25 @@ public sealed class FhirPatientMapperTests
 
         var patient = mapper.MapRaw(source);
         patient.Active.Should().Be(true, "Module 05 marks imported patients Active");
+    }
+
+    /// <summary>
+    /// Map RawPatientData with addIdentifier=false (module 05 pre-refactor parity):
+    /// no business Identifier is written, female gender stays Female (data-integrity fix), US Core profile applied.
+    /// </summary>
+    [TestMethod]
+    public void MapRaw_NoIdentifier_WhenAddIdentifierDisabled()
+    {
+        var mapper = new FhirPatientMapper(usCoreProfile: true, addTestDataTag: false, addIdentifier: false);
+        var source = new RawPatientData { FirstName = "Jane", LastName = "Smith", Gender = "Female", BirthDate = "1985-06-20" };
+
+        var patient = mapper.MapRaw(source);
+
+        patient.Identifier.Should().BeNullOrEmpty("Module 05 pre-refactor wrote no business Identifier");
+        patient.Gender.Should().Be(AdministrativeGender.Female, "Female must not be mapped to Male");
+        patient.Active.Should().BeTrue("Module 05 marks imported patients Active");
+        patient.Meta.Should().NotBeNull();
+        patient.Meta.Profile.Should().Contain(FhirPatientMapper.UsCorePatientProfile);
     }
 
     /// <summary>

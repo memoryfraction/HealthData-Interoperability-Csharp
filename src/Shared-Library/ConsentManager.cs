@@ -15,13 +15,13 @@ namespace Shared_Library
         /// <param name="patientId">[EN] Patient identifier / [CN] 患者标识符</param>
         /// <param name="requestPurpose">[EN] Purpose of data access request / [CN] 数据访问请求的用途</param>
         /// <returns>[EN] True if consent is granted / [CN] 如果已授权则返回true</returns>
-        public bool CheckConsent(string patientId, string? requestPurpose)
+        public bool CheckConsent(string patientId, string requestPurpose)
         {
             Guard.NotNullOrEmpty(patientId, nameof(patientId));
 
             // In real scenario: Read from FHIR Consent resource
             // For demo, we simulate that the patient has granted consent for the requested purpose.
-            Console.WriteLine($"\n[CONSENT CHECK] Patient {patientId} | Purpose: {requestPurpose ?? "N/A"} | Status: GRANTED");
+            Console.WriteLine($"\n[CONSENT CHECK] Patient {patientId} | Purpose: {requestPurpose} | Status: GRANTED");
             return true;
         }
     }
