@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -11,6 +11,10 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.1.0" />
     <PackageReference Include="Hl7.Fhir.R4" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared-Library\Shared-Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>

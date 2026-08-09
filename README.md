@@ -1,11 +1,11 @@
-﻿# AI-Driven-FHIR-Interoperability-Engine-DotNet10
+# AI-Driven-FHIR-Interoperability-Engine-DotNet10
 
 ### *Empowering 2026 Healthcare Data Ecosystems with High-Performance .NET 10 & Private AI*
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![Version](https://img.shields.io/badge/Version-1.1.0-blue.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-163%20Passed-success.svg)](./src/tests/)
 
 ---
@@ -188,6 +188,34 @@ Complex clinical retrieval requires more than basic CRUD.
 ---
 
 ## Changelog and Version History
+### v1.2.0 - 2026-08-09 (Service Abstraction, Code Standard Refactoring, Mapperly Source Generator)
+
+**What Changed:**
+
+* **Service Class Extraction** (Modules 01-07): Extracted functional logic into reusable, unit-testable service classes:
+  - FhirBasicService (Module 01) - Basic FHIR Patient CRUD operations
+  - AdvancedQueryService (Module 2) - Chained search and _include/_revinclude queries
+  - ResourceValidationService (Module 3) - Firely SDK FHIR resource validation
+  - EtlPipelineService (Module 04) - CSV extraction, transformation, transaction bundle loading
+  - SmartFhirEtlService (Module 05) - SMART-on-FHIR ETL pipeline with US Core profile support
+  - AiValidatorService + ClinicalGuardrails (Module 06) - AI-assisted data cleaning with guard validation
+  - HipaaComplianceOrchestrator (Module 07) - HIPAA compliance workflow orchestration
+
+* **Mapperly Source Generator**: Fixed and configured Mapperly (Riok.Mapperly v4.1.1) for compile-time mapping:
+  - Resolved ObjectFactory signature errors (RMG022) and abstract member issues (CS0621)
+  - Gender normalization via [UserMapping] with centralized GenderNormalizer
+  - Static helpers (BuildHumanName, BuildTelecom) for inline Name/Telecom construction
+
+* **Guard Helper Unification**: Consolidated parameter validation across Shared-Library using internal Guard class (NotNull, NotNullOrEmpty) per CodeStandard.md requirements
+
+* **Shared-Library Enhancement**: Added Hl7.Fhir.R4 and Riok.Mapperly package references; moved DTO models (LegacyPatientRecord, RawPatientData) and mapper to shared library for cross-module reuse
+
+* **Project Reference Updates**: Updated csproj files (Modules 04, 05) with proper Shared-Library project references
+
+**No Breaking Changes:** All business logic preserved. Program.cs entry points delegate to service classes without behavioral changes.
+
+---
+
 
 ### v1.1.0 - 2026-08-07 (TDD, Code Standard Compliance, and .NET 10 Unification)
 
@@ -241,3 +269,5 @@ Complex clinical retrieval requires more than basic CRUD.
 * **Focus**: Building High-Performance, Compliant Healthcare Systems. W-9 available, no sponsorship needed in US
 
 ---
+
+
