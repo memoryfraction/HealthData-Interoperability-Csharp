@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -37,7 +37,7 @@
   <!-- NuGet Package Metadata -->
   <PropertyGroup>
     <PackageId>HealthData.Interop.Fhir</PackageId>
-    <Version>1.3.2</Version>
+    <Version>1.3.3</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
@@ -51,7 +51,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.3.2 - Removed Microsoft.SemanticKernel alpha dependency and known critical vulnerability. Replaced Ollama integration with native HttpClient for cleaner, lighter NuGet package. Portfolio snapshot - no maintenance.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.3.3 - Codebase upgrades, stability improvements, and minor bug fixes.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

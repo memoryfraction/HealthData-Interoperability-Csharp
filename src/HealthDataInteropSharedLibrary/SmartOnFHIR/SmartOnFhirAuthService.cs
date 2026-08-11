@@ -107,6 +107,12 @@ public sealed class SmartOnFhirAuthService : IDisposable
 {
     private readonly OidcOptions _options;
     private readonly HttpClient _tokenHttpClient;
+    // [EN] Shared handler reused across all FhirClients to avoid socket exhaustion.
+    // [CN] 所有FhirClient共享的处理器，避免套接字耗尽。
+    private readonly SocketsHttpHandler _fhirHandler = new();
+    // [EN] Serializes token refresh so concurrent callers don't trigger duplicate token requests.
+    // [CN] 序列化令牌刷新，避免并发调用触发重复的令牌请求。
+    private readonly SemaphoreSlim _tokenLock = new(1, 1);
     private CachedToken? _cachedToken;
     private bool _disposed;
 
@@ -136,8 +142,20 @@ public sealed class SmartOnFhirAuthService : IDisposable
         if (_cachedToken is not null && _cachedToken.IsStillValid())
             return _cachedToken.AccessToken;
 
-        _cachedToken = await FetchTokenAsync();
-        return _cachedToken.AccessToken;
+        await _tokenLock.WaitAsync();
+        try
+        {
+            // Re-check inside the lock: another caller may have refreshed while we waited.
+            if (_cachedToken is not null && _cachedToken.IsStillValid())
+                return _cachedToken.AccessToken;
+
+            _cachedToken = await FetchTokenAsync();
+            return _cachedToken.AccessToken;
+        }
+        finally
+        {
+            _tokenLock.Release();
+        }
     }
 
     /// <summary>
@@ -154,8 +172,8 @@ public sealed class SmartOnFhirAuthService : IDisposable
 
         var accessToken = await GetAccessTokenAsync();
 
-        var handler = new SocketsHttpHandler();
-        var client = new HttpClient(handler);
+        // Reuse the shared handler (disposeHandler: false) so repeated calls don't leak sockets.
+        var client = new HttpClient(_fhirHandler, disposeHandler: false);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             _cachedToken?.TokenType ?? "Bearer",
             accessToken
@@ -217,6 +235,8 @@ public sealed class SmartOnFhirAuthService : IDisposable
         if (!_disposed)
         {
             _tokenHttpClient.Dispose();
+            _fhirHandler.Dispose();
+            _tokenLock.Dispose();
             _disposed = true;
         }
     }
