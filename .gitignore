@@ -419,3 +419,5 @@ FodyWeavers.xsd
 /src/.vscode/settings.json
 /INTEGRATION_AUDIT.md
 /PORTFOLIO_IMPROVEMENT_PLAN.md
+/nupkg_check
+/temp_nupkg_verify

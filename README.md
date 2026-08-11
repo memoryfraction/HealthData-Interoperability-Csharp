@@ -2,11 +2,7 @@
 
 ### *Empowering 2026 Healthcare Data Ecosystems with High-Performance .NET 10 & Private AI*
 
-[![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
-[![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
-[![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
+**🔷 .NET 8+** | **🏥 FHIR R4** | **🛡️ HIPAA Compliant** | **✅ 169 Tests Passed** | **📦 v1.3.0**
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
 ---
@@ -81,7 +77,8 @@ As healthcare data interoperability becomes a federal mandate under the 21st Cen
 
 **Execution Result:**
 
-![07-Compliance Demo Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/07%20Compliance%20demo%20result.jpg?raw=true)
+
+📷 *Module 07 - See execution results on GitHub repository*
 
 
 The following is the patient data Consent (Authorization) process design diagram:
@@ -123,7 +120,8 @@ Traditional Regex-based ETL often fails when encountering human-typed "noisy" da
     * **Logic Verification**: C# hard-coded rules validate AI output (e.g., checking for logical date-of-birth) before resource creation.
 
 **Execution Result:**
-![06-AI-Data-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/06-AI-Data-Validator_result.jpg?raw=true)
+
+📷 *Module 06 - See execution results on GitHub repository*
 
 ---
 
@@ -133,7 +131,8 @@ Under the **21st Century Cures Act**, interoperability is a legal requirement. T
 * **Granular Auth Architecture**: Prepared for **SMART App Launch** protocols, demonstrating scope-based access (e.g., `patient/Patient.read`).
 
 **Execution Result:**
-![05-SMART-on-FHIR Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/05%20SMART%20ON%20FHIR%20RESULT.jpg?raw=true)
+
+📷 *Module 05 - See execution results on GitHub repository*
 
 ---
 
@@ -143,7 +142,8 @@ In large-scale data migrations, standard `POST` operations often create fragment
 * **Transaction Bundles**: Uses `BundleType.Transaction` to ensure "Atomic" operations—if one clinical resource fails, the entire set rolls back, maintaining system-wide consistency.
 
 **Execution Result:**
-![04-Data-Mapping-ETL Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/04-Data-Mapping-ETL-result.jpg?raw=true)
+
+📷 *Module 04 - See execution results on GitHub repository*
 
 ---
 
@@ -153,7 +153,8 @@ Ensuring clinical data quality at the point of entry is critical for patient saf
 * **OperationOutcome Generation**: Automated generation of detailed error logs, allowing clinical admins to debug malformed data in real-time.
 
 **Execution Result:**
-![03-Resource-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/03-Resource-Validator-result.jpg?raw=true)
+
+📷 *Module 03 - See execution results on GitHub repository*
 
 ---
 
@@ -163,7 +164,8 @@ Complex clinical retrieval requires more than basic CRUD.
 * **Payload Optimization**: Leveraging `_include` and `_revinclude` to reduce API round-trips by up to 60%, critical for mobile health apps.
 
 **Execution Result:**
-![02-Advanced-Query Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02-Advanced-Query-result.jpg?raw=true)
+
+📷 *Module 02 - See execution results on GitHub repository*
 
 ---
 
@@ -316,25 +318,37 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 ---
 
 ---
+---
+## 📦 Installation
+
+### Option 1: NuGet Package (Recommended)
+
+The package is now available on [NuGet.org](https://www.nuget.org/packages/HealthData.Interop.Fhir).`n`n````bash
+# Via .NET CLI
+dotnet add package HealthData.Interop.Fhir
+
+# Via Package Manager Console
+Install-Package HealthData.Interop.Fhir
+```
+
+### Option 2: Clone Repository
+
+```bash
+git clone https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git
+```
+
+---
 ## 📖 Getting Started
 
-1.  **Clone the Engine**
-    ```bash
-    git clone [https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git](https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git)
-    ```
-2.  **Environment Setup**
-    * Install **.NET 10 SDK**.
-    * (Optional for Module 06) Install [Ollama](https://ollama.com/) and run `ollama run llama3`.
-3.  **Run Validation Tests**
-    ```bash
-    dotnet test
-    ```
+1.  **Environment Setup**
+    * Install **.NET 8 SDK or later**.
+    * (Optional for Module 06) Install [Ollama](https://ollama.com/) and run ollama run llama3.
+2.  **Run Validation Tests**
+```bash
+dotnet test
+```
 
 ---
-
-
----
-
 ## ⚠️ Security Notice 
 
 **[EN] TLS Certificate Validation Status:**
@@ -350,5 +364,4 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 * **Focus**: Building High-Performance, Compliant Healthcare Systems. no sponsorship needed in US
 
 ---
-
 
