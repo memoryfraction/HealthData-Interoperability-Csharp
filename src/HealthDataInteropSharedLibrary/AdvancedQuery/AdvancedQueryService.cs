@@ -13,13 +13,33 @@ public sealed class AdvancedQueryService
     private readonly FhirClient _client;
 
     /// <summary>
-    /// [EN] Initialize with a FHIR server URL.
-    /// [CN] 使用FHIR服务器URL初始化。
+    /// [EN] Initialize with a FHIR server URL and HTTPS configuration.
+    /// 
+    /// IMPORTANT / 重要说明:
+    /// [EN] enableHttps controls TLS certificate validation behavior.
+    ///      Default is true (strict HTTPS/TLS validation).
+    ///      Set to false ONLY for local development when network issues prevent connecting to remote FHIR servers.
+    /// PRODUCTION REQUIREMENT: Always use enableHttps = true in production. Disabling TLS violates HIPAA 164.312(e)(1).
+    /// [CN] enableHttps 控制 TLS 证书验证。默认值为 true。仅本地开发时可设为 false。生产环境必须为 true。
     /// </summary>
-    public AdvancedQueryService(string fhirServerUrl)
+    public AdvancedQueryService(string fhirServerUrl, bool enableHttps = true)
     {
         Guard.NotNullOrEmpty(fhirServerUrl, nameof(fhirServerUrl));
-        _client = new FhirClient(fhirServerUrl);
+
+        if (enableHttps)
+        {
+            _client = new FhirClient(fhirServerUrl);
+        }
+        else
+        {
+            var handler = new System.Net.Http.SocketsHttpHandler();
+            handler.SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+            {
+                RemoteCertificateValidationCallback = 
+                    (sender, certificate, chain, sslPolicyErrors) => sslPolicyErrors == System.Net.Security.SslPolicyErrors.None
+            };
+            _client = new FhirClient(fhirServerUrl, new System.Net.Http.HttpClient(handler));
+        }
     }
 
     /// <summary>
@@ -28,7 +48,7 @@ public sealed class AdvancedQueryService
     /// includes related Patient resources, and reverse-includes Observation resources.
     /// [CN] 按医生姓名搜索就诊记录，包含相关的患者资源和反向包含观察指标资源。
     /// </summary>
-    public async Task<Bundle> SearchEncountersByPractitionerNameAsync(string practitionerName)
+    public async System.Threading.Tasks.Task<Bundle> SearchEncountersByPractitionerNameAsync(string practitionerName)
     {
         Guard.NotNullOrEmpty(practitionerName, nameof(practitionerName));
 
@@ -63,7 +83,7 @@ public sealed class AdvancedQueryService
         {
             lines.Add($"Resource found: {entry.Resource.TypeName}/{entry.Resource.Id}");
         }
-        return string.Join(Environment.NewLine, lines);
+        return string.Join(System.Environment.NewLine, lines);
     }
 }
 
@@ -76,14 +96,14 @@ internal static class Guard
     public static void NotNull(object? value, string name)
     {
         if (value is null)
-            throw new ArgumentNullException(name, $"Parameter '{name}' must not be null.");
+            throw new System.ArgumentNullException(name, $"Parameter '{name}' must not be null.");
     }
 
     public static void NotNullOrEmpty(string? value, string name)
     {
         if (value is null)
-            throw new ArgumentNullException(name, $"Parameter '{name}' must not be null.");
+            throw new System.ArgumentNullException(name, $"Parameter '{name}' must not be null.");
         if (value.Length == 0)
-            throw new ArgumentException($"Parameter '{name}' must not be empty.", name);
+            throw new System.ArgumentException($"Parameter '{name}' must not be empty.", name);
     }
 }

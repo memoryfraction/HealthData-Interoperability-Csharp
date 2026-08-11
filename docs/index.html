@@ -115,6 +115,21 @@ foreach (var patient in results)
 }</code></pre>
 </section>
 
+
+<section id="why">
+    <h2>Why Use This Library?</h2>
+    <p>Healthcare data interoperability is one of the most challenging problems in modern software engineering. This library addresses real-world pain points:</p>
+    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+        <li><strong>FHIR Complexity Made Simple</strong> — The FHIR specification has thousands of pages. This library wraps the most commonly used operations (patient CRUD, search, validation) into clean, testable services so you don't have to reinvent the wheel.</li>
+        <li><strong>HIPAA Compliance by Design</strong> — Role-Based Access Control (RBAC), PHI masking before logging, immutable audit trails, and encryption helpers are built in. You shouldn't need a compliance consultant to write safe healthcare code.</li>
+        <li><strong>US Core Conformance Checking</strong> — ONC certification requires US Core profile conformance. This library validates your resources against federal standards before they hit production.</li>
+        <li><strong>ETL Without the Headache</strong> — Migrating legacy CSV/SQL data to FHIR is tedious. The ETL pipeline automates mapping, gender normalization, and idempotent upserts with compile-time code generation (Mapperly).</li>
+        <li><strong>Local AI Validation</strong> — Normalize messy clinical data using a local LLM (Ollama). No PHI leaves your network because inference runs entirely on-premise.</li>
+        <li><strong>Battle-Tested Against Public Servers</strong> — Each module is designed to run against real public FHIR servers (hapi.fhir.org, sandbox.smarte.onhealth.it) with graceful fallbacks for network issues, spec downloads, and duplicate resource handling.</li>
+    </ul>
+    <p><em>This library demonstrates production-grade healthcare interoperability patterns. It is intended as a reference implementation and educational resource — see the License section below.</em></p>
+</section>
+
 <section id="modules">
     <h2>Modules & Business Value</h2>
     <p>Each module solves a specific healthcare interoperability challenge. Here is why you need them:</p>
@@ -217,7 +232,7 @@ var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pr
 <section id="security">
     <h2>Security Notice</h2>
     <div class="warning">
-        <strong>Production Requirement:</strong> HTTPS must be enforced in production environments. The demo modules may include TLS certificate validation bypassing for local development behind VPN/proxies. This is <em>never acceptable</em> in production. Always use valid certificates and enforce TLS 1.2+ for all FHIR server connections.
+        <strong>Production Requirement:</strong> HTTPS must be enforced in production environments. The demo modules may include TLS certificate validation bypassing for local development due to network issues. This is <em>never acceptable</em> in production. Always use valid certificates and enforce TLS 1.2+ for all FHIR server connections.
     </div>
 </section>
 
@@ -244,3 +259,6 @@ var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pr
 
 </body>
 </html>
+
+
+

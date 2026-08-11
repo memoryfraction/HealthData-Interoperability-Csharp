@@ -35,8 +35,9 @@ namespace HealthDataInteropSharedLibrary.Shared;
                 AuditMessage = "PHI access recorded for HIPAA compliance"
             };
 
-            Console.WriteLine("\n========== HIPAA AUDIT LOG ==========");
-            Console.WriteLine(JsonSerializer.Serialize(record, new JsonSerializerOptions { WriteIndented = true }));
-            Console.WriteLine("=====================================\n");
+            SafeConsole.WriteLine("\n========== HIPAA AUDIT LOG ==========");
+            SafeConsole.WriteLine(JsonSerializer.Serialize(record, new JsonSerializerOptions { WriteIndented = true }));
+            SafeConsole.WriteLine("=====================================\n");
         }
     }
+

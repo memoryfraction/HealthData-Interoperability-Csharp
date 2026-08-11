@@ -421,3 +421,4 @@ FodyWeavers.xsd
 /PORTFOLIO_IMPROVEMENT_PLAN.md
 /nupkg_check
 /temp_nupkg_verify
+/dotnet-tools.json

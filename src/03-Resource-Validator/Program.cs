@@ -1,4 +1,5 @@
 using HealthDataInteropSharedLibrary.ResourceValidator;
+using Hl7.Fhir.Model;
 
 namespace _03_Resource_Validator;
 
@@ -12,22 +13,31 @@ internal static class Program
     {
         Console.WriteLine("=== FHIR Resource Validation (Module 03) ===");
 
+        var testPatient = new Hl7.Fhir.Model.Patient
+        {
+            Active = true,
+            BirthDate = "1990-13-45",
+            Gender = Hl7.Fhir.Model.AdministrativeGender.Male
+        };
+        testPatient.Telecom.Add(new Hl7.Fhir.Model.ContactPoint { System = Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Phone });
+
+        Console.WriteLine("Validating patient against FHIR R4 rules...");
+
         try
         {
             var validator = new ResourceValidationService();
 
-            var testPatient = new Hl7.Fhir.Model.Patient
+            if (validator.HasFullSpec)
             {
-                Active = true,
-                BirthDate = "1990-13-45",
-                Gender = Hl7.Fhir.Model.AdministrativeGender.Male
-            };
-            testPatient.Telecom.Add(new Hl7.Fhir.Model.ContactPoint { System = Hl7.Fhir.Model.ContactPoint.ContactPointSystem.Phone });
+                Console.WriteLine("[Info] Full FHIR spec validation available.");
+            }
+            else
+            {
+                Console.WriteLine("[Info] Running basic structural validation (spec download unavailable).");
+            }
 
-            Console.WriteLine("Validating patient against FHIR R4 rules...");
             var issues = validator.GetValidationIssues(testPatient);
             var isValid = validator.Validate(testPatient);
-
             Console.WriteLine(ResourceValidationService.FormatValidationResult(isValid, issues.Count, issues));
         }
         catch (Exception ex)
