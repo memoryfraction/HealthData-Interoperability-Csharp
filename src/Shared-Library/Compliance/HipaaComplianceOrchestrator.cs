@@ -1,6 +1,7 @@
+using Shared_Library.Shared;
 using Shared_Library;
 
-namespace _07_HIPAA_Compliance_Demo;
+namespace Shared_Library.Compliance;
 
 /// <summary>
 /// [EN] Orchestrator for HIPAA compliance demo workflow.

@@ -1,7 +1,8 @@
+using Shared_Library.SmartOnFHIR;
 using Hl7.Fhir.Model;
 using Riok.Mapperly.Abstractions;
 
-namespace Shared_Library;
+namespace Shared_Library.Shared;
 
 /// <summary>
 /// [EN] Mapperly-based source generator for converting legacy records to FHIR R4 Patient resources.
@@ -205,3 +206,5 @@ public partial class FhirPatientMapper
         };
     }
 }
+
+

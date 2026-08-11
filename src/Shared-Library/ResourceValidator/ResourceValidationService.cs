@@ -1,9 +1,10 @@
+using Shared_Library.Shared;
 using Firely.Fhir.Validation;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Specification.Source;
 using Hl7.Fhir.Specification.Terminology;
 
-namespace _03_Resource_Validator;
+namespace Shared_Library.ResourceValidator;
 
 /// <summary>
 /// [EN] Service for FHIR resource validation using Firely SDK.
@@ -74,26 +75,5 @@ public sealed class ResourceValidationService
             lines.Add($"[{issue.Severity}] {issue.Diagnostics} (At: {issue.Location})");
         }
         return string.Join(Environment.NewLine, lines);
-    }
-}
-
-/// <summary>
-/// [EN] Parameter validation helpers.
-/// [CN] 参数验证辅助方法。
-/// </summary>
-internal static class Guard
-{
-    public static void NotNull(object? value, string name)
-    {
-        if (value is null)
-            throw new ArgumentNullException(name, $"Parameter '{name}' must not be null.");
-    }
-
-    public static void NotNullOrEmpty(string? value, string name)
-    {
-        if (value is null)
-            throw new ArgumentNullException(name, $"Parameter '{name}' must not be null.");
-        if (value.Length == 0)
-            throw new ArgumentException($"Parameter '{name}' must not be empty.", name);
     }
 }

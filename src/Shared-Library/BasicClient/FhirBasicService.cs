@@ -1,7 +1,8 @@
+using Shared_Library.Shared;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 
-namespace HealthData.Interop.BasicClient;
+namespace Shared_Library.BasicClient;
 
 /// <summary>
 /// [EN] Service for basic FHIR Patient CRUD operations. Encapsulates patient creation and search logic.

@@ -1,4 +1,4 @@
-namespace _05_SMART_on_FHIR
+namespace Shared_Library.SmartOnFHIR
 {
     /// <summary>
     /// [EN] Data model for raw patient data mapped from CSV files.
@@ -29,3 +29,4 @@ namespace _05_SMART_on_FHIR
         public string BirthDate { get; set; }
     }
 }
+

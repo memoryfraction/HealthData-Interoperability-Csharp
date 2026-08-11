@@ -1,9 +1,10 @@
+using Shared_Library.Shared;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace _06_AI_Data_Validator;
+namespace Shared_Library.AIDataValidator;
 
 /// <summary>
 /// [EN] Service for AI-assisted FHIR data mapping and validation.

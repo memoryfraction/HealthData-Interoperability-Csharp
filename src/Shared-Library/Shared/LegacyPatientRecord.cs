@@ -1,4 +1,4 @@
-namespace Shared_Library;
+namespace Shared_Library.Shared;
 
 /// <summary>
 /// [EN] Source DTO matching the legacy CSV structure (module 04).
@@ -25,3 +25,4 @@ public sealed record LegacyPatientRecord
     /// <summary>[EN] Optional phone number. / [CN] 可选电话号码</summary>
     public string? Phone { get; init; }
 }
+

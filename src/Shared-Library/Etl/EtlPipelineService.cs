@@ -1,3 +1,5 @@
+using Shared_Library.SmartOnFHIR;
+using Shared_Library.Shared;
 using CsvHelper;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
@@ -5,7 +7,7 @@ using Shared_Library;
 using System.Globalization;
 using Task = System.Threading.Tasks.Task;
 
-namespace _04_Data_Mapping_ETL;
+namespace Shared_Library.Etl;
 
 /// <summary>
 /// [EN] ETL pipeline service: Extract CSV -> Transform to FHIR Patient -> Load via Transaction Bundle.
@@ -74,7 +76,7 @@ public sealed class EtlPipelineService
         using var reader = new StreamReader(csvPath);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
-        var records = csv.GetRecords<Shared_Library.LegacyPatientRecord>().ToList();
+        var records = csv.GetRecords<Shared_Library.Shared.LegacyPatientRecord>().ToList();
 
         foreach (var record in records)
         {
@@ -180,4 +182,5 @@ internal static class Guard
             throw new ArgumentException($"Parameter '{name}' must not be empty.", name);
     }
 }
+
 

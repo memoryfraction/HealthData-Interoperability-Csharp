@@ -1,3 +1,4 @@
+using Shared_Library.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using Shared_Library;

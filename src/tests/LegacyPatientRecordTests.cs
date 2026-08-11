@@ -1,6 +1,7 @@
+using Shared_Library.Shared;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using _04_Data_Mapping_ETL;
+using Shared_Library;
 
 namespace HealthData.Interop.Tests.ModelTests;
 

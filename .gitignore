@@ -417,3 +417,5 @@ FodyWeavers.xsd
 *.msm
 *.msp
 /src/.vscode/settings.json
+/INTEGRATION_AUDIT.md
+/PORTFOLIO_IMPROVEMENT_PLAN.md
