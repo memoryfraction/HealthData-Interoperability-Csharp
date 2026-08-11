@@ -6,6 +6,6 @@
   <Project Path="06-AI-Data-Validator/06-AI-Data-Validator.csproj" Id="9f7bd5c9-c255-49f2-a1c8-a758d06ca229" />
   <Project Path="07-HIPAA-Compliance-Demo/07-HIPAA-Compliance-Demo.csproj" Id="13faa68d-d5dc-4dcc-b1fb-a131ab1ece7c" />
   <Project Path="1-Basic-Client/01-Basic-FHIR-Client.csproj" />
-  <Project Path="Shared-Library/HealthDataInteropSharedLibrary.csproj" Id="ccbfa315-2395-4c05-bf9f-772c2e85a6f0" />
+  <Project Path="Shared-Library/HealthDataInteropSharedLibrary.csproj" />
   <Project Path="tests/HealthData.Interop.Tests.csproj" />
 </Solution>

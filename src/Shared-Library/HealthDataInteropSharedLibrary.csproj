@@ -1,15 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Shared_Library</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="C:\Users\rongf\.nuget\packages\hl7.fhir.specification.data.r4\6.0.2\contentFiles\any\any\specification.zip" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.1.0" />
@@ -27,4 +23,24 @@
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
 
-</Project>
+
+  <!-- NuGet Package Metadata -->
+  <PropertyGroup>
+    <PackageId>Rex.HealthData.Interop.Fhir</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Rong(Rex) Fan</Authors>
+    <Description>A C#/.NET library for Healthcare Data Interoperability, featuring FHIR R4 client utilities, HIPAA compliance helpers (RBAC, Encryption, Audit Log), US Core conformance checker, and Serilog integration.</Description>
+    <PackageTags>fhir;hipaa;healthcare;hl7;csharp;dotnet;interoperability;us-core</PackageTags>
+    <PackageProjectUrl>https://github.com/your-username/HealthData-Interoperability-Csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/your-username/HealthData-Interoperability-Csharp.git</RepositoryUrl>
+    <LicenseFile>LICENSE</LicenseFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
+  </Project>
