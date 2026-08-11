@@ -1,6 +1,6 @@
 using Hl7.Fhir.Rest;
-using Shared_Library.Shared;
-using Shared_Library.Etl;
+using HealthDataInteropSharedLibrary.Etl;
+using HealthDataInteropSharedLibrary.Shared;
 
 namespace _04_Data_Mapping_ETL;
 

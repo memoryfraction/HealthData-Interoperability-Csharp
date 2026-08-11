@@ -1,4 +1,6 @@
-using Shared_Library.ResourceValidator;namespace _03_Resource_Validator;
+using HealthDataInteropSharedLibrary.ResourceValidator;
+
+namespace _03_Resource_Validator;
 
 /// <summary>
 /// Entry point: Demonstrating FHIR resource validation.

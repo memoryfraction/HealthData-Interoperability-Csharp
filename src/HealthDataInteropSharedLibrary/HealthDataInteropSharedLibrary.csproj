@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>HealthDataInteropSharedLibrary</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
+    <PackageReference Include="Firely.Fhir.Validation.R4" Version="3.1.0" />
+    <PackageReference Include="Hl7.Fhir.R4" Version="6.0.2" />
+    <PackageReference Include="IdentityModel" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.2" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.70.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.70.0-alpha" />
+    <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+
+  <!-- NuGet Package Metadata -->
+  <PropertyGroup>
+    <PackageId>Rex.HealthData.Interop.Fhir</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Rong(Rex) Fan</Authors>
+    <Description>A C#/.NET library for Healthcare Data Interoperability, featuring FHIR R4 client utilities, HIPAA compliance helpers (RBAC, Encryption, Audit Log), US Core conformance checker, and Serilog integration.</Description>
+    <PackageTags>fhir;hipaa;healthcare;hl7;csharp;dotnet;interoperability;us-core</PackageTags>
+    <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
+    <RepositoryUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp.git</RepositoryUrl>
+    <LicenseFile>LICENSE</LicenseFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
+  </Project>

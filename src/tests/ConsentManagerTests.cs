@@ -1,7 +1,6 @@
-using Shared_Library.Shared;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shared_Library;
+using HealthDataInteropSharedLibrary.Shared;
 
 namespace HealthData.Interop.Tests.ConsentManagerTests;
 

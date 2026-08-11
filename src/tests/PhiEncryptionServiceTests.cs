@@ -1,8 +1,8 @@
-using Shared_Library.Shared;
+using HealthDataInteropSharedLibrary.Shared;
 using System.Security.Cryptography;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shared_Library;
+using HealthDataInteropSharedLibrary;
 
 namespace HealthData.Interop.Tests.EncryptionTests;
 

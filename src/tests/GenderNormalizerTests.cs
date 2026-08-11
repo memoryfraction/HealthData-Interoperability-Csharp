@@ -1,8 +1,7 @@
-using Shared_Library.Shared;
 using FluentAssertions;
 using Hl7.Fhir.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shared_Library;
+using HealthDataInteropSharedLibrary.Shared;
 
 namespace HealthData.Interop.Tests.GenderNormalizerTests;
 

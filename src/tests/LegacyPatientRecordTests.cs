@@ -1,7 +1,7 @@
-using Shared_Library.Shared;
+using HealthDataInteropSharedLibrary.Shared;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shared_Library;
+using HealthDataInteropSharedLibrary;
 
 namespace HealthData.Interop.Tests.ModelTests;
 
