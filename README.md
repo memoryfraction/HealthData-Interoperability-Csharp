@@ -1,4 +1,4 @@
-﻿# AI-Driven-FHIR-Interoperability-Engine-DotNet10
+# AI-Driven-FHIR-Interoperability-Engine-DotNet10
 
 ### *Empowering 2026 Healthcare Data Ecosystems with High-Performance .NET 10 & Private AI*
 
@@ -7,6 +7,7 @@
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
 [![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
+[🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
 ---
 
