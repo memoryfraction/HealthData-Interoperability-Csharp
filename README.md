@@ -7,6 +7,7 @@
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
 [![Version](https://img.shields.io/badge/Version-1.3.2-blue.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
+
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
 ---
@@ -82,7 +83,7 @@ As healthcare data interoperability becomes a federal mandate under the 21st Cen
 **Execution Result:**
 
 
-[![07-Compliance Demo Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/07%20Compliance%20demo%20result.jpg?raw=true)]
+![07-Compliance Demo Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/07%20Compliance%20demo%20result.jpg?raw=true)
 
 
 The following is the patient data Consent (Authorization) process design diagram:
@@ -125,7 +126,7 @@ Traditional Regex-based ETL often fails when encountering human-typed "noisy" da
 
 **Execution Result:**
 
-[![06-AI-Data-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/06-AI-Data-Validator_result.jpg?raw=true)]
+![06-AI-Data-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/06-AI-Data-Validator_result.jpg?raw=true)
 
 ---
 
@@ -136,7 +137,7 @@ Under the **21st Century Cures Act**, interoperability is a legal requirement. T
 
 **Execution Result:**
 
-[![05-SMART-on-FHIR Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/05%20SMART%20ON%20FHIR%20RESULT.jpg?raw=true)]
+![05-SMART-on-FHIR Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/05%20SMART%20ON%20FHIR%20RESULT.jpg?raw=true)
 
 ---
 
@@ -147,7 +148,7 @@ In large-scale data migrations, standard `POST` operations often create fragment
 
 **Execution Result:**
 
-[![04-Data-Mapping-ETL Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/04-Data-Mapping-ETL-result.jpg?raw=true)]
+![04-Data-Mapping-ETL Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/04-Data-Mapping-ETL-result.jpg?raw=true)
 
 ---
 
@@ -158,7 +159,7 @@ Ensuring clinical data quality at the point of entry is critical for patient saf
 
 **Execution Result:**
 
-[![03-Resource-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/03-Resource-Validator-result.jpg?raw=true)]
+![03-Resource-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/03-Resource-Validator-result.jpg?raw=true)
 
 ---
 
@@ -168,8 +169,7 @@ Complex clinical retrieval requires more than basic CRUD.
 * **Payload Optimization**: Leveraging `_include` and `_revinclude` to reduce API round-trips by up to 60%, critical for mobile health apps.
 
 **Execution Result:**
-
-[![02-Advanced-Query Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02-Advanced-Query-result.jpg?raw=true)]
+![02-Advanced-Query Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02-Advanced-Query-result.jpg?raw=true)
 
 ---
 
