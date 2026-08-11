@@ -334,21 +334,15 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 
 ---
 
-## ⚠️ Security Notice / 安全须知
+## ⚠️ Security Notice 
 
 **[EN] TLS Certificate Validation Status:**
-- Module 05 (5-SMART-on-FHIR) currently **bypasses HTTPS certificate validation** due to VPN connectivity issues in the development environment.
+- Module 05 (5-SMART-on-FHIR) currently **bypasses HTTPS certificate validation** due to network issues in the development environment.
 - **This is a DEV-only workaround** that introduces MITM vulnerability and violates HIPAA §164.312(e)(1) transmission security rule.
 - **Production Deployment:** You MUST: 1) Remove `RemoteCertificateValidationCallback = ... => true`. 2) **Enforce HTTPS-only connections** on all FHIR client endpoints (no HTTP fallback allowed). 3) Configure server-side HSTS headers. 4) Pin TLS 1.2+ minimum.
 - See src/05-SMART-on-FHIR/Program.cs for the detailed inline warning.
 
-**[CN] TLS 证书验证状态：**
-- 模块 05 (5-SMART-on-FHIR) 当前**绕过 HTTPS 证书验证**，原因是开发环境中 VPN 导致的网络连接问题。
-- **此为纯开发环境临时方案**，会引入中间人攻击 (MITM) 风险并违反 HIPAA §164.312(e)(1) 传输安全规定。
-- **生产部署前：** 你必须：1) 移除 `RemoteCertificateValidationCallback = ... => true`。2) **强制开启 HTTPS**，所有 FHIR 客户端端点必须使用 HTTPS（不允许 HTTP 回退）。3) 配置服务器端 HSTS 头。4) 最低 TLS 1.2+。
-- 详见 src/05-SMART-on-FHIR/Program.cs 中的内联警告注释。
-
-`r`n## 👤 Contact & Collaboration
+## 👤 Contact & Collaboration
 **Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
 * **LinkedIn**: [Rex Linkedin](https://www.linkedin.com/in/rongfan1031/)
 * **Upwork**: [Rex Upwork](upwork.com/freelancers/~0130de8f5f5eeebb0f)
