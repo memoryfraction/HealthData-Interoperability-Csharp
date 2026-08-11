@@ -1,11 +1,11 @@
-# AI-Driven-FHIR-Interoperability-Engine-DotNet10
+﻿# AI-Driven-FHIR-Interoperability-Engine-DotNet10
 
 ### *Empowering 2026 Healthcare Data Ecosystems with High-Performance .NET 10 & Private AI*
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![Version](https://img.shields.io/badge/Version-1.3.0-blue.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.3.1-blue.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
@@ -244,6 +244,11 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 ---
 
 ## Changelog and Version History
+### v1.3.1 - 2026-08-11 (Embedded FHIR R4 Specification, Validation Fix)
+* **FHIR R4 Spec Embedded**: Bundled specification.zip (~6MB) via ContentFiles for reliable offline validation
+* **ResourceValidationService Rewritten**: Removed ineffective Polly retry logic. Clean init/fallback pattern now
+* **README Images Fixed**: Replaced untrusted GitHub blob URLs with raw.githubusercontent.com CDN links
+* **Module 04 Fix**: Use HttpClientHandler for consistent SSL bypass behavior across all demo modules
 ### v1.3.0 - 2026-08-11 (Portfolio Improvements, HIPAA Security Hardening, US Core Conformance)
 
 **What Changed:**
