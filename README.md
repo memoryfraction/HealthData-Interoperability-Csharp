@@ -6,7 +6,7 @@
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
 [![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-240%20Passed-success.svg)](./src/tests/)
+[![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
 
 ---
 
@@ -246,7 +246,7 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 * **US Core Profile Conformance** (Module 03): Added `UsCoreConformanceChecker` and `UsCoreProfiles` — validates that FHIR resources declare expected US Core IG v7.1.0 StructureDefinition URIs in `Meta.Profile`. Supports Patient, Observation, Encounter, Condition, MedicationRequest, AllergyIntolerance profiles.
 * **ILogger Abstraction Layer** (Shared-Library): Added `IApplicationLogger` interface and `ConsoleLogger` implementation with UTC timestamped log levels (Info/Warn/Error/Critical) for HIPAA audit trail readiness.
 * **Duplicate DTO Consolidation**: Removed duplicate `LegacyPatientRecord` from Module 04 — now exclusively uses Shared-Library version.
-* **Test Suite Expanded**: From **163** to **240** passing MSTest v3 tests (+79 new tests) covering encryption, authentication, US Core conformance, and logging abstraction.
+* **Test Suite Expanded**: From **163** to **169** passing MSTest v3 tests (cleaned up redundant SDK-level boundary checks while retaining core business logic coverage) covering encryption, authentication, US Core conformance, and logging abstraction.
 
 ---
 
