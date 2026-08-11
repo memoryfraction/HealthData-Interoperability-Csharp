@@ -21,24 +21,28 @@
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
 
-
   <!-- NuGet Package Metadata -->
   <PropertyGroup>
-    <PackageId>Rex.HealthData.Interop.Fhir</PackageId>
-    <Version>1.0.0</Version>
+    <PackageId>HealthData.Interop.Fhir</PackageId>
+    <Version>1.3.0</Version>
     <Authors>Rong(Rex) Fan</Authors>
-    <Description>A C#/.NET library for Healthcare Data Interoperability, featuring FHIR R4 client utilities, HIPAA compliance helpers (RBAC, Encryption, Audit Log), US Core conformance checker, and Serilog integration.</Description>
-    <PackageTags>fhir;hipaa;healthcare;hl7;csharp;dotnet;interoperability;us-core</PackageTags>
+    <Company>Rong(Rex) Fan</Company>
+    <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
+    <Description>A production-grade C#/.NET 8 library for Healthcare Data Interoperability. Features: FHIR R4 client utilities, HIPAA compliance helpers (RBAC, PHI Encryption, Audit Log), US Core profile conformance checker, SMART on FHIR auth, AI-driven data normalization via local LLMs (Ollama), CSV-to-FHIR ETL pipeline, and Serilog integration. Portfolio snapshot - no maintenance.</Description>
+    <PackageTags>fhir;hipaa;healthcare;hl7;csharp;dotnet;interoperability;us-core;smart-on-fhir;etl;r4</PackageTags>
     <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
-    <RepositoryUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp.git</RepositoryUrl>
-    <LicenseFile>LICENSE</LicenseFile>
+    <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageReleaseNotes>v1.3.0 - Initial NuGet release. Portfolio snapshot demonstrating healthcare interoperability expertise. No future maintenance planned.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+    <None Include="..\..\README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
-  </Project>
+</Project>
