@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rex.HealthData.Interop.Fhir - Healthcare Interoperability Library</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>HealthData.Interop.Fhir - Healthcare Interoperability Library by Rong(Rex) Fan</title>
     <style>
         :root { --primary: #2563eb; --secondary: #475569; --success: #16a34a; --bg: #f8fafc; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,20 +24,24 @@
         pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.9rem; }
         code { font-family: "Cascadia Code", "Fira Code", monospace; }
         .inline-code { background: #e2e8f0; padding: 0.15rem 0.4rem; border-radius: 3px; color: #1e293b; font-size: 0.9em; }
-        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; min-width: 600px; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
         th { background: #f1f5f9; font-weight: 600; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .feature-card { padding: 1rem; border: 1px solid #e2e8f0; border-radius: 6px; }
-        .feature-card h3 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1rem; }
+        .why-col { width: 40%; color: var(--secondary); font-size: 0.95rem; }
         footer { text-align: center; padding: 2rem 0; color: var(--secondary); font-size: 0.9rem; border-top: 1px solid #e2e8f0; }
         .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin: 1rem 0; }
+        /* Author section */
+        .author-section { text-align: center; padding: 2rem; }
+        .author-photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin-bottom: 1rem; }
+        .author-name { font-size: 1.3rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; }
+        .author-links a { color: var(--primary); text-decoration: none; margin: 0 0.5rem; font-size: 0.95rem; }
+        .author-links a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 <header>
     <div class="container">
-        <h1>Rex.HealthData.Interop.Fhir</h1>
+        <h1>HealthData.Interop.Fhir</h1>
         <p>A production-grade .NET 8 library for Healthcare Data Interoperability, FHIR R4 client utilities, HIPAA compliance helpers, and US Core conformance checking.</p>
         <div class="badges">
             <span class="badge">.NET 8 LTS</span>
@@ -49,16 +52,29 @@
         </div>
     </div>
 </header>
+
 <nav>
     <div class="container">
         <a href="#install">Install</a>
         <a href="#quick-start">Quick Start</a>
-        <a href="#modules">Modules</a>
+        <a href="#modules">Modules & Value</a>
         <a href="#api">API Reference</a>
         <a href="#license">License</a>
     </div>
 </nav>
+
 <main class="container">
+
+<!-- Author Section -->
+<section class="author-section">
+    <img src="images/author.png" alt="Rong(Rex) Fan" class="author-photo">
+    <p class="author-name">By Rong (Rex) Fan</p>
+    <div class="author-links">
+        <a href="https://medium.com/@rex.fan18" target="_blank">📝 Medium Blog</a> |
+        <a href="mailto:rex.fan18@gmail.com">📧 Email</a> |
+        <a href="https://github.com/memoryfraction" target="_blank">⭐ GitHub</a>
+    </div>
+</section>
 
 <section id="install">
     <h2>Installation</h2>
@@ -95,19 +111,48 @@ foreach (var patient in results)
 </section>
 
 <section id="modules">
-    <h2>Modules</h2>
+    <h2>Modules & Business Value</h2>
+    <p>Each module solves a specific healthcare interoperability challenge. Here is why you need them:</p>
     <table>
         <thead>
-            <tr><th>Module</th><th>Purpose</th><th>Namespace</th></tr>
+            <tr><th style="width: 15%;">Module</th><th style="width: 30%;">What it does</th><th class="why-col" style="width: 40%;">Why use this module?</th></tr>
         </thead>
         <tbody>
-            <tr><td><strong>BasicClient</strong></td><td>FHIR R4 REST client for Patient/CareProvider operations</td><td><span class="inline-code">HealthDataInteropSharedLibrary.BasicClient</span></td></tr>
-            <tr><td><strong>AdvancedQuery</strong></td><td>Chained parameters, _include, _summary search strategies</td><td><span class="inline-code">HealthDataInteropSharedLibrary.AdvancedQuery</span></td></tr>
-            <tr><td><strong>ResourceValidator</strong></td><td>Firely SDK validation + US Core conformance checker</td><td><span class="inline-code">HealthDataInteropSharedLibrary.ResourceValidator</span></td></tr>
-            <tr><td><strong>Etl</strong></td><td>CSV to FHIR Patient mapping pipeline with Mapperly</td><td><span class="inline-code">HealthDataInteropSharedLibrary.Etl</span></td></tr>
-            <tr><td><strong>AIDataValidator</strong></td><td>Local LLM (Ollama) semantic data normalization</td><td><span class="inline-code">HealthDataInteropSharedLibrary.AIDataValidator</span></td></tr>
-            <tr><td><strong>SmartOnFHIR</strong></td><td>OAuth2/OIDC SMART on FHIR authentication</td><td><span class="inline-code">HealthDataInteropSharedLibrary.SmartOnFHIR</span></td></tr>
-            <tr><td><strong>Compliance</strong></td><td>HIPAA RBAC, PHI encryption, audit logging</td><td><span class="inline-code">HealthDataInteropSharedLibrary.Compliance</span></td></tr>
+            <tr>
+                <td><strong>BasicClient</strong></td>
+                <td>FHIR R4 REST client for Patient/CareProvider operations</td>
+                <td class="why-col">Don't reinvent the wheel. It handles FHIR search parameters and resource parsing out of the box, saving you from writing raw HttpClient boilerplate.</td>
+            </tr>
+            <tr>
+                <td><strong>AdvancedQuery</strong></td>
+                <td>Chained parameters, _include, _summary search strategies</td>
+                <td class="why-col">Basic queries are often slow and return too much data. This optimizes network round-trips and reduces payload size by fetching only what you need.</td>
+            </tr>
+            <tr>
+                <td><strong>ResourceValidator</strong></td>
+                <td>Firely SDK validation + US Core conformance checker</td>
+                <td class="why-col">Clinical data is often messy. This acts as a "clinical firewall," ensuring resources strictly adhere to HL7 FHIR R4 rules and federal US Core requirements before storage.</td>
+            </tr>
+            <tr>
+                <td><strong>Etl</strong></td>
+                <td>CSV to FHIR Patient mapping pipeline with Mapperly</td>
+                <td class="why-col">Most healthcare data exists in legacy databases or Excel. This bridges the gap, migrating legacy CSV/SQL data into standardized FHIR resources automatically.</td>
+            </tr>
+            <tr>
+                <td><strong>AIDataValidator</strong></td>
+                <td>Local LLM (Ollama) semantic data normalization</td>
+                <td class="why-col">Traditional ETL fails on "fuzzy" data. AI semantic analysis can normalize messy text (e.g., different gender formats) where regex falls short, without sending PHI to the cloud.</td>
+            </tr>
+            <tr>
+                <td><strong>SmartOnFHIR</strong></td>
+                <td>OAuth2/OIDC SMART on FHIR authentication</td>
+                <td class="why-col">Accessing an EHR is impossible without proper auth. This implements the industry-standard SMART on FHIR protocol for secure, token-based patient access.</td>
+            </tr>
+            <tr>
+                <td><strong>Compliance</strong></td>
+                <td>HIPAA RBAC, PHI encryption, audit logging</td>
+                <td class="why-col">HIPAA is non-negotiable. This provides out-of-the-box Role-Based Access Control (RBAC) and immutable audit trails to protect you from compliance penalties.</td>
+            </tr>
         </tbody>
     </table>
 </section>
@@ -182,11 +227,15 @@ var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pr
 </section>
 
 </main>
+
 <footer>
     <div class="container">
-        <p>&copy; 2025 Rong (Rex) Fan | Healthcare Data Interoperability with .NET 8 &amp; FHIR R4</p>
-        <p><a href="https://github.com/memoryfraction/HealthData-Interoperability-Csharp" style="color: var(--primary);">GitHub Repository</a></p>
+        <p>&copy; 2026 Rong (Rex) Fan | Healthcare Data Interoperability with .NET 8 &amp; FHIR R4</p>
+        <p>
+            <a href="https://github.com/memoryfraction/HealthData-Interoperability-Csharp" style="color: var(--primary);">GitHub Repository</a>
+        </p>
     </div>
 </footer>
+
 </body>
 </html>
