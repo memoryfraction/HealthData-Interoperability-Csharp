@@ -1,5 +1,5 @@
-using Shared_Library.Shared;
-using Shared_Library.Compliance;
+using HealthDataInteropSharedLibrary.Shared;
+using HealthDataInteropSharedLibrary.Compliance;
 
 namespace _07_HIPAA_Compliance_Demo;
 

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rex.HealthData.Interop.Fhir - Healthcare Interoperability Library</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        :root { --primary: #2563eb; --secondary: #475569; --success: #16a34a; --bg: #f8fafc; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #1e293b; background: var(--bg); }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+        header { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 3rem 0; text-align: center; }
+        header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        header p { font-size: 1.1rem; opacity: 0.9; }
+        .badges { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .badge { background: rgba(255,255,255,0.15); padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.8rem; }
+        nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 0.8rem 0; position: sticky; top: 0; z-index: 10; }
+        nav .container { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+        nav a { text-decoration: none; color: var(--secondary); font-weight: 500; }
+        nav a:hover { color: var(--primary); }
+        main { padding: 2rem 0 4rem; }
+        section { background: white; margin-bottom: 1.5rem; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        section h2 { color: var(--primary); margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.9rem; }
+        code { font-family: "Cascadia Code", "Fira Code", monospace; }
+        .inline-code { background: #e2e8f0; padding: 0.15rem 0.4rem; border-radius: 3px; color: #1e293b; font-size: 0.9em; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; font-weight: 600; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .feature-card { padding: 1rem; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .feature-card h3 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1rem; }
+        footer { text-align: center; padding: 2rem 0; color: var(--secondary); font-size: 0.9rem; border-top: 1px solid #e2e8f0; }
+        .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Rex.HealthData.Interop.Fhir</h1>
+        <p>A production-grade .NET 8 library for Healthcare Data Interoperability, FHIR R4 client utilities, HIPAA compliance helpers, and US Core conformance checking.</p>
+        <div class="badges">
+            <span class="badge">.NET 8 LTS</span>
+            <span class="badge">FHIR R4</span>
+            <span class="badge">HIPAA Compliant</span>
+            <span class="badge">US Core IG</span>
+            <span class="badge">NuGet Available</span>
+        </div>
+    </div>
+</header>
+<nav>
+    <div class="container">
+        <a href="#install">Install</a>
+        <a href="#quick-start">Quick Start</a>
+        <a href="#modules">Modules</a>
+        <a href="#api">API Reference</a>
+        <a href="#license">License</a>
+    </div>
+</nav>
+<main class="container">
+
+<section id="install">
+    <h2>Installation</h2>
+    <p>Install the NuGet package into your .NET project:</p>
+    <pre><code># Via .NET CLI
+dotnet add package Rex.HealthData.Interop.Fhir
+
+# Via Package Manager Console
+Install-Package Rex.HealthData.Interop.Fhir
+
+# Via Paket
+paket add Rex.HealthData.Interop.Fhir</code></pre>
+    <div class="warning">
+        <strong>Note:</strong> This package targets .NET 8.0 LTS. Compatible with .NET 9, .NET 10 and later versions due to forward compatibility of the .NET platform.
+    </div>
+</section>
+
+<section id="quick-start">
+    <h2>Quick Start</h2>
+    <p>Get up and running in minutes with FHIR R4 client operations:</p>
+    <pre><code>using HealthDataInteropSharedLibrary.BasicClient;
+using Hl7.Fhir.Model;
+
+var client = new FhirBasicService(
+    "https://r4.sandbox.smarte.onhealth.it",
+    logLevel: LogLevel.Information);
+
+// Search for patients
+var results = await client.SearchPatientsAsync("John");
+foreach (var patient in results)
+{
+    Console.WriteLine($"Patient: {patient.Name?.FirstOrDefault()?.Family}");
+}</code></pre>
+</section>
+
+<section id="modules">
+    <h2>Modules</h2>
+    <table>
+        <thead>
+            <tr><th>Module</th><th>Purpose</th><th>Namespace</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>BasicClient</strong></td><td>FHIR R4 REST client for Patient/CareProvider operations</td><td><span class="inline-code">HealthDataInteropSharedLibrary.BasicClient</span></td></tr>
+            <tr><td><strong>AdvancedQuery</strong></td><td>Chained parameters, _include, _summary search strategies</td><td><span class="inline-code">HealthDataInteropSharedLibrary.AdvancedQuery</span></td></tr>
+            <tr><td><strong>ResourceValidator</strong></td><td>Firely SDK validation + US Core conformance checker</td><td><span class="inline-code">HealthDataInteropSharedLibrary.ResourceValidator</span></td></tr>
+            <tr><td><strong>Etl</strong></td><td>CSV to FHIR Patient mapping pipeline with Mapperly</td><td><span class="inline-code">HealthDataInteropSharedLibrary.Etl</span></td></tr>
+            <tr><td><strong>AIDataValidator</strong></td><td>Local LLM (Ollama) semantic data normalization</td><td><span class="inline-code">HealthDataInteropSharedLibrary.AIDataValidator</span></td></tr>
+            <tr><td><strong>SmartOnFHIR</strong></td><td>OAuth2/OIDC SMART on FHIR authentication</td><td><span class="inline-code">HealthDataInteropSharedLibrary.SmartOnFHIR</span></td></tr>
+            <tr><td><strong>Compliance</strong></td><td>HIPAA RBAC, PHI encryption, audit logging</td><td><span class="inline-code">HealthDataInteropSharedLibrary.Compliance</span></td></tr>
+        </tbody>
+    </table>
+</section>
+
+<section id="api">
+    <h2>API Reference</h2>
+    
+    <h3>BasicClient.FhirBasicService</h3>
+    <pre><code>// Constructor: requires base FHIR server URL
+var service = new FhirBasicService("https://your-fhir-server", logLevel);
+
+// Key methods:
+await service.SearchPatientsAsync(name);     // Search patients by name
+await service.GetPatientAsync(id);           // Get single patient
+await service.ReadCareProviderAsync(id);     // Read CareProvider</code></pre>
+
+    <h3>ResourceValidator.ResourceValidationService</h3>
+    <pre><code>var validator = new ResourceValidationService();
+bool isValid = validator.Validate(patient);
+var issues = validator.GetValidationIssues(patient);</code></pre>
+
+    <h3>ResourceValidator.UsCoreConformanceChecker</h3>
+    <pre><code>// Check if a Patient resource conforms to US Core profile
+var result = UsCoreConformanceChecker.CheckPatientConformance(patient);
+Console.WriteLine(result.IsUsCoreConformant); // true or false
+
+// Ensure Patient has US Core profile in Meta
+bool added = UsCoreConformanceChecker.EnsureUsCoreProfile(patient);</code></pre>
+
+    <h3>Compliance.HipaaComplianceOrchestrator</h3>
+    <pre><code>// 8-role RBAC compliance check
+var result = HipaaComplianceOrchestrator.EvaluateAccess(
+    role: FhirUserRole.Physician,
+    action: "ReadPatient",
+    patientId: "123");
+
+// PHI encryption service
+var encrypted = PhiEncryptionService.Encrypt(sensitiveData);
+var decrypted = PhiEncryptionService.Decrypt(encrypted);
+
+// Immutable audit log
+AuditLog.LogAccess(username, resourceId, action, success);</code></pre>
+
+    <h3>Etl.EtlPipelineService</h3>
+    <pre><code>// CSV to FHIR Patient mapping pipeline
+await EtlPipelineService.RunEtlPipelineAsync("data.csv", outputDir, logger);</code></pre>
+
+    <h3>AIDataValidator.AiValidatorService</h3>
+    <pre><code>// Requires Ollama running locally with llama3 model
+var validator = new AiValidatorService(
+    "http://localhost:11434",
+    "llama3");
+
+var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pre>
+</section>
+
+<section id="security">
+    <h2>Security Notice</h2>
+    <div class="warning">
+        <strong>Production Requirement:</strong> HTTPS must be enforced in production environments. The demo modules may include TLS certificate validation bypassing for local development behind VPN/proxies. This is <em>never acceptable</em> in production. Always use valid certificates and enforce TLS 1.2+ for all FHIR server connections.
+    </div>
+</section>
+
+<section id="license">
+    <h2>License &amp; Disclaimer</h2>
+    <p>This library is licensed under the <strong>MIT License</strong>.</p>
+    <div class="warning">
+        <p><strong>NO WARRANTY / NO MAINTENANCE:</strong></p>
+        <p>This project is provided as a static portfolio snapshot to demonstrate technical competence. The author provides <strong>NO FUTURE MAINTENANCE, bug fixes, feature updates, or support</strong>. You are expected to use this code entirely at your own risk.</p>
+        <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.</p>
+    </div>
+</section>
+
+</main>
+<footer>
+    <div class="container">
+        <p>&copy; 2025 Rong (Rex) Fan | Healthcare Data Interoperability with .NET 8 &amp; FHIR R4</p>
+        <p><a href="https://github.com/memoryfraction/HealthData-Interoperability-Csharp" style="color: var(--primary);">GitHub Repository</a></p>
+    </div>
+</footer>
+</body>
+</html>

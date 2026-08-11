@@ -1,7 +1,6 @@
-using Shared_Library.Shared;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using Shared_Library;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using HealthDataInteropSharedLibrary.Shared;
 
 namespace HealthData.Interop.Tests.RbacAuthTests;
 

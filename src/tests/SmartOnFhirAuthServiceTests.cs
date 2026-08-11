@@ -1,5 +1,5 @@
-using Shared_Library.SmartOnFHIR;
-using Shared_Library.Shared;
+using HealthDataInteropSharedLibrary.SmartOnFHIR;
+using HealthDataInteropSharedLibrary.Shared;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

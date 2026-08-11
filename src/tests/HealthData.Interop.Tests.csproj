@@ -19,12 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared-Library\HealthDataInteropSharedLibrary.csproj" />
     <ProjectReference Include="..\04-Data-Mapping-ETL\04-Data-Mapping-ETL.csproj" />
     <!-- Added for SmartOnFhirAuthService and OidcOptions tests -->
     <ProjectReference Include="..\05-SMART-on-FHIR\05-SMART-on-FHIR.csproj" />
     <!-- Added for UsCoreConformanceChecker tests -->
     <ProjectReference Include="..\03-Resource-Validator\03-Resource-Validator.csproj" />
+    <ProjectReference Include="..\HealthDataInteropSharedLibrary\HealthDataInteropSharedLibrary.csproj" />
   </ItemGroup>
 
 </Project>

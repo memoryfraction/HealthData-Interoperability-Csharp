@@ -1,4 +1,4 @@
-using Shared_Library.Shared;
+using HealthDataInteropSharedLibrary.Shared;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

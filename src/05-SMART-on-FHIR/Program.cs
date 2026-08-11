@@ -1,7 +1,7 @@
 using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Configuration;
+using HealthDataInteropSharedLibrary.SmartOnFHIR;
 using System.Net;
-using Shared_Library.SmartOnFHIR;
 
 namespace _05_SMART_on_FHIR;
 

@@ -6,6 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared-Library\HealthDataInteropSharedLibrary.csproj" />
+    <ProjectReference Include="..\HealthDataInteropSharedLibrary\HealthDataInteropSharedLibrary.csproj" />
   </ItemGroup>
 </Project>

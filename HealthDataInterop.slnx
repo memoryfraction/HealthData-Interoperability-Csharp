@@ -6,7 +6,7 @@
     <Project Path="src/05-SMART-on-FHIR/05-SMART-on-FHIR.csproj" />
     <Project Path="src/06-AI-Data-Validator/06-AI-Data-Validator.csproj" />
     <Project Path="src/07-HIPAA-Compliance-Demo/07-HIPAA-Compliance-Demo.csproj" />
-    <Project Path="src/Shared-Library/Shared-Library.csproj" />
+    <Project Path="src/HealthDataInteropSharedLibrary/HealthDataInteropSharedLibrary.csproj" />
   </Folder>
   <Folder Name="/src/1-Basic-Client/">
     <Project Path="src/1-Basic-Client/01-Basic-FHIR-Client.csproj" />

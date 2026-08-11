@@ -1,5 +1,5 @@
 using Microsoft.SemanticKernel;
-using Shared_Library.AIDataValidator;
+using HealthDataInteropSharedLibrary.AIDataValidator;
 
 namespace _06_AI_Data_Validator;
 

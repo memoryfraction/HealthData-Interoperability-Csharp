@@ -1,4 +1,6 @@
-using Shared_Library.AdvancedQuery;namespace _02_Advanced_Query;
+using HealthDataInteropSharedLibrary.AdvancedQuery;
+
+namespace _02_Advanced_Query;
 
 /// <summary>
 /// Entry point: Demonstrating advanced FHIR query capabilities.

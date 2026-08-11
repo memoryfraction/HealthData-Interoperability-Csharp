@@ -1,5 +1,5 @@
-using Shared_Library.ResourceValidator;
-using Shared_Library.Shared;
+using HealthDataInteropSharedLibrary.ResourceValidator;
+using HealthDataInteropSharedLibrary.Shared;
 using FluentAssertions;
 using Hl7.Fhir.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

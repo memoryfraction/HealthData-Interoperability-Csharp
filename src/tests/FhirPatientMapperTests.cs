@@ -1,8 +1,8 @@
-using Shared_Library.Shared;
+using HealthDataInteropSharedLibrary.Shared;
 using FluentAssertions;
 using Hl7.Fhir.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shared_Library.SmartOnFHIR;
+using HealthDataInteropSharedLibrary.SmartOnFHIR;
 
 namespace HealthData.Interop.Tests.MapperTests;
 
