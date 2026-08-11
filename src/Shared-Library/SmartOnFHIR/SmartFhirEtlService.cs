@@ -1,3 +1,4 @@
+using Shared_Library.Shared;
 using CsvHelper;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
@@ -5,7 +6,7 @@ using Shared_Library;
 using System.Globalization;
 using Task = System.Threading.Tasks.Task;
 
-namespace _05_SMART_on_FHIR;
+namespace Shared_Library.SmartOnFHIR;
 
 /// <summary>
 /// [EN] SMART-on-FHIR ETL service: reads CSV patient data and imports into a FHIR server using shared mapper.
@@ -52,7 +53,7 @@ public sealed class SmartFhirEtlService
 
         try
         {
-            var records = csv.GetRecords<Shared_Library.RawPatientData>();
+            var records = csv.GetRecords<Shared_Library.SmartOnFHIR.RawPatientData>();
 
             foreach (var record in records)
             {

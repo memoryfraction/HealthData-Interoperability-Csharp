@@ -1,6 +1,5 @@
 
-namespace Shared_Library
-{
+namespace Shared_Library.Shared;
     /// <summary>
     /// [EN] FHIR User Roles (HIPAA Compliant) - 8 official roles for clinic, insurance, audit, and system access.
     /// [CN] FHIR用户角色（符合HIPAA标准）- 诊所、保险、审计和系统访问的8个官方角色。
@@ -121,4 +120,3 @@ namespace Shared_Library
                 throw new ArgumentException($"Invalid role value: {role}", paramName);
         }
     }
-}

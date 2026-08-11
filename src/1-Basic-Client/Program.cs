@@ -1,4 +1,4 @@
-using HealthData.Interop.BasicClient;
+using Shared_Library.BasicClient;
 
 namespace HealthData.Interop.BasicClient;
 

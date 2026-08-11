@@ -1,5 +1,4 @@
-namespace Shared_Library
-{
+namespace Shared_Library.Shared;
     /// <summary>
     /// [EN] Patient consent manager for HIPAA-compliant data access control.
     /// Verifies that patients have granted consent before their data is accessed.
@@ -25,4 +24,3 @@ namespace Shared_Library
             return true;
         }
     }
-}

@@ -1,4 +1,4 @@
-namespace Shared_Library;
+namespace Shared_Library.Shared;
 
 /// <summary>
 /// [EN] Parameter validation helpers (CodeStandard.md: all public methods start with guard clauses).
@@ -28,3 +28,4 @@ public static class Guard
             throw new ArgumentException($"Parameter '{name}' must not be empty.", name);
     }
 }
+

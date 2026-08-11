@@ -1,6 +1,6 @@
 using Hl7.Fhir.Model;
 
-namespace Shared_Library;
+namespace Shared_Library.Shared;
 
 /// <summary>
 /// [EN] Normalizes raw gender strings (from CSV/AI output) to FHIR AdministrativeGender enum.
@@ -47,3 +47,4 @@ public static class GenderNormalizer
         };
     }
 }
+

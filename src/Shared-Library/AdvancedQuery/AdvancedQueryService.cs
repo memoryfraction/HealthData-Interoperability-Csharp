@@ -1,7 +1,8 @@
+using Shared_Library.Shared;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 
-namespace _02_Advanced_Query;
+namespace Shared_Library.AdvancedQuery;
 
 /// <summary>
 /// [EN] Service for advanced FHIR search queries including chained parameters, _include, and _revinclude.

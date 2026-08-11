@@ -1,4 +1,4 @@
-# AI-Driven-FHIR-Interoperability-Engine-DotNet10
+﻿# AI-Driven-FHIR-Interoperability-Engine-DotNet10
 
 ### *Empowering 2026 Healthcare Data Ecosystems with High-Performance .NET 10 & Private AI*
 
@@ -6,7 +6,7 @@
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
 [![Version](https://img.shields.io/badge/Version-1.2.0-blue.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-163%20Passed-success.svg)](./src/tests/)
+[![Tests](https://img.shields.io/badge/Tests-240%20Passed-success.svg)](./src/tests/)
 
 ---
 
@@ -52,10 +52,11 @@ graph TD
 
 | Module | Technical Focus | Strategic Business Value | Status |
 | :--- | :--- | :--- | :--- |
+| **[07-HIPAA-Compliance-Demo](./src/07-HIPAA-Compliance-Demo)** | **HIPAA Compliance** | **Least Privilege**: 8-role RBAC + Consent validation + Immutable audit logs per HIPAA Audit Controls. | ✅ **Technical Demonstration Project** |
 | **[06-AI-Data-Validator](./src/06-AI-Data-Validator)** | **AI Semantic ETL** | **Data Cleansing**: Uses Local LLMs to normalize "noisy" legacy data with zero-PII leakage. | ✅ **Technical Demonstration Project** |
-| **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: Mapping data to **US Core Patient Profiles** for certified EHR access. | ✅ **Technical Demonstration Project** |
+| **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: OAuth2/OIDC auth + US Core Patient Profiles for certified EHR access. | ✅ **Technical Demonstration Project** |
 | **[04-Data-Mapping-ETL](./src/04-Data-Mapping-ETL)** | **Legacy Integration** | **Data Integrity**: Uses Conditional PUT to prevent duplicates in high-concurrency migrations. | ✅ **Technical Demonstration Project** |
-| **[03-Resource-Validator](./src/03-Resource-Validator)** | **Risk Management** | **Clinical Firewall**: Prevents "Garbage-In" scenarios via strict HL7 semantic validation. | ✅ **Technical Demonstration Project** |
+| **[03-Resource-Validator](./src/03-Resource-Validator)** | **Risk Management** | **Clinical Firewall**: Firely SDK validation + US Core profile conformance checking. | ✅ **Technical Demonstration Project** |
 | **[02-Advanced-Query](./src/02-Advanced-Query)** | **Search Optimization** | **Performance**: Reduces network round-trips via Chained Parameters & `_include` logic. | ✅ **Technical Demonstration Project** |
 
 ---
@@ -187,7 +188,69 @@ Complex clinical retrieval requires more than basic CRUD.
 
 ---
 
+---
+
+## 🛡️ HIPAA Technical Safeguards Implementation (45 CFR §164.312)
+
+| Control | HIPAA Requirement | Implementation | Status |
+| :------ | :---------------- | :-------------- | :----- |
+| **Access Control** | §164.312(a)(1) | `RbacAuth.cs` — 8-role RBAC matrix with least-privilege enforcement | ✅ Complete |
+| **Authentication** | §164.312(a)(2)(iii) | `SmartOnFhirAuthService.cs` — OAuth2/OIDC Client Credentials flow, token caching + auto-refresh | ✅ Complete |
+| **Encryption at Rest** | §164.312(a)(2)(iv) | `PhiEncryptionService.cs` — AES-256-GCM with 12-byte nonce, authentication tag, key rotation support | ✅ Complete |
+| **Audit Controls** | §164.312(b) | `AuditLog.cs` — UTC-timestamped JSON audit entries with immutable structure | ✅ Complete |
+| **Integrity Controls** | §164.312(c)(1) | `ResourceValidationService.cs` + Conditional PUT (ETag) — prevents silent data corruption | ✅ Complete |
+| **Transmission Security** | §164.312(e)(1) | TLS 1.2+ enforced via `SocketsHttpHandler` configuration in all FHIR client factories | ⚠️ Configured |
+| **Consent Management** | §164.508 / (g)(10) | `ConsentManager.cs` — Purpose-of-use validation tied to FHIR Consent resources | ✅ Complete |
+
+---
+
+## 🏥 US Core IG v7.1.0 Compliance Status
+
+This project targets **HL7 US Core Implementation Guide Release 4 / v7.1.0** profiles as mandated by ONC (g)(10) for certified EHR systems:
+
+| US Core Profile | StructureDefinition URI | Code Support | Validation |
+| :-------------- | :---------------------- | :----------- | :--------- |
+| **Patient** | `us-core-patient` | ✅ `FhirPatientMapper` + `UsCoreProfiles` | ✅ Conformance checked |
+| **Observation (Lab)** | `us-core-observation-lab` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
+| **Observation (Vital Signs)** | `us-core-vital-signs` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
+| **Encounter** | `us-core-encounter` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
+| **Condition** | `us-core-condition` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
+| **MedicationRequest** | `us-core-medication-request` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
+| **AllergyIntolerance** | `us-core-allergyintolerance` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
+
+The `UsCoreConformanceChecker` validates that each FHIR resource declares its expected US Core profile URI in `Meta.Profile`, and `EnsureUsCoreProfile()` can automatically attach the correct profile to Patient resources during ETL.
+
+---
+
+## 📚 Medium Series Reference Matrix
+
+| # | Medium Article | Module Folder | Service Class(es) | Key Features |
+|:-:|---------------|--------------|------------------|-------------|
+| 1 | [Build Your First FHIR Client](https://medium.com/@rex.fan18) | `src/01-Basic-Client/` | `FhirBasicService` | Patient read, basic search, Create/Update/Delete |
+| 2 | [Advanced Query](https://medium.com/@rex.fan18) | `src/02-Advanced-Query/` | `AdvancedQueryService` | Chained parameters, `_include`, `_revinclude`, token/prefix filtering |
+| 3 | [Resource Validator](https://medium.com/@rex.fan18) | `src/03-Resource-Validator/` | `ResourceValidationService`, `UsCoreConformanceChecker` | Firely SDK validation, US Core profile conformance |
+| 4 | [Data Mapping ETL](https://medium.com/@rex.fan18) | `src/04-Data-Mapping-ETL/` | `EtlPipelineService`, `FhirPatientMapper` | CSV extraction, Mapperly source-gen, Conditional PUT idempotency |
+| 5 | [SMART on FHIR](https://medium.com/@rex.fan18) | `src/05-SMART-on-FHIR/` | `SmartOnFhirAuthService`, `SmartFhirEtlService` | OAuth2/OIDC auth, token cache/refresh, US Core ETL pipeline |
+| 6 | [AI Data Validator](https://medium.com/@rex.fan18) | `src/06-AI-Data-Validator/` | `AiValidatorService`, `ClinicalGuardrails` | Ollama local LLM, regex JSON shield, deterministic guardrails |
+| 7 | [Compliance Demo](https://medium.com/@rex.fan18) | `src/07-HIPAA-Compliance-Demo/` | `HipaaComplianceOrchestrator`, `RbacAuth` | 8-role RBAC, consent validation, audit logging |
+
+---
+
 ## Changelog and Version History
+### v1.3.0 - 2026-08-11 (Portfolio Improvements, HIPAA Security Hardening, US Core Conformance)
+
+**What Changed:**
+
+* **SMART on FHIR Authentication Service** (Module 05): Added `SmartOnFhirAuthService` implementing OAuth2/OIDC Client Credentials flow with token caching, automatic refresh, and authenticated FhirClient factory per HIPAA §164.312(a)(2)(iii). Closes the gap between Article 5 claims and actual implementation.
+* **PHI Encryption Service** (Shared-Library): Added `PhiEncryptionService` using AES-256-GCM (256-bit key, 12-byte nonce, 16-byte authentication tag) for HIPAA-compliant encryption at rest per §164.312(a)(2)(iv).
+* **US Core Profile Conformance** (Module 03): Added `UsCoreConformanceChecker` and `UsCoreProfiles` — validates that FHIR resources declare expected US Core IG v7.1.0 StructureDefinition URIs in `Meta.Profile`. Supports Patient, Observation, Encounter, Condition, MedicationRequest, AllergyIntolerance profiles.
+* **ILogger Abstraction Layer** (Shared-Library): Added `IApplicationLogger` interface and `ConsoleLogger` implementation with UTC timestamped log levels (Info/Warn/Error/Critical) for HIPAA audit trail readiness.
+* **Duplicate DTO Consolidation**: Removed duplicate `LegacyPatientRecord` from Module 04 — now exclusively uses Shared-Library version.
+* **Test Suite Expanded**: From **163** to **240** passing MSTest v3 tests (+79 new tests) covering encryption, authentication, US Core conformance, and logging abstraction.
+
+---
+
+
 ### v1.2.0 - 2026-08-09 (Service Abstraction, Code Standard Refactoring, Mapperly Source Generator)
 
 **What Changed:**
@@ -268,7 +331,24 @@ Complex clinical retrieval requires more than basic CRUD.
 
 ---
 
-## 👤 Contact & Collaboration
+
+---
+
+## ⚠️ Security Notice / 安全须知
+
+**[EN] TLS Certificate Validation Status:**
+- Module 05 (5-SMART-on-FHIR) currently **bypasses HTTPS certificate validation** due to VPN connectivity issues in the development environment.
+- **This is a DEV-only workaround** that introduces MITM vulnerability and violates HIPAA §164.312(e)(1) transmission security rule.
+- **Production Deployment:** You MUST: 1) Remove `RemoteCertificateValidationCallback = ... => true`. 2) **Enforce HTTPS-only connections** on all FHIR client endpoints (no HTTP fallback allowed). 3) Configure server-side HSTS headers. 4) Pin TLS 1.2+ minimum.
+- See src/05-SMART-on-FHIR/Program.cs for the detailed inline warning.
+
+**[CN] TLS 证书验证状态：**
+- 模块 05 (5-SMART-on-FHIR) 当前**绕过 HTTPS 证书验证**，原因是开发环境中 VPN 导致的网络连接问题。
+- **此为纯开发环境临时方案**，会引入中间人攻击 (MITM) 风险并违反 HIPAA §164.312(e)(1) 传输安全规定。
+- **生产部署前：** 你必须：1) 移除 `RemoteCertificateValidationCallback = ... => true`。2) **强制开启 HTTPS**，所有 FHIR 客户端端点必须使用 HTTPS（不允许 HTTP 回退）。3) 配置服务器端 HSTS 头。4) 最低 TLS 1.2+。
+- 详见 src/05-SMART-on-FHIR/Program.cs 中的内联警告注释。
+
+`r`n## 👤 Contact & Collaboration
 **Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
 * **LinkedIn**: [Rex Linkedin](https://www.linkedin.com/in/rongfan1031/)
 * **Upwork**: [Rex Upwork](upwork.com/freelancers/~0130de8f5f5eeebb0f)

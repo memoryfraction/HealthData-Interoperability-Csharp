@@ -1,5 +1,6 @@
 using Hl7.Fhir.Rest;
-using Shared_Library;
+using Shared_Library.Shared;
+using Shared_Library.Etl;
 
 namespace _04_Data_Mapping_ETL;
 

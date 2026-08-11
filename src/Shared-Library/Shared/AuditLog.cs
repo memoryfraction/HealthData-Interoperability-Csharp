@@ -1,7 +1,6 @@
 using System.Text.Json;
 
-namespace Shared_Library
-{
+namespace Shared_Library.Shared;
     /// <summary>
     /// [EN] HIPAA-compliant audit logging utility for recording Protected Health Information (PHI) access.
     /// Records who, when, what action, what resource, and IP address.
@@ -41,4 +40,3 @@ namespace Shared_Library
             Console.WriteLine("=====================================\n");
         }
     }
-}
