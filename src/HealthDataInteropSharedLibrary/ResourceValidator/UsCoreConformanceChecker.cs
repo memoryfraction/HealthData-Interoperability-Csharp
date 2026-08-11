@@ -1,5 +1,5 @@
 using HealthDataInteropSharedLibrary.Shared;
-﻿using Hl7.Fhir.Model;
+using Hl7.Fhir.Model;
 
 namespace HealthDataInteropSharedLibrary.ResourceValidator;
 

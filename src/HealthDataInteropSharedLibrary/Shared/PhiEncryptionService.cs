@@ -13,6 +13,10 @@ namespace HealthDataInteropSharedLibrary.Shared;
 /// </summary>
 public sealed class PhiEncryptionService : IDisposable
 {
+    // [EN] 16-byte (128-bit) authentication tag per NIST SP 800-38D.
+    // [CN] 按NIST SP 800-38D，16字节（128位）认证标签。
+    private const int TagSizeBytes = 16;
+
     private readonly AesGcm _cipher;
     private bool _disposed;
 
@@ -28,7 +32,7 @@ public sealed class PhiEncryptionService : IDisposable
         if (key.Length != 32)
             throw new ArgumentException("Key must be exactly 32 bytes", nameof(key));
 
-        _cipher = new AesGcm(key);
+        _cipher = new AesGcm(key, TagSizeBytes);
     }
 
     /// <summary>
@@ -54,7 +58,7 @@ public sealed class PhiEncryptionService : IDisposable
         var nonce = GenerateNonce();
         var plaintextBytes = System.Text.Encoding.UTF8.GetBytes(plaintext);
         var ciphertext = new byte[plaintextBytes.Length];
-        var tag = new byte[AesGcm.TagByteSizes.MaxSize];
+        var tag = new byte[TagSizeBytes];
         
         _cipher.Encrypt(nonce, plaintextBytes, ciphertext, tag, null);
 
