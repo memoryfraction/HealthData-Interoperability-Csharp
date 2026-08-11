@@ -34,18 +34,18 @@ public sealed class HipaaComplianceOrchestrator
         // Step 1: RBAC - Role-based access control (Least Privilege)
         if (!_rbacAuth.CanAccessFullPHI(role))
         {
-            Console.WriteLine("DENIED: Insufficient role for full PHI access");
+            SafeConsole.WriteLine("DENIED: Insufficient role for full PHI access");
             return false;
         }
-        Console.WriteLine("PASSED: User has permission to access full PHI\n");
+        SafeConsole.WriteLine("PASSED: User has permission to access full PHI\n");
 
         // Step 2: Patient Consent Validation
         if (!_consentManager.CheckConsent(patientId, accessPurpose))
         {
-            Console.WriteLine("DENIED: No patient consent provided");
+            SafeConsole.WriteLine("DENIED: No patient consent provided");
             return false;
         }
-        Console.WriteLine("PASSED: Patient consent is granted\n");
+        SafeConsole.WriteLine("PASSED: Patient consent is granted\n");
 
         // Step 3: Record HIPAA-compliant audit log
         AuditLog.Record(userId, role.ToString(), ipAddress, resourceType, patientId, action);
@@ -66,3 +66,4 @@ public sealed class HipaaComplianceOrchestrator
     public static string FormatUserContext(string userId, FhirUserRole role, string ipAddress) =>
         $"[User Context] User: {userId} | Role: {role} | IP: {ipAddress}";
 }
+

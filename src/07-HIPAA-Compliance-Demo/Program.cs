@@ -5,15 +5,15 @@ namespace _07_HIPAA_Compliance_Demo;
 
 /// <summary>
 /// Entry point: HIPAA compliance demo demonstrating PHI access control.
-/// 入口点：演示PHI访问控制的HIPAA合规演示。
+/// Uses SafeConsole to ensure all PHI is masked before output.
 /// </summary>
 internal static class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("=============================================");
-        Console.WriteLine("      HIPAA Compliance Demo (FHIR)");
-        Console.WriteLine("=============================================\n");
+        SafeConsole.WriteLine("=============================================");
+        SafeConsole.WriteLine("      HIPAA Compliance Demo (FHIR)");
+        SafeConsole.WriteLine("=============================================\n");
 
         var orchestrator = new HipaaComplianceOrchestrator();
 
@@ -23,11 +23,11 @@ internal static class Program
         const string patientId = "P1001";
         const string accessPurpose = "TREATMENT";
 
-        Console.WriteLine(HipaaComplianceOrchestrator.FormatUserContext(userId, role, ipAddress));
-        Console.WriteLine();
+        SafeConsole.WriteLine(HipaaComplianceOrchestrator.FormatUserContext(userId, role, ipAddress));
+        SafeConsole.WriteLine();
 
         // Execute full HIPAA compliance workflow
-        Console.WriteLine("Step 1: RBAC Permission Check");
+        SafeConsole.WriteLine("Step 1: RBAC Permission Check");
         var result = orchestrator.ExecutePhiAccessRequest(
             userId: userId,
             role: role,
@@ -35,12 +35,12 @@ internal static class Program
             patientId: patientId,
             accessPurpose: accessPurpose);
 
-        Console.WriteLine();
+        SafeConsole.WriteLine();
         if (result)
         {
-            Console.WriteLine("=============================================");
-            Console.WriteLine(" Demo completed successfully - All HIPAA checks passed.");
-            Console.WriteLine("=============================================");
+            SafeConsole.WriteLine("=============================================");
+            SafeConsole.WriteLine(" Demo completed successfully - All HIPAA checks passed.");
+            SafeConsole.WriteLine("=============================================");
         }
     }
 }

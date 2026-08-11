@@ -44,7 +44,7 @@ public sealed class AuditLogTests
             string captured = stringWriter.ToString();
             captured.Should().Contain("user001", "Output should contain the user ID");
             captured.Should().Contain("Physician", "Output should contain the role");
-            captured.Should().Contain("192.168.1.100", "Output should contain the IP address");
+            captured.Should().Contain("[IP_MASKED]", "Output should contain the masked IP address (HIPAA PHI masking)");
             captured.Should().Contain("READ", "Output should contain the action");
             captured.Should().Contain("Patient/P1001", "Output should contain the resource path");
             captured.Should().Contain("Timestamp", "Output should contain timestamp field");
@@ -310,3 +310,4 @@ public sealed class AuditLogTests
         }
     }
 }
+

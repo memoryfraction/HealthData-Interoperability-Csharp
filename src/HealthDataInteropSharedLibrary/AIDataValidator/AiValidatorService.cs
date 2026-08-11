@@ -63,7 +63,7 @@ public sealed class AiValidatorService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[Error] JSON Error: {ex.Message}");
+            SafeConsole.WriteLine($"[Error] JSON Error: {ex.Message}");
             return null;
         }
     }
@@ -184,5 +184,6 @@ internal static class Guard
             throw new ArgumentException($"Parameter '{name}' must not be empty.", name);
     }
 }
+
 
 

@@ -20,7 +20,8 @@ namespace HealthDataInteropSharedLibrary.Shared;
 
             // In real scenario: Read from FHIR Consent resource
             // For demo, we simulate that the patient has granted consent for the requested purpose.
-            Console.WriteLine($"\n[CONSENT CHECK] Patient {patientId} | Purpose: {requestPurpose} | Status: GRANTED");
+            SafeConsole.WriteLine($"\n[CONSENT CHECK] Patient {patientId} | Purpose: {requestPurpose} | Status: GRANTED");
             return true;
         }
     }
+

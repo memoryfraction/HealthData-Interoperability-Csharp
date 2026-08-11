@@ -38,22 +38,22 @@ public sealed class EtlPipelineService
     {
         Guard.NotNullOrEmpty(csvPath, nameof(csvPath));
 
-        Console.WriteLine("[ETL Process] Starting data mapping task...");
+        SafeConsole.WriteLine("[ETL Process] Starting data mapping task...");
 
         if (!File.Exists(csvPath))
             throw new FileNotFoundException($"CSV file not found at: {csvPath}");
 
         // --- Extract + Transform ---
         var patientsToImport = await ExtractAndTransformAsync(csvPath);
-        Console.WriteLine($"[Extract] Read and mapped {patientsToImport.Count} records.");
+        SafeConsole.WriteLine($"[Extract] Read and mapped {patientsToImport.Count} records.");
 
         // --- Load: Transaction Bundle ---
         var batchBundle = BuildTransactionBundle(patientsToImport);
-        Console.WriteLine("[Load] Sending Transaction Bundle...");
+        SafeConsole.WriteLine("[Load] Sending Transaction Bundle...");
 
         var response = await _client.TransactionAsync(batchBundle);
         var result = AnalyzeResponse(response);
-        Console.WriteLine($"[Success] Load completed. Created: {result.Created}, Updated: {result.Updated}.");
+        SafeConsole.WriteLine($"[Success] Load completed. Created: {result.Created}, Updated: {result.Updated}.");
 
         // --- Verify ---
         await VerifyOnServer(patientsToImport.Count);
@@ -135,7 +135,7 @@ public sealed class EtlPipelineService
     /// </summary>
     public async Task VerifyOnServer(int expectedCount)
     {
-        Console.WriteLine("[Verify] Fetching updated resources from server...");
+        SafeConsole.WriteLine("[Verify] Fetching updated resources from server...");
 
         var query = new SearchParams()
             .Where("_tag=SUBSET")
@@ -146,16 +146,16 @@ public sealed class EtlPipelineService
 
         if (searchResult.Entry.Count > 0)
         {
-            Console.WriteLine($"[Verify] Confirmed {searchResult.Entry.Count} records on server:");
+            SafeConsole.WriteLine($"[Verify] Confirmed {searchResult.Entry.Count} records on server:");
             foreach (var entry in searchResult.Entry)
             {
                 var p = (Patient)entry.Resource;
-                Console.WriteLine($" - Patient: {p.Name[0].Family}, Version: {p.Meta?.VersionId}, LastUpdated: {p.Meta?.LastUpdated}");
+                SafeConsole.WriteLine($" - Patient: {p.Name[0].Family}, Version: {p.Meta?.VersionId}, LastUpdated: {p.Meta?.LastUpdated}");
             }
         }
         else
         {
-            Console.WriteLine("[Verify] No records found. Indexing might be delayed on public server.");
+            SafeConsole.WriteLine("[Verify] No records found. Indexing might be delayed on public server.");
         }
     }
 }

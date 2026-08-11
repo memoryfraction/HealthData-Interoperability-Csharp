@@ -25,11 +25,28 @@ public sealed class SmartFhirEtlService
     {
         Guard.NotNull(client, nameof(client));
         _client = client;
-        // [EN] Module 05 pre-refactor created Patients without a business Identifier;
-        // keep output parity by disabling the synthetic name-based Identifier.
-        // [CN] 模块05重构前创建的Patient不带业务Identifier；
-        // 关闭基于姓名拼接的合成Identifier以保持输出一致。
         _mapper = new FhirPatientMapper(usCoreProfile: true, addTestDataTag: false, addIdentifier: false);
+    }
+
+    /// <summary>
+    /// [EN] Initialize with a FHIR client and custom identifier system.
+    /// The custom idSystem allows each test run to use unique identifiers, preventing duplicate resource errors
+    /// on shared public FHIR servers like hapi.fhir.org (HAPI-2840).
+    /// 
+    /// [CN] 使用FHIR客户端和自定义标识符系统初始化。
+    /// 自定义idSystem允许每次测试运行使用唯一标识符，防止在共享公共FHIR服务器上出现重复资源错误。
+    /// </summary>
+    /// <param name="client">[EN] FHIR client / [CN] FHIR客户端</param>
+    /// <param name="idSystem">[EN] Run-specific identifier system URI to avoid duplicates / [CN] 运行特定的标识符系统URI以避免重复</param>
+    public SmartFhirEtlService(FhirClient client, string idSystem)
+    {
+        Guard.NotNull(client, nameof(client));
+        Guard.NotNullOrEmpty(idSystem, nameof(idSystem));
+        _client = client;
+        // [EN] Use custom idSystem so each run generates unique identifiers.
+        // Enable identifier so the system+value combination is unique per run.
+        // [CN] 使用自定义idSystem使每次运行生成唯一标识符。
+        _mapper = new FhirPatientMapper(idSystem: idSystem, usCoreProfile: true, addTestDataTag: false, addIdentifier: true);
     }
 
     /// <summary>
@@ -60,7 +77,7 @@ public sealed class SmartFhirEtlService
                 try
                 {
                     var created = await _client.CreateAsync(patient);
-                    Console.WriteLine($"[Success] {record.FirstName} {record.LastName} -> Assigned ID: {created.Id}");
+                    SafeConsole.WriteLine($"[Success] {record.FirstName} {record.LastName} -> Assigned ID: {created.Id}");
                     count++;
 
                     if (delayMs.HasValue)
@@ -68,13 +85,13 @@ public sealed class SmartFhirEtlService
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Failed] Import failed for {record.FirstName}: {ex.Message}");
+                    SafeConsole.WriteLine($"[Failed] Import failed for {record.FirstName}: {ex.Message}");
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[Critical] ETL Pipeline Failure: {ex.Message}");
+            SafeConsole.WriteLine($"[Critical] ETL Pipeline Failure: {ex.Message}");
         }
 
         return count;
