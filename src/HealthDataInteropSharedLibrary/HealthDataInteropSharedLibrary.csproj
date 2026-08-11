@@ -40,7 +40,7 @@
   <!-- NuGet Package Metadata -->
   <PropertyGroup>
     <PackageId>HealthData.Interop.Fhir</PackageId>
-    <Version>1.3.0</Version>
+    <Version>1.3.1</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
@@ -54,7 +54,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.3.0 - Initial NuGet release with embedded FHIR R4 specification (~6MB). Portfolio snapshot demonstrating healthcare interoperability expertise. No future maintenance planned.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.3.1 - Embedded FHIR R4 specification.zip for reliable offline validation. Removed ineffective Polly retry logic. Portfolio snapshot - no maintenance.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -62,3 +62,5 @@
   </ItemGroup>
 
 </Project>
+
+
