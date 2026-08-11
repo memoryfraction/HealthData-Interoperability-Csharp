@@ -5,7 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![Version](https://img.shields.io/badge/Version-1.3.1-blue.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.3.2-blue.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
@@ -244,6 +244,10 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 ---
 
 ## Changelog and Version History
+### v1.3.2 - 2026-08-11 (Dependency Cleanup, Security Hardening)
+* **Removed Microsoft.SemanticKernel alpha dependency**: Eliminated known critical vulnerability warning (NU1904/GHSA-2ww3-72rp-wpp4) and NuGet NU5104 stable-release warning
+* **Native HttpClient for Ollama**: Replaced heavy SemanticKernel framework with lightweight native HttpClient — smaller NuGet package, zero alpha dependencies
+* **NuGet package size reduced** by removing unnecessary transitive dependencies
 ### v1.3.1 - 2026-08-11 (Embedded FHIR R4 Specification, Validation Fix)
 * **FHIR R4 Spec Embedded**: Bundled specification.zip (~6MB) via ContentFiles for reliable offline validation
 * **ResourceValidationService Rewritten**: Removed ineffective Polly retry logic. Clean init/fallback pattern now
