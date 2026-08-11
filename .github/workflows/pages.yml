@@ -1,11 +1,11 @@
-# Deploy docs/ folder to GitHub Pages via GitHub Actions
+# Deploy pages/ folder to GitHub Pages via GitHub Actions
 name: Deploy GitHub Pages
 
 on:
   push:
     branches: [ main ]
     paths:
-      - "docs/**"
+      - "pages/**"
       - ".github/workflows/pages.yml"
 
   workflow_dispatch:
@@ -34,10 +34,10 @@ jobs:
         with:
           enablement: true
 
-      - name: Upload artifact (docs/)
+      - name: Upload artifact (pages/)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "docs"
+          path: "pages"
 
       - name: Deploy to GitHub Pages
         id: deployment
