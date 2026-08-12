@@ -51,7 +51,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.3.3 - Codebase upgrades, stability improvements, and minor bug fixes.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.3.3 - Removed Polly dependency to simplify package surface area. Code quality and stability improvements across the shared library.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

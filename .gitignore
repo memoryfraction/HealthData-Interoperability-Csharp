@@ -422,3 +422,10 @@ FodyWeavers.xsd
 /nupkg_check
 /temp_nupkg_verify
 /dotnet-tools.json
+/fix_script.ps1
+/RELEASE-SKILL.md
+/temp_appendix.txt
+/temp_part1.txt
+/temp_part2.txt
+/tmp_appendix.md
+/tmp_appendix.txt
