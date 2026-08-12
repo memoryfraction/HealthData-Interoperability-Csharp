@@ -65,7 +65,7 @@ graph TD
 
 ## 🚀 Technical Deep Dive: Solving 2026's MedTech Challenges
 ### 🧩 07: 07-HIPAA-Compliance-Demo
-As healthcare data interoperability becomes a federal mandate under the 21st Century Cures Act, ensuring HIPAA compliance is non-negotiable for protecting Protected Health Information (PHI). This module demonstrates a production-grade compliance framework, combining role-based access control (RBAC) and patient consent validation to meet HIPAA’s Minimum Necessary Standard and ONC (g)(10) requirements.
+As healthcare data interoperability becomes a federal mandate under the 21st Century Cures Act, ensuring HIPAA compliance is non-negotiable for protecting Protected Health Information (PHI). This module demonstrates a compliance reference framework, combining role-based access control (RBAC) and patient consent validation to meet HIPAA’s Minimum Necessary Standard and ONC (g)(10) requirements.
 
 #### 🔴 The Compliance Pain Points
 * **Overly Permissive Access**: Generic auth systems often grant broad PHI access, violating HIPAA’s least privilege principle and increasing breach risk.
@@ -351,7 +351,7 @@ Healthcare data interoperability is one of the most challenging problems in mode
 | **Messy clinical data fails traditional validation** | Local AI (Ollama) normalizes fuzzy text without sending PHI to the cloud |
 | **Public FHIR servers cause unpredictable errors** | Each module has graceful fallbacks for network issues, spec downloads, and duplicate resource handling |
 
-*This library demonstrates production-grade healthcare interoperability patterns. It is intended as a reference implementation and educational resource - see the License section below.*
+*This library demonstrates healthcare interoperability patterns. It is intended as a reference implementation and educational resource - see the License section below.*
 
 ---
 
@@ -361,7 +361,7 @@ Healthcare data interoperability is one of the most challenging problems in mode
 **Version**: [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Fhir)](https://www.nuget.org/packages/HealthData.Interop.Fhir/)  
 **License**: MIT | **Author**: Rong(Rex) Fan
 
-A production-grade .NET 8 library for Healthcare Data Interoperability, featuring:
+A .NET 8 reference library for Healthcare Data Interoperability, featuring:
 - 🔷 **FHIR R4 Client Utilities** - Search, retrieve, and create resources
 - 🛡️ **HIPAA Compliance Helpers** - RBAC, PHI Encryption, Immutable Audit Logs
 - ⚖️ **US Core Conformance Checker** - Validates resources against federal standards
