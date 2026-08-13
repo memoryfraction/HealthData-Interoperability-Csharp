@@ -432,6 +432,11 @@ dotnet test
 - **Production Deployment:** You MUST: 1) Remove `RemoteCertificateValidationCallback = ... => true`. 2) **Enforce HTTPS-only connections** on all FHIR client endpoints (no HTTP fallback allowed). 3) Configure server-side HSTS headers. 4) Pin TLS 1.2+ minimum.
 - See src/05-SMART-on-FHIR/Program.cs for the detailed inline warning.
 
+
+---
+
+> 📢 **Building FHIR interoperability?** I made a free checklist of the [12 pitfalls teams hit before Cures Act certification](https://mailchi.mp/83cafe450eef/rex-landing-page).
+
 ## 👤 Contact & Collaboration
 **Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
 * **LinkedIn**: [Rex Linkedin](https://www.linkedin.com/in/rongfan1031/)
