@@ -9,6 +9,7 @@
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
+[🏥 **Live Sample: Clinic FHIR Server (Azure Container Apps)**](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/)
 
 ---
 
