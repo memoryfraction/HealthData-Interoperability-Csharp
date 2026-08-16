@@ -59,7 +59,7 @@
         <a href="#quick-start">Quick Start</a>
         <a href="#modules">Modules & Value</a>
         <a href="#api">API Reference</a>
-        <a href="#sample">Live Sample</a>
+        <a href="#sample">More Projects</a>
         <a href="#license">License</a>
     </div>
 </nav>
@@ -86,13 +86,18 @@
     </p>
 </section>
 <section id="sample">
-    <h2>🏥 Live Sample Project</h2>
-    <p>Explore a running <strong>Clinic FHIR Server</strong> sample application hosted on Azure Container Apps.</p>
-    <div style="margin-bottom: 1rem; margin-top: 0.5rem;">
-        <a href="https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/" target="_blank" style="background: #004880; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold;">
-            🏥 Open Live Sample
-        </a>
-    </div>
+    <h2>🏥 More Healthcare IT Projects by the Author</h2>
+    <p>Two independent healthcare IT projects built by the author. They are <strong>not</strong> built on top of this library — they simply live in the same healthcare interoperability space.</p>
+    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+        <li>
+            <strong>Clinic FHIR Server</strong> — a multi-tenant FHIR R4 server for clinics and community health centers: tenant-isolated FHIR storage, role-based access control, audit logging, and PHI encryption.
+            <a href="https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: none;">Live demo ↗</a>
+        </li>
+        <li>
+            <strong>XBridge</strong> — a Prior Authorization toolkit that validates X12 278 transactions against payer Companion Guide rules and converts between X12 and FHIR R4, running 100% in your local browser.
+            <a href="https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: none;">Live demo ↗</a>
+        </li>
+    </ul>
 </section>
 
 <section id="install">
@@ -272,8 +277,9 @@ var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pr
         <p>&copy; 2026 Rong (Rex) Fan | Healthcare Data Interoperability with .NET 8 &amp; FHIR R4</p>
         <p>
             <a href="https://github.com/memoryfraction/HealthData-Interoperability-Csharp" style="color: var(--primary);">GitHub Repository</a> |
-            <a href="https://memoryfraction.github.io/HealthData-Interoperability-Csharp//" style="color: var(--primary);">GitHub Pages</a> |
-            <a href="https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/" target="_blank" style="color: var(--primary);">Live Sample</a>
+            <a href="https://memoryfraction.github.io/HealthData-Interoperability-Csharp/" style="color: var(--primary);">GitHub Pages</a> |
+            <a href="https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/" target="_blank" style="color: var(--primary);">Clinic FHIR Server</a> |
+            <a href="https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/" target="_blank" style="color: var(--primary);">XBridge</a>
         </p>
     </div>
 </footer>

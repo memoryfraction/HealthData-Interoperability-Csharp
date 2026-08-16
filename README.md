@@ -9,7 +9,9 @@
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
-[🏥 **Live Sample: Clinic FHIR Server (Azure Container Apps)**](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/)
+**🏥 More Healthcare IT Sample Projects by me**
+* **[Clinic FHIR Server](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/)** — a multi-tenant FHIR R4 server for clinics and community health centers: tenant-isolated FHIR storage, role-based access control, audit logging, and PHI encryption.
+* **[XBridge](https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/)** — a Prior Authorization toolkit that validates X12 278 transactions against payer Companion Guide rules and converts between X12 and FHIR R4, running entirely in your browser locally.
 
 ---
 
