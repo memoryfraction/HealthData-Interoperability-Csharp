@@ -364,7 +364,7 @@ Healthcare data interoperability is one of the most challenging problems in mode
 **Version**: [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Fhir)](https://www.nuget.org/packages/HealthData.Interop.Fhir/)  
 **License**: MIT | **Author**: Rong(Rex) Fan
 
-A .NET 8 reference library for Healthcare Data Interoperability, featuring:
+A .NET 10 reference library for Healthcare Data Interoperability, featuring:
 - 🔷 **FHIR R4 Client Utilities** - Search, retrieve, and create resources
 - 🛡️ **HIPAA Compliance Helpers** - RBAC, PHI Encryption, Immutable Audit Logs
 - ⚖️ **US Core Conformance Checker** - Validates resources against federal standards
@@ -414,7 +414,7 @@ if (accessResult.IsAllowed) {
 ## 📖 Getting Started
 
 1.  **Environment Setup**
-    * Install **.NET 8 SDK or later** (The Shared Library is built on .NET 8 LTS; Demo Apps run on .NET 10).
+    * Install **.NET 10 SDK or later** (the library package ships on .NET 8 LTS for broad compatibility; all demo apps run on .NET 10).
     * (Optional for Module 06) Install [Ollama](https://ollama.com/) and run ollama run llama3.
 3.  **FHIR Spec Validation Note**
     * Module 03 (Resource Validator) uses the Firely SDK which downloads the FHIR R4 specification (~40MB) on first run.
@@ -439,6 +439,17 @@ dotnet test
 ---
 
 > 📢 **Building FHIR interoperability?** I made a free checklist of the [12 pitfalls teams hit before Cures Act certification](https://mailchi.mp/83cafe450eef/rex-landing-page).
+
+## 🔗 Related Projects / 相关项目
+
+| Project | Description |
+|---------|-------------|
+| [Quant.Infra.Net](https://github.com/memoryfraction/Quant.Infra.Net) | One-stop .NET quantitative trading infrastructure — multi-source data ingestion, unified broker execution, portfolio analytics. 一站式 .NET 量化交易基础设施 —— 多源数据接入、统一券商执行、组合分析。 |
+| [LLSDA](https://github.com/memoryfraction/LLSDA-Lightning-Location-System-Data-Analyzer) | Open-source lightning location system (LLS) data analysis library — published on NuGet, cited in a TechRxiv preprint. 开源闪电定位系统数据分析类库 —— 已发布 NuGet 包，并被 TechRxiv 预印本引用。 |
+
+> More projects by the same author: [github.com/memoryfraction](https://github.com/memoryfraction)
+
+---
 
 ## 👤 Contact & Collaboration
 **Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
