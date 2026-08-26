@@ -185,7 +185,7 @@ OAuth2 授权码流程 → OIDC 身份验证 → 令牌管理 → US Core 数据
 **版本**: [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Fhir)](https://www.nuget.org/packages/HealthData.Interop.Fhir/)  
 **许可证**: MIT | **作者**: Rong(Rex) Fan
 
-生产级 .NET 8 医疗数据互操作库，功能包括：
+生产级 .NET 10 医疗数据互操作库，功能包括：
 - 🔷 **FHIR R4 客户端工具** - 资源搜索、检索、创建
 - 🛡️ **HIPAA 合规辅助** - RBAC、PHI 加密、不可篡改审计日志
 - ⚖️ **US Core 标准校验器** - 验证资源是否符合联邦标准
@@ -236,7 +236,7 @@ if (accessResult.IsAllowed) {
 ## 📖 快速开始
 
 1. **环境准备**
-   - 安装 **.NET 8 SDK 或更高版本**（共享库基于 .NET 8 LTS；演示应用运行在 .NET 10）
+   - 安装 **.NET 10 SDK 或更高版本**（类库包基于 .NET 8 LTS 以兼容更广泛环境；演示应用运行在 .NET 10）
    - （模块 06 可选）安装 [Ollama](https://ollama.com/) 并运行 `ollama run llama3`
 
 2. **FHIR 规范验证说明**
@@ -278,6 +278,17 @@ dotnet test
 | **互操作认证** | ONC (g)(10), US Core IG | 互联互通成熟度测评（四甲） |
 
 > 中国市场适用场景：本库中的 ETL 管道、AI 数据验证、资源校验等模块可复用于 FHIR China IG 项目。安全合规模块需按 PIPL/等保2.0 重新适配。
+
+---
+
+## 🔗 相关项目
+
+| 项目 | 简介 |
+|------|------|
+| [Quant.Infra.Net](https://github.com/memoryfraction/Quant.Infra.Net) | 一站式 .NET 量化交易基础设施 —— 多源数据接入、统一券商执行、组合分析 |
+| [LLSDA](https://github.com/memoryfraction/LLSDA-Lightning-Location-System-Data-Analyzer) | 开源闪电定位系统数据分析类库 —— 已发布 NuGet 包，并被 TechRxiv 预印本引用 |
+
+> 同一作者的更多项目：[github.com/memoryfraction](https://github.com/memoryfraction)
 
 ---
 
