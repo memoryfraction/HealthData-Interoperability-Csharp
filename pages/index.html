@@ -48,7 +48,7 @@
             <span class="badge">FHIR R4</span>
             <span class="badge">HIPAA Compliant</span>
             <span class="badge">US Core IG</span>
-            <span class="badge">v1.3.3</span>
+            <span class="badge">v1.3.4</span>
             </div>
     </div>
 </header>
@@ -125,18 +125,21 @@ paket add HealthData.Interop.Fhir</code></pre>
     <h2>Quick Start</h2>
     <p>Get up and running in minutes with FHIR R4 client operations:</p>
     <pre><code>using HealthDataInteropSharedLibrary.BasicClient;
+using HealthDataInteropSharedLibrary.ResourceValidator;
 using Hl7.Fhir.Model;
 
-var client = new FhirBasicService(
-    "https://r4.sandbox.smarte.onhealth.it",
-    logLevel: LogLevel.Information);
+var client = new FhirBasicService("https://r4.ontoserver.cignacorp.org/fhir");
 
-// Search for patients
-var results = await client.SearchPatientsAsync("John");
+// Search patients by name
+var results = await client.SearchPatientsByNameAsync("John");
 foreach (var patient in results)
 {
-    Console.WriteLine($"Patient: {patient.Name?.FirstOrDefault()?.Family}");
-}</code></pre>
+    Console.WriteLine($"Patient: {FhirBasicService.FormatPatientName(patient)}");
+}
+
+// Validate a Patient resource against the R4 specification
+var validator = new ResourceValidationService();
+bool valid = validator.Validate(patient);</code></pre>
 </section>
 
 
@@ -205,13 +208,13 @@ foreach (var patient in results)
     <h2>API Reference</h2>
     
     <h3>BasicClient.FhirBasicService</h3>
-    <pre><code>// Constructor: requires base FHIR server URL
-var service = new FhirBasicService("https://your-fhir-server", logLevel);
+    <pre><code>// Constructor: base FHIR server URL
+var service = new FhirBasicService("https://your-fhir-server");
 
 // Key methods:
-await service.SearchPatientsAsync(name);     // Search patients by name
-await service.GetPatientAsync(id);           // Get single patient
-await service.ReadCareProviderAsync(id);     // Read CareProvider</code></pre>
+var patients = await service.SearchPatientsByNameAsync("John");
+var created  = await service.CreatePatientAsync("John","Doe","male","1985-01-15","MRN-1234");
+Console.WriteLine(FhirBasicService.FormatPatientName(patients[0]));</code></pre>
 
     <h3>ResourceValidator.ResourceValidationService</h3>
     <pre><code>var validator = new ResourceValidationService();
@@ -227,11 +230,14 @@ Console.WriteLine(result.IsUsCoreConformant); // true or false
 bool added = UsCoreConformanceChecker.EnsureUsCoreProfile(patient);</code></pre>
 
     <h3>Compliance.HipaaComplianceOrchestrator</h3>
-    <pre><code>// 8-role RBAC compliance check
-var result = HipaaComplianceOrchestrator.EvaluateAccess(
+    <pre><code>// RBAC PHI access check (8 roles)
+var orchestrator = new HipaaComplianceOrchestrator();
+bool canRead = await orchestrator.ExecutePhiAccessRequest(
+    userId: "u-1001",
     role: FhirUserRole.Physician,
-    action: "ReadPatient",
-    patientId: "123");
+    ipAddress: "10.0.0.5",
+    patientId: "123",
+    accessPurpose: "Clinical review");
 
 // PHI encryption service
 var encrypted = PhiEncryptionService.Encrypt(sensitiveData);
@@ -256,7 +262,7 @@ var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pr
 <section id="security">
     <h2>Security Notice</h2>
     <div class="warning">
-        <strong>Production Requirement:</strong> HTTPS must be enforced in production environments. The demo modules may include TLS certificate validation bypassing for local development due to network issues. This is <em>never acceptable</em> in production. Always use valid certificates and enforce TLS 1.2+ for all FHIR server connections.
+        <strong>Production Requirement:</strong> TLS certificate validation is <strong>strict by default</strong> on all FHIR client connections. A development-only bypass exists for local self-signed test setups and is <em>OFF by default</em> — enable it only for local development by setting the environment variable <code>HEALTHDATA_INSECURE_SKIP_TLS=1</code>. This must <em>never</em> be enabled in production (violates HIPAA §164.312(e)(1)). Application logging is PHI-masked: SSN, patient name, DOB, phone and email are redacted before reaching the log sink. Always use valid certificates and enforce TLS 1.2+ for all FHIR server connections.
     </div>
 </section>
 

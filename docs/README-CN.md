@@ -221,12 +221,15 @@ bool isValid = validator.Validate(patients.First());
 
 // 4. HIPAA 合规检查（访问 PHI 前）
 using HealthDataInteropSharedLibrary.Compliance;
-var accessResult = HipaaComplianceOrchestrator.EvaluateAccess(
+var orchestrator = new HipaaComplianceOrchestrator();
+bool canRead = await orchestrator.ExecutePhiAccessRequest(
+    userId: "u-1001",
     role: FhirUserRole.Physician,
-    action: "ReadPatient",
-    patientId: "123");
+    ipAddress: "10.0.0.5",
+    patientId: "123",
+    accessPurpose: "Clinical review");
 
-if (accessResult.IsAllowed) {
+if (canRead) {
     Console.WriteLine("✓ PHI 访问已授权，审计日志已记录");
 }
 ```
