@@ -37,7 +37,7 @@
   <!-- NuGet Package Metadata -->
   <PropertyGroup>
     <PackageId>HealthData.Interop.Fhir</PackageId>
-    <Version>1.3.3</Version>
+    <Version>1.3.4</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
@@ -51,7 +51,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.3.3 - Removed Polly dependency to simplify package surface area. Code quality and stability improvements across the shared library.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.3.4 - TLS certificate validation is strict by default everywhere; the dev-only bypass is now opt-in via HEALTHDATA_INSECURE_SKIP_TLS=1 and consistently implemented. Application logging is now PHI-masked by default. Fixed a broken README quick-start example.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

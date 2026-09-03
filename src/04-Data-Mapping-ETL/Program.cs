@@ -13,15 +13,27 @@ internal static class Program
         const string fhirServerUrl = "https://hapi.fhir.org/baseR4";
         string csvPath = Path.Combine(AppContext.BaseDirectory, "Data", "legacy_patients.csv");
 
-        // NOTE: HTTPS validation bypassed for local development in restricted network environments.
-        // Production MUST enforce strict TLS validation. HIPAA 164.312(e)(1) requires it.
-        var handler = new System.Net.Http.HttpClientHandler
+        // SECURITY NOTICE / 安全说明:
+        // [EN] TLS certificate validation is STRICT by default. A certificate-validation bypass is available ONLY for local
+        //     development and is OFF by default.
+        // [CN] TLS 证书验证默认严格开启。证书校验绕过仅用于本地开发，且默认关闭。
+        //     TO OPT IN (dev only) / 如需开启（仅限开发）: set HEALTHDATA_INSECURE_SKIP_TLS=1 before starting the process.
+        //     NEVER set this in production/staging. Disabling TLS validation violates HIPAA 164.312(e)(1).
+        //     切勿在生产/测试环境设置。禁用 TLS 验证违反 HIPAA 164.312(e)(1) 传输安全规定。
+        FhirClient client;
+        if (DevTlsBypass.IsEnabled)
         {
-            ServerCertificateCustomValidationCallback = 
-                (message, cert, chain, errors) => true
-        };
-
-        var client = new FhirClient(fhirServerUrl, new System.Net.Http.HttpClient(handler));
+            var handler = new System.Net.Http.HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback =
+                    (message, cert, chain, errors) => true
+            };
+            client = new FhirClient(fhirServerUrl, new System.Net.Http.HttpClient(handler));
+        }
+        else
+        {
+            client = new FhirClient(fhirServerUrl);
+        }
 
         var mapper = new FhirPatientMapper(addTestDataTag: true, testNameMarkers: true);
         var service = new EtlPipelineService(client, mapper);

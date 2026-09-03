@@ -84,20 +84,22 @@ public static class PhiMasker
     public static string SafeLog(string? message) => Mask(message);
 
     /// <summary>
-    /// [EN] Extension methods for IApplicationLogger to log with automatic PHI masking.
-    /// Use these INSTEAD of regular logger methods to enforce HIPAA compliance.
-    /// 
-    /// [CN] 用于使用自动PHI脱敏进行日志记录的IApplicationLogger扩展方法。使用这些代替常规记录器方法以执行HIPAA合规性。
+    /// [EN] Extension methods for IApplicationLogger. Kept for source compatibility with existing callers;
+    /// PHI masking is now applied unconditionally inside ConsoleLogger itself, so these simply forward to
+    /// the regular logger methods instead of masking a second time.
+    ///
+    /// [CN] IApplicationLogger 的扩展方法，为兼容既有调用方而保留。PHI 脱敏现在已在 ConsoleLogger 内部无条件执行，
+    /// 因此这里直接转发到常规日志方法，不再重复脱敏。
     /// </summary>
     public static void SafeInformation(this IApplicationLogger logger, string message) =>
-        logger.Information(Mask(message));
+        logger.Information(message);
 
     public static void SafeWarning(this IApplicationLogger logger, string message) =>
-        logger.Warning(Mask(message));
+        logger.Warning(message);
 
     public static void SafeError(this IApplicationLogger logger, string message, Exception? ex = null) =>
-        logger.Error(Mask(message), ex);
+        logger.Error(message, ex);
 
     public static void SafeCritical(this IApplicationLogger logger, string message) =>
-        logger.Critical(Mask(message));
+        logger.Critical(message);
 }

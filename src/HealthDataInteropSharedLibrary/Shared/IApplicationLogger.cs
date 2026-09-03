@@ -54,7 +54,7 @@ public sealed class ConsoleLogger : IApplicationLogger
     public void Information(string message)
     {
         Guard.NotNull(message, nameof(message));
-        _log.Information(message);
+        _log.Information(PhiMasker.Mask(message));
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public sealed class ConsoleLogger : IApplicationLogger
     public void Warning(string message)
     {
         Guard.NotNull(message, nameof(message));
-        _log.Warning(message);
+        _log.Warning(PhiMasker.Mask(message));
     }
 
     /// <summary>
@@ -75,9 +75,9 @@ public sealed class ConsoleLogger : IApplicationLogger
     {
         Guard.NotNull(message, nameof(message));
         if (ex is not null)
-            _log.Error(ex, message);
+            _log.Error(ex, PhiMasker.Mask(message));
         else
-            _log.Error(message);
+            _log.Error(PhiMasker.Mask(message));
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public sealed class ConsoleLogger : IApplicationLogger
     public void Critical(string message)
     {
         Guard.NotNull(message, nameof(message));
-        _log.Fatal(message);
+        _log.Fatal(PhiMasker.Mask(message));
     }
 }
 
