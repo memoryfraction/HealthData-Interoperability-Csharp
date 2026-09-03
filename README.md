@@ -9,6 +9,14 @@
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
+
+## 📌 Scope & Stability
+
+**What this library is:** An application-layer toolkit for HL7 FHIR R4 interoperability on .NET. It builds on [Hl7.Fhir.R4](https://www.nuget.org/packages/Hl7.Fhir.R4/) (FHIR client/model) and [Firely.Fhir.Validation.R4](https://www.nuget.org/packages/Firely.Fhir.Validation.R4/) (resource validation), and adds ready-to-use services on top: patient CRUD, advanced/chained search, FHIR resource validation, CSV→FHIR ETL, SMART on FHIR auth, and HIPAA compliance helpers (RBAC, PHI encryption, audit log, PHI-masked logging).
+
+**What it is not:** It does not replace a FHIR server, is not a full EHR, and does not by itself provide US Core / ONC certified compliance. It is a starting point for building interoperability logic, not a turnkey certified product.
+
+**Stability:** Current version **v1.3.3**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
 **🏥 More Healthcare IT Sample Projects by me**
 * **[Clinic FHIR Server](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/)** — a multi-tenant FHIR R4 server for clinics and community health centers: tenant-isolated FHIR storage, role-based access control, audit logging, and PHI encryption.
 * **[XBridge](https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/)** — a Prior Authorization toolkit that validates X12 278 transactions against payer Companion Guide rules and converts between X12 and FHIR R4, running entirely in your browser locally.
@@ -384,29 +392,24 @@ Install-Package HealthData.Interop.Fhir
 
 ### Quick Start Example
 
+Minimal example: read a Patient by name, then validate it against the FHIR R4 spec.
 ```csharp
 using HealthDataInteropSharedLibrary.BasicClient;
 using HealthDataInteropSharedLibrary.ResourceValidator;
 
-// 1. Initialize FHIR client service
-var fhirService = new FhirBasicService("https://your-fhir-server.com");
+// 1. Point at a FHIR R4 server and search for patients by name.
+var service = new FhirBasicService("https://your-fhir-server.com/fhir");
+var patients = await service.SearchPatientsByNameAsync("Doe");
 
-// 2. Search patients by name
-var patients = await fhirService.SearchPatientsByNameAsync("John");
+foreach (var p in patients)
+    Console.WriteLine(FhirBasicService.FormatPatientName(p));
 
-// 3. Validate a resource against US Core standards
+// 2. Validate a Patient resource against the bundled FHIR R4 specification.
 var validator = new ResourceValidationService();
-bool isValid = validator.Validate(patients.First());
-
-// 4. Check HIPAA compliance before accessing PHI
-using HealthDataInteropSharedLibrary.Compliance;
-var accessResult = HipaaComplianceOrchestrator.EvaluateAccess(
-    role: FhirUserRole.Physician,
-    action: "ReadPatient",
-    patientId: "123");
-
-if (accessResult.IsAllowed) {
-    Console.WriteLine("✓ PHI Access granted with audit logging");
+if (patients.Count > 0)
+{
+    var ok = validator.Validate(patients[0]);
+    Console.WriteLine(ok ? "Patient is valid against FHIR R4." : "Validation found issues.");
 }
 ```
 
@@ -427,13 +430,18 @@ dotnet test
 ```
 
 ---
-## ⚠️ Security Notice 
+## ⚠️ Security Notice
 
-**[EN] TLS Certificate Validation Status:**
-- Module 05 (5-SMART-on-FHIR) currently **bypasses HTTPS certificate validation** due to network issues in the development environment.
-- **This is a DEV-only workaround** that introduces MITM vulnerability and violates HIPAA §164.312(e)(1) transmission security rule.
-- **Production Deployment:** You MUST: 1) Remove `RemoteCertificateValidationCallback = ... => true`. 2) **Enforce HTTPS-only connections** on all FHIR client endpoints (no HTTP fallback allowed). 3) Configure server-side HSTS headers. 4) Pin TLS 1.2+ minimum.
-- See src/05-SMART-on-FHIR/Program.cs for the detailed inline warning.
+**[EN] TLS Certificate Validation:**
+- **STRICT by default.** The library and all demo apps enforce TLS certificate validation out of the box.
+- **DEV-only bypass (opt-in, OFF by default):** A certificate-validation bypass is available ONLY for local development (e.g. behind a proxy/firewall with a self-signed MITM cert). It is enabled **only** when you explicitly set the environment variable `HEALTHDATA_INSECURE_SKIP_TLS=1` before starting the process.
+- **Production:** Do **not** set `HEALTHDATA_INSECURE_SKIP_TLS`. Disabling TLS validation violates HIPAA §164.312(e)(1) transmission security. For production, enforce HTTPS-only endpoints, HSTS, and TLS 1.2+ minimum.
+
+**[CN] TLS 证书验证说明：**
+- **默认严格开启。** 库与所有示例默认都会验证 TLS 证书。
+- **仅开发调试可选开关（默认关闭）：** 证书校验绕过仅用于本地开发（如企业代理/防火墙的自签名证书），仅当你在启动进程前显式设置环境变量 `HEALTHDATA_INSECURE_SKIP_TLS=1` 时才生效。
+
+**安全日志：** 库内输出的日志会经过 `PhiMasker` 脱敏（SSN、姓名、出生日期、电话、邮箱等自动置为占位符），降低 PHI 泄露风险。
 
 
 ---

@@ -1,6 +1,7 @@
 using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Configuration;
 using HealthDataInteropSharedLibrary.SmartOnFHIR;
+using HealthDataInteropSharedLibrary.Shared;
 using System.Net;
 
 namespace _05_SMART_on_FHIR;
@@ -36,23 +37,20 @@ internal static class Program
             ConnectTimeout = System.TimeSpan.FromSeconds(30)
         };
 
-        // ⚠️ SECURITY NOTICE / 安全说明:
-        // [EN] Certificate validation callback is set to always return true. This DISABLES HTTPS certificate
-        //     validation and makes the connection VULNERABLE to MITM attacks.
-        //     REASON: Local development in restricted network environments where connecting to remote FHIR servers
-        //     fails due to proxy/firewall/network issues.
-        //     RISK: Silent security degradation - ALL TLS errors are silently ignored.
-        // 🔒 PRODUCTION REQUIREMENT: NEVER use this in production. HIPAA §164.312(e)(1) requires strict
-        //     TLS certificate validation. Production MUST enforce HTTPS-only connections with valid certificates.
-        // [CN] 证书验证回调始终返回true。这会禁用HTTPS证书验证，连接易受中间人攻击。
-        //     原因：本地开发环境因网络问题无法连接远程FHIR服务器。
-        //     风险：所有TLS错误被静默忽略，包括过期/无效证书。
-        // 🔒 生产环境要求：绝不在生产环境中使用。HIPAA §164.312(e)(1)要求严格TLS证书验证。
-        handler.SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+        // SECURITY NOTICE / 安全说明:
+        // [EN] STRICT TLS by default. A certificate-validation bypass is available ONLY for local development and is OFF by default.
+        //     TO OPT IN (dev only) / 如需开启（仅限开发）: set HEALTHDATA_INSECURE_SKIP_TLS=1 before starting the process.
+        //     NEVER set this in production/staging. Disabling TLS validation violates HIPAA 164.312(e)(1).
+        // [CN] TLS 证书验证默认严格开启。证书校验绕过仅用于本地开发，且默认关闭。
+        //     切勿在生产/测试环境设置。禁用 TLS 验证违反 HIPAA 164.312(e)(1) 传输安全规定。
+        if (DevTlsBypass.IsEnabled)
         {
-            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-            EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12
-        };
+            handler.SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12
+            };
+        }
 
         using var httpClient = new HttpClient(handler)
         {

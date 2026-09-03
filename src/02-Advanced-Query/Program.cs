@@ -11,9 +11,7 @@ internal static class Program
     {
         Console.WriteLine("=== Advanced Query (Module 02) ===");
 
-        // NOTE: enableHttps = false for local development in restricted network environments.
-        // Production MUST use true. HIPAA §164.312(e)(1) requires TLS validation.
-        var service = new AdvancedQueryService("https://server.fire.ly", enableHttps: false);
+        var service = new AdvancedQueryService("https://server.fire.ly");
 
         Console.WriteLine("--- Search Results ---");
 

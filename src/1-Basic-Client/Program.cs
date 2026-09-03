@@ -17,10 +17,7 @@ internal static class Program
         var givenName = $"Demo{runSuffix}";
         var familyName = "Patient";
 
-        // NOTE: enableHttps = false is used here ONLY for local development in environments where
-        // network restrictions (firewall, proxy, VPN) prevent connecting to remote FHIR servers.
-        // In production, this MUST be true. See HipaaComplianceOrchestrator for details.
-        var service = new FhirBasicService("http://server.fire.ly", enableHttps: false);
+        var service = new FhirBasicService("http://server.fire.ly");
 
         try
         {

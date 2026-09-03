@@ -13,27 +13,19 @@ public sealed class FhirBasicService
     private readonly FhirClient _client;
 
     /// <summary>
-    /// [EN] Initialize with a FHIR server URL and HTTPS configuration.
-    /// 
-    /// IMPORTANT / 重要说明:
-    /// [EN] enableHttps controls TLS certificate validation behavior.
-    ///      Default is true (strict HTTPS/TLS validation).
-    ///      Set to false ONLY for local development when network issues (e.g. proxy, firewall) prevent
-    ///      connecting to remote FHIR servers. Disabling HTTPS makes the connection VULNERABLE to MITM attacks.
-    ///      
-    /// PRODUCTION REQUIREMENT: Always use enableHttps = true in production/staging environments.
-    ///    Disabling TLS validation violates HIPAA 164.312(e)(1) transmission security rule.
-    ///    
-    /// [CN] enableHttps 控制 TLS 证书验证行为。默认值为 true（严格 HTTPS/TLS 验证）。
-    ///     仅当本地开发环境因网络问题（代理、防火墙等）无法连接远程 FHIR 服务器时，才设置为 false。
-    ///     禁用 HTTPS 会使连接容易受到中间人攻击。
-    ///     
-    /// PRODUCTION REQUIREMENT: 在生产/测试环境中始终使用 enableHttps = true。
-    ///    禁用 TLS 验证违反 HIPAA 164.312(e)(1) 传输安全规定。
+    /// [EN] Initialize with a FHIR server URL. TLS certificate validation is STRICT by default.
+    /// [CN] 使用 FHIR 服务器 URL 初始化。TLS 证书验证默认严格开启。
     /// </summary>
+    /// <remarks>
+    /// [EN] A certificate-validation bypass is available ONLY for local development and is OFF by default.
+    ///     To opt in (dev only), set the environment variable HEALTHDATA_INSECURE_SKIP_TLS=1 before
+    ///     starting the process. NEVER set this in production/staging. Disabling TLS validation violates
+    ///     HIPAA 164.312(e)(1) transmission security rule.
+    /// [CN] 证书校验绕过仅用于本地开发，且默认关闭。如需开启（仅限开发），请在启动进程前设置环境变量
+    ///     HEALTHDATA_INSECURE_SKIP_TLS=1。切勿在生产/测试环境设置。禁用 TLS 验证违反 HIPAA 164.312(e)(1) 传输安全规定。
+    /// </remarks>
     /// <param name="fhirServerUrl">[EN] FHIR server base URL / [CN] FHIR 服务器基础URL</param>
-    /// <param name="enableHttps">[EN] Enable strict TLS certificate validation (default: true) / [CN] 启用严格TLS证书验证（默认：true）</param>
-    public FhirBasicService(string fhirServerUrl, bool enableHttps = true)
+    public FhirBasicService(string fhirServerUrl)
     {
         Guard.NotNullOrEmpty(fhirServerUrl, nameof(fhirServerUrl));
 
@@ -43,15 +35,18 @@ public sealed class FhirBasicService
         };
 
         // SECURITY NOTICE / 安全说明:
-        // [EN] When enableHttps is false, certificate validation is bypassed.
-        //     This should NEVER be used in production. It is only for local development behind restrictive networks.
-        // [CN] 当 enableHttps 为 false 时，证书验证被绕过。绝不在生产环境中使用。仅用于本地开发。
-        if (!enableHttps)
+        // [EN] TLS certificate validation is STRICT by default. A certificate-validation bypass is available ONLY for local
+        //     development (e.g. behind a proxy/firewall with a self-signed MITM cert) and is OFF by default.
+        // [CN] TLS 证书验证默认严格开启。证书校验绕过仅用于本地开发（例如企业代理/防火墙的自签名中间人证书），且默认关闭。
+        //     TO OPT IN (dev only) / 如需开启（仅限开发）: set the environment variable HEALTHDATA_INSECURE_SKIP_TLS=1 before starting the process.
+        //     NEVER set this in production/staging. Disabling TLS validation violates HIPAA 164.312(e)(1).
+        //     切勿在生产/测试环境设置。禁用 TLS 验证违反 HIPAA 164.312(e)(1) 传输安全规定。
+        if (DevTlsBypass.IsEnabled)
         {
             handler.SslOptions = new System.Net.Security.SslClientAuthenticationOptions
             {
-                RemoteCertificateValidationCallback = 
-                    (sender, certificate, chain, sslPolicyErrors) => sslPolicyErrors == System.Net.Security.SslPolicyErrors.None
+                RemoteCertificateValidationCallback =
+                    (sender, certificate, chain, sslPolicyErrors) => true
             };
         }
 
