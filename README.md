@@ -5,7 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![Version](https://img.shields.io/badge/Version-1.3.3-blue.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.3.4-blue.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
@@ -16,7 +16,7 @@
 
 **What it is not:** It does not replace a FHIR server, is not a full EHR, and does not by itself provide US Core / ONC certified compliance. It is a starting point for building interoperability logic, not a turnkey certified product.
 
-**Stability:** Current version **v1.3.3**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
+**Stability:** Current version **v1.3.4**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
 **🏥 More Healthcare IT Sample Projects by me**
 * **[Clinic FHIR Server](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/)** — a multi-tenant FHIR R4 server for clinics and community health centers: tenant-isolated FHIR storage, role-based access control, audit logging, and PHI encryption.
 * **[XBridge](https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/)** — a Prior Authorization toolkit that validates X12 278 transactions against payer Companion Guide rules and converts between X12 and FHIR R4, running entirely in your browser locally.
@@ -255,7 +255,13 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 ---
 
 ## Changelog and Version History
-### v1.3.3 - 2026-08-11 (Codebase Upgrades, Stability Improvements)
+### v1.3.4 - 2026-09-02 (Security Hardening, PHI-Masked Logging)
+* **TLS certificate validation now STRICT by default** across the library and all demo modules
+* **Dev-only TLS bypass is opt-in** via HEALTHDATA_INSECURE_SKIP_TLS=1 (OFF by default) — never enable in production
+* **Application logging is PHI-masked** (SSN / name / DOB / phone / email) before reaching the Serilog sink
+* Fixed the broken README quick-start example and stale pages-site API samples
+
+### v1.3.4 - 2026-08-11 (Codebase Upgrades, Stability Improvements)
 * **Code improvements**: Various code quality and stability enhancements across the shared library
 * **Bug fixes**: Minor issues resolved based on integration testing feedback
 * **NuGet package size optimized**: Streamlined transitive dependencies for faster restore times

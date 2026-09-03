@@ -41,7 +41,7 @@
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
-    <Description>A production-grade C#/.NET 8 library for Healthcare Data Interoperability. Features: FHIR R4 client utilities, HIPAA compliance helpers (RBAC, PHI Encryption, Audit Log), US Core profile conformance checker, SMART on FHIR auth, AI-driven data normalization via local LLMs (Ollama), CSV-to-FHIR ETL pipeline, and Serilog integration. Portfolio snapshot - no maintenance.</Description>
+    <Description>An actively maintained C#/.NET 8 application-layer toolkit for HL7 FHIR R4 interoperability, built on Hl7.Fhir.R4 and Firely.Fhir.Validation.R4. Includes FHIR R4 client utilities, US Core profile conformance checking, SMART on FHIR auth, HIPAA compliance helpers (RBAC, PHI encryption, PHI-masked audit logging), and a CSV-to-FHIR ETL pipeline. Early-stage: the public API may still change between minor versions.</Description>
     <PackageTags>fhir;hipaa;healthcare;hl7;csharp;dotnet;interoperability;us-core;smart-on-fhir;etl;r4</PackageTags>
     <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
