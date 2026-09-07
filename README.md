@@ -5,7 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![Version](https://img.shields.io/badge/Version-1.3.5-blue.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.3.5-blue.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir/1.3.5)
 [![Tests](https://img.shields.io/badge/Tests-180%20Passed-success.svg)](./src/tests/)
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
