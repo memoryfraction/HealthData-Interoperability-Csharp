@@ -5,8 +5,8 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
 [![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![Version](https://img.shields.io/badge/Version-1.3.4-blue.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
+[![Version](https://img.shields.io/badge/Version-1.3.5-blue.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-180%20Passed-success.svg)](./src/tests/)
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
@@ -16,7 +16,9 @@
 
 **What it is not:** It does not replace a FHIR server, is not a full EHR, and does not by itself provide US Core / ONC certified compliance. It is a starting point for building interoperability logic, not a turnkey certified product.
 
-**Stability:** Current version **v1.3.4**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
+**Where this fits architecturally:** this toolkit's modules assemble the components a *hybrid* FHIR architecture needs around a FHIR server (data mapping/ETL in module 04, drift detection in module 08, validation in module 03, auth in module 05, RBAC/consent/audit in module 07) — the FHIR server itself remains the copy, and the legacy/CSV source stays the system of record. It is not a facade (no dynamic per-request translation) and not FHIR-native (nothing here claims the FHIR server as source of truth). If your project needs a different model, treat these modules as a reference for what to build, not a drop-in fit.
+
+**Stability:** Current version **v1.3.5**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
 **🏥 More Healthcare IT Sample Projects by me**
 * **[Clinic FHIR Server](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/)** — a multi-tenant FHIR R4 server for clinics and community health centers: tenant-isolated FHIR storage, role-based access control, audit logging, and PHI encryption.
 * **[XBridge](https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/)** — a Prior Authorization toolkit that validates X12 278 transactions against payer Companion Guide rules and converts between X12 and FHIR R4, running entirely in your browser locally.
@@ -24,7 +26,7 @@
 ---
 
 ## 📌 Strategic Mission & Industry Context
-In the 2026 healthcare landscape, data interoperability is no longer an option but a federal mandate under the **21st Century Cures Act**. This project is a production-ready implementation of a **Healthcare Interoperability Engine**, specifically engineered to bridge the gap between fragmented legacy clinical data and the standardized **HL7 FHIR R4/R5** ecosystem.
+In the 2026 healthcare landscape, data interoperability is no longer an option but a federal mandate under the **21st Century Cures Act**. This project is a reference implementation of a **Healthcare Interoperability Engine** — early-stage, not production-ready (see "Scope & Stability" above) — built to demonstrate how to bridge fragmented legacy clinical data with the standardized **HL7 FHIR R4/R5** ecosystem.
 
 ```mermaid
 graph TD
@@ -65,6 +67,7 @@ graph TD
 
 | Module | Technical Focus | Strategic Business Value | Status |
 | :--- | :--- | :--- | :--- |
+| **[08-Data-Drift-Detector](./src/08-Data-Drift-Detector)** | **Data Reconciliation** | **Trust**: Detects field-level drift and missing records between the legacy source of truth and the synced FHIR copy before it causes a production incident. | ✅ **Technical Demonstration Project** |
 | **[07-HIPAA-Compliance-Demo](./src/07-HIPAA-Compliance-Demo)** | **HIPAA Compliance** | **Least Privilege**: 8-role RBAC + Consent validation + Immutable audit logs per HIPAA Audit Controls. | ✅ **Technical Demonstration Project** |
 | **[06-AI-Data-Validator](./src/06-AI-Data-Validator)** | **AI Semantic ETL** | **Data Cleansing**: Uses Local LLMs to normalize "noisy" legacy data with zero-PII leakage. | ✅ **Technical Demonstration Project** |
 | **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: OAuth2/OIDC auth + US Core Patient Profiles for certified EHR access. | ✅ **Technical Demonstration Project** |
@@ -89,7 +92,7 @@ As healthcare data interoperability becomes a federal mandate under the 21st Cen
 * **Least Privilege Enforcement**: No super-admin accounts, bulk PHI export/delete functionality is hard-disabled, and access is limited to only the data needed for job functions.
 * **Field-Level PHI Redaction**:  Sensitive fields (e.g., PHI, financial data) are automatically hidden for roles without authorization, ensuring only necessary data is visible.
 * **Patient Consent Validation**: Tightly integrated with FHIR Consent resources to verify patient authorization for PHI access, including purpose-of-use validation.
-* **Immutable Audit Logging**:    Every PHI access, denial, and modification is recorded with timestamp, user identity, and action details—fully compliant with HIPAA’s audit requirements.
+* **Immutable Audit Logging**:    Every PHI access, denial, and modification is recorded with timestamp, user identity, and action details, implementing the technical audit-trail elements of HIPAA §164.312(b) — actual compliance depends on how it's deployed and operated, not on this library alone.
 
 **Execution Result:**
 
@@ -184,6 +187,20 @@ Complex clinical retrieval requires more than basic CRUD.
 
 ---
 
+### 🩺 08: Data Drift Detection (Hybrid Model Reconciliation)
+Hybrid FHIR architectures — like module 04's CSV→FHIR sync — always carry one silent risk: the FHIR copy quietly falls out of sync with the legacy system that still owns the data. Nothing on the FHIR server itself signals staleness, so drift is the failure mode most likely to reach production unnoticed.
+
+#### 🔴 The Hybrid-Model Pain Points
+* **Silent drift**: once the legacy source changes after a sync, the FHIR copy goes stale and every consumer downstream acts on wrong data — until someone notices.
+* **Late discovery**: without an explicit reconciliation step, drift is typically discovered only when a clinical workflow or report surfaces the inconsistency, not before.
+
+#### 💡 The Module 08 Solution
+* **Read-only reconciliation check**: DriftDetectionService compares the current legacy source of truth field-by-field against what is actually stored on the FHIR server (name, gender, birth date, phone).
+* **Three explicit outcomes per record**: in sync, field-level drift (with old vs. new values shown), or missing entirely (never synced or deleted on the server).
+* **Detection only, no writes**: reconciliation (re-running module 04's ETL or a manual fix) remains a separate, deliberate step — module 08 never mutates the FHIR copy.
+
+---
+
 ## 🛠 Tech Stack (2026 Enterprise Standards)
 * **Language**: C# 12/13 (.NET 10 LTS)
 * **AI Orchestration**: [Microsoft Semantic Kernel](https://github.com/microsoft/semantic-kernel)
@@ -251,12 +268,21 @@ The `UsCoreConformanceChecker` validates that each FHIR resource declares its ex
 | 5 | [SMART on FHIR](https://medium.com/@rex.fan18) | `src/05-SMART-on-FHIR/` | `SmartOnFhirAuthService`, `SmartFhirEtlService` | OAuth2/OIDC auth, token cache/refresh, US Core ETL pipeline |
 | 6 | [AI Data Validator](https://medium.com/@rex.fan18) | `src/06-AI-Data-Validator/` | `AiValidatorService`, `ClinicalGuardrails` | Ollama local LLM, regex JSON shield, deterministic guardrails |
 | 7 | [Compliance Demo](https://medium.com/@rex.fan18) | `src/07-HIPAA-Compliance-Demo/` | `HipaaComplianceOrchestrator`, `RbacAuth` | 8-role RBAC, consent validation, audit logging |
+| 8 | (draft/TBD) | src/08-Data-Drift-Detector/ | DriftDetectionService | Field-level drift detection, missing-record detection, hybrid-model reconciliation |
 
 ---
 
 ## Changelog and Version History
+### v1.3.5 - 2026-09-07 (Data Drift Detection, Hybrid Model Reconciliation)
+* **New module 08** (src/08-Data-Drift-Detector): read-only reconciliation tool that compares the current legacy source-of-truth CSV against the FHIR resources synced by module 04, reporting per-record drift (missing / field-level drift / in sync)
+* **New DriftDetectionService** in the shared library (HealthDataInteropSharedLibrary.DriftDetection namespace): Compare() for single-record comparison, DriftReport.Summarize() for batch reporting — purely additive public API, no existing types or method signatures changed
+* **README `Scope & Stability`** now states explicitly which FHIR architectural model (facade / hybrid / FHIR-native) this toolkit assumes, and where each module fits
+* **Test suite expanded** from 169 to 180 passing tests (11 new, DriftDetectionServiceTests.cs), covering field-drift detection, missing-record detection, test-name-marker stripping, and a gender-comparison regression guard
+* **Backward-compatible, purely additive change** — a PATCH bump (1.3.4 → 1.3.5) rather than minor: this project's own Stability note already treats minor-version bumps on the 1.x line as carrying possible API changes, and this addition is a small, self-contained new demo module and shared-library namespace rather than a change to the library's core surface
+
 ### v1.3.4 - 2026-09-02 (Security Hardening, PHI-Masked Logging)
 * **TLS certificate validation now STRICT by default** across the library and all demo modules
+* **Breaking change:** the `enableHttps` constructor flag on `FhirBasicService` and `AdvancedQueryService` was removed — certificate validation is now always enforced unless you opt in via the environment variable below
 * **Dev-only TLS bypass is opt-in** via HEALTHDATA_INSECURE_SKIP_TLS=1 (OFF by default) — never enable in production
 * **Application logging is PHI-masked** (SSN / name / DOB / phone / email) before reaching the Serilog sink
 * Fixed the broken README quick-start example and stale pages-site API samples

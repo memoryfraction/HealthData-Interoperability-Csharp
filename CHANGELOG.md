@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.5] - 2026-09-07
+
+### Added
+- **New module 08 — Data Drift Detection** (src/08-Data-Drift-Detector): read-only reconciliation tool that compares the legacy source-of-truth CSV against the FHIR resources synced by module 04, reporting per-record drift (missing / field-level drift / in sync).
+- **New DriftDetectionService** in the shared library (HealthDataInteropSharedLibrary.DriftDetection namespace): Compare() for single-record comparison and DriftReport.Summarize() for batch reporting — purely additive public API, no existing types or method signatures changed.
+- **README Scope & Stability** now states explicitly which FHIR architectural model (facade / hybrid / FHIR-native) this toolkit assumes, and where each module fits.
+- **Test suite expanded** from 169 to **180 passing tests** (11 new in DriftDetectionServiceTests.cs), covering field-drift detection, missing-record detection, test-name-marker stripping, and a gender-comparison regression guard.
+
+### Changed
+- **PATCH bump (1.3.4 → 1.3.5),** backward-compatible and purely additive: a small, self-contained new demo module and shared-library namespace rather than a change to the library’s core surface.
+
 ## [1.3.4] - 2026-09-02
 
 ### Added
@@ -79,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unified all project target frameworks to `net10.0` (the NuGet package still targets `net8.0` for broad compatibility).
 
 <!-- Release links -->
+[1.3.5]: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/
 [1.3.4]: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/
 [1.3.3]: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/
 [1.3.2]: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/
