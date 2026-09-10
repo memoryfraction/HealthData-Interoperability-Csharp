@@ -4,9 +4,9 @@ namespace HealthDataInteropSharedLibrary.Shared;
 
 /// <summary>
 /// [EN] Console wrapper that automatically masks PHI data before output.
-/// Use this INSTEAD of Console.WriteLine to enforce HIPAA compliance during demonstrations/testing.
+/// Use this INSTEAD of Console.WriteLine to keep PHI masked in console output during demonstrations/testing (HIPAA Security Rule-oriented practice).
 /// 
-/// [CN] 自动在输出前脱敏PHI数据的控制台包装器。使用这个代替Console.WriteLine以在执行演示/测试时执行HIPAA合规性。
+/// [CN] 自动在输出前脱敏PHI数据的控制台包装器。使用这个代替Console.WriteLine，在执行演示/测试时保持控制台输出脱敏（HIPAA安全规则取向的实践）。
 /// </summary>
 public static class SafeConsole
 {

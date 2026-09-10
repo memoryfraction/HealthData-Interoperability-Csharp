@@ -1,8 +1,8 @@
 namespace HealthDataInteropSharedLibrary.Shared;
     /// <summary>
-    /// [EN] Patient consent manager for HIPAA-compliant data access control.
+    /// [EN] Patient consent manager for purpose-of-use data access control (HIPAA Security Rule-oriented).
     /// Verifies that patients have granted consent before their data is accessed.
-    /// [CN] 患者授权管理器，用于符合HIPAA标准的数据访问控制。
+    /// [CN] 患者授权管理器，用于基于使用目的的数据访问控制（HIPAA安全规则取向）。
     /// </summary>
     public class ConsentManager
     {

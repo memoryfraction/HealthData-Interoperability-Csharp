@@ -4,11 +4,11 @@ namespace HealthDataInteropSharedLibrary.Shared;
 
 /// <summary>
 /// [EN] PHI Encryption Service using AES-GCM 256-bit encryption.
-/// Provides HIPAA-compliant encryption at rest for Protected Health Information (PHI).
+/// Provides encryption at rest for Protected Health Information (PHI), oriented around HIPAA Security Rule (45 CFR §164.312(a)(2)(iv)).
 /// Implements encrypt/decrypt operations with nonce management and key rotation support.
 /// 
 /// [CN] Use AES-GCM 256-bit encryption for PHI data service.
-/// Provide HIPAA-compliant static data encryption.
+/// 提供面向静态数据的PHI加密（HIPAA安全规则取向）。
 /// Implement encrypt/decrypt with nonce management and key rotation support.
 /// </summary>
 public sealed class PhiEncryptionService : IDisposable

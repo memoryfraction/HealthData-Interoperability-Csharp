@@ -2,17 +2,17 @@ using System.Text.Json;
 
 namespace HealthDataInteropSharedLibrary.Shared;
     /// <summary>
-    /// [EN] HIPAA-compliant audit logging utility for recording Protected Health Information (PHI) access.
+    /// [EN] Audit logging utility for recording Protected Health Information (PHI) access events (HIPAA Security Rule-oriented, illustrative).
     /// Records who, when, what action, what resource, and IP address.
-    /// [CN] 符合HIPAA标准的审计日志工具，用于记录受保护健康信息(PHI)的访问。
+    /// [CN] 记录受保护健康信息(PHI)访问事件的审计日志工具（HIPAA安全规则取向，示例性质）。
     /// </summary>
     public static class AuditLog
     {
         /// <summary>
-        /// [EN] Records a HIPAA-compliant audit log entry for PHI access.
+        /// [EN] Records an audit log entry for a PHI access event.
         /// Parameters: userId (the user accessing data), role (user's role), ipAddress (source IP),
         /// resourceType (FHIR resource type), resourceId (resource ID), action (READ/WRITE/DELETE/UPDATE).
-        /// [CN] 记录一条符合HIPAA标准的审计日志条目，用于PHI访问。
+        /// [CN] 记录一条PHI访问的审计日志条目。
         /// </summary>
         public static void Record(string userId, string role, string ipAddress,
             string resourceType, string resourceId, string action)
@@ -32,7 +32,7 @@ namespace HealthDataInteropSharedLibrary.Shared;
                 IpAddress = ipAddress,
                 Action = action,
                 Resource = $"{resourceType}/{resourceId}",
-                AuditMessage = "PHI access recorded for HIPAA compliance"
+                AuditMessage = "PHI access recorded (HIPAA Security Rule-oriented audit)"
             };
 
             SafeConsole.WriteLine("\n========== HIPAA AUDIT LOG ==========");

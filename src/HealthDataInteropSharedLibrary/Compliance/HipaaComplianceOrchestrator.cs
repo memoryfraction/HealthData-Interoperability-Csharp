@@ -4,9 +4,9 @@ using HealthDataInteropSharedLibrary;
 namespace HealthDataInteropSharedLibrary.Compliance;
 
 /// <summary>
-/// [EN] Orchestrator for HIPAA compliance demo workflow.
+/// [EN] Orchestrator for the HIPAA technical-safeguards demo workflow (illustrative, not a compliance certification).
 /// Coordinates RBAC checks, patient consent validation, and audit logging to meet Minimum Necessary Standard.
-/// [CN] HIPAA合规演示工作流编排器。协调RBAC检查、患者授权验证和审计日志以符合最小必要标准。
+/// [CN] HIPAA技术保障演示工作流编排器（示例性质，不构成合规认证）。协调RBAC检查、患者授权验证和审计日志，体现最小必要原则。
 /// </summary>
 public sealed class HipaaComplianceOrchestrator
 {
@@ -24,9 +24,9 @@ public sealed class HipaaComplianceOrchestrator
     }
 
     /// <summary>
-    /// [EN] Execute the full HIPAA compliance workflow for a PHI access request.
+    /// [EN] Execute the full safeguards-demo workflow for a simulated PHI access request.
     /// Returns true if all checks pass (RBAC + consent + audit logging).
-    /// [CN] 执行PHI访问请求的完整HIPAA合规工作流。所有检查通过则返回true（RBAC+授权+审计日志）。
+    /// [CN] 对模拟的PHI访问请求执行完整的安全保障演示流程。所有检查通过则返回true（RBAC+授权+审计日志）。
     /// </summary>
     public bool ExecutePhiAccessRequest(string userId, FhirUserRole role, string ipAddress,
         string patientId, string accessPurpose, string resourceType = "Patient", string action = "READ")
@@ -47,7 +47,7 @@ public sealed class HipaaComplianceOrchestrator
         }
         SafeConsole.WriteLine("PASSED: Patient consent is granted\n");
 
-        // Step 3: Record HIPAA-compliant audit log
+        // Step 3: Record the audit log entry
         AuditLog.Record(userId, role.ToString(), ipAddress, resourceType, patientId, action);
         return true;
     }
