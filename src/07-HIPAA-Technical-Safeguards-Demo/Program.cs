@@ -1,10 +1,10 @@
 using HealthDataInteropSharedLibrary.Shared;
 using HealthDataInteropSharedLibrary.Compliance;
 
-namespace _07_HIPAA_Compliance_Demo;
+namespace _07_HIPAA_Technical_Safeguards_Demo;
 
 /// <summary>
-/// Entry point: HIPAA compliance demo demonstrating PHI access control.
+/// Entry point: demo of HIPAA-oriented technical safeguards for PHI access (RBAC, consent, audit, PHI masking).
 /// Uses SafeConsole to ensure all PHI is masked before output.
 /// </summary>
 internal static class Program
@@ -12,7 +12,7 @@ internal static class Program
     static void Main(string[] args)
     {
         SafeConsole.WriteLine("=============================================");
-        SafeConsole.WriteLine("      HIPAA Compliance Demo (FHIR)");
+        SafeConsole.WriteLine("      HIPAA Technical Safeguards Demo (FHIR)");
         SafeConsole.WriteLine("=============================================\n");
 
         var orchestrator = new HipaaComplianceOrchestrator();
@@ -26,7 +26,7 @@ internal static class Program
         SafeConsole.WriteLine(HipaaComplianceOrchestrator.FormatUserContext(userId, role, ipAddress));
         SafeConsole.WriteLine();
 
-        // Execute full HIPAA compliance workflow
+        // Run the safeguards workflow: RBAC -> consent -> audit log
         SafeConsole.WriteLine("Step 1: RBAC Permission Check");
         var result = orchestrator.ExecutePhiAccessRequest(
             userId: userId,
@@ -39,7 +39,7 @@ internal static class Program
         if (result)
         {
             SafeConsole.WriteLine("=============================================");
-            SafeConsole.WriteLine(" Demo completed successfully - All HIPAA checks passed.");
+            SafeConsole.WriteLine(" Demo completed - simulated PHI access request was allowed (see audit log above).");
             SafeConsole.WriteLine("=============================================");
         }
     }

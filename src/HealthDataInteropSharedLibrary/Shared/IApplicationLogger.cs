@@ -1,11 +1,11 @@
 namespace HealthDataInteropSharedLibrary.Shared;
 
 /// <summary>
-/// [EN] Application logger abstraction for HIPAA-compliant audit trails.
+/// [EN] Application logger abstraction for audit trails oriented around HIPAA Security Rule concepts.
 /// Allows redirecting log output to files, databases, or console without modifying service code.
 /// Per CodeStandard.md: all public methods have bilingual XML docs and parameter guards.
 /// 
-/// [CN] 应用程序日志记录器抽象，用于HIPAA合规审计追踪。
+/// [CN] 应用程序日志记录器抽象，用于围绕HIPAA安全规则概念的审计追踪。
 /// 允许将日志输出重定向到文件、数据库或控制台，而无需修改服务代码。
 /// 按照CodeStandard.md要求：所有public方法具有双语XML文档和参数保护子句。
 /// </summary>
@@ -30,8 +30,8 @@ public interface IApplicationLogger
     void Error(string message, Exception? ex = null);
 
     /// <summary>
-    /// [EN] Log a critical security/compliance event (HIPAA audit-worthy).
-    /// [CN] 记录关键安全/合规事件（HIPAA审计级别）。
+    /// [EN] Log a critical security event (HIPAA audit-worthy).
+    /// [CN] 记录关键安全事件（HIPAA审计级别）。
     /// </summary>
     void Critical(string message);
 }
@@ -81,8 +81,8 @@ public sealed class ConsoleLogger : IApplicationLogger
     }
 
     /// <summary>
-    /// [EN] Log a critical security/compliance event via Serilog.
-    /// [CN] 通过Serilog记录关键安全/合规事件。
+    /// [EN] Log a critical security event via Serilog.
+    /// [CN] 通过Serilog记录关键安全事件。
     /// </summary>
     public void Critical(string message)
     {

@@ -1,8 +1,8 @@
 
 namespace HealthDataInteropSharedLibrary.Shared;
     /// <summary>
-    /// [EN] FHIR User Roles (HIPAA Compliant) - 8 official roles for clinic, insurance, audit, and system access.
-    /// [CN] FHIR用户角色（符合HIPAA标准）- 诊所、保险、审计和系统访问的8个官方角色。
+    /// [EN] FHIR User Roles (HIPAA Security Rule-oriented) - 8 roles for clinic, insurance, audit, and system access.
+    /// [CN] FHIR用户角色（HIPAA安全规则取向）- 诊所、保险、审计和系统访问的8个角色。
     /// </summary>
     public enum FhirUserRole
     {

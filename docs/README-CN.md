@@ -1,22 +1,28 @@
-# AI 驱动的 FHIR 医疗数据互操作引擎 .NET 10
+# HealthData Interoperability for .NET
 
-### *赋能 2026 年医疗数据生态：高性能 .NET 10 + 本地化私有 AI*
+**基于 Firely .NET SDK 的 HL7 FHIR R4 互操作参考实现 —— 一组可以直接阅读、运行和改用的可运行示例。**
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
-[![架构: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
-[![版本](https://img.shields.io/badge/Version-1.3.2-blue.svg)]()
-[![测试](https://img.shields.io/badge/Tests-169%20Passed-success.svg)](./src/tests/)
+[![版本](https://img.shields.io/badge/Version-1.3.5-blue.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir/1.3.5)
+[![测试](https://img.shields.io/badge/Tests-180%20Passed-success.svg)](./src/tests/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
 [🌐 **文档与 API 参考：访问 GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
 ---
 
-## 📌 项目定位与行业背景
+## 📌 这是什么项目（以及不是什么）
 
-在 2026 年的医疗行业，数据互操作已从"可选功能"变为联邦法规强制要求。**《21世纪治愈法案》(21st Century Cures Act)** 明确要求医疗机构实现标准化数据交换。本项目是一个**生产级医疗数据互操作引擎**，专门解决碎片化传统临床数据向 **HL7 FHIR R4/R5** 标准迁移的难题。
+**是什么：** 一个面向 HL7 FHIR R4 互操作的**应用层工具包和参考实现**。它构建在 [Firely .NET SDK](https://github.com/FirelyTeam/firely-net-sdk)（[Hl7.Fhir.R4](https://www.nuget.org/packages/Hl7.Fhir.R4/) 客户端/模型 + [Firely.Fhir.Validation.R4](https://www.nuget.org/packages/Firely.Fhir.Validation.R4/) 资源校验）之上，提供一组小而可测试的服务：患者 CRUD、链式搜索、FHIR 资源校验、CSV→FHIR ETL、SMART on FHIR 认证、本地 LLM 数据规范化、HIPAA 安全规则取向的安全示例（RBAC、授权、审计、PHI 脱敏），以及数据漂移检测。
 
-> 中文版说明：本项目基于美国医疗标准（FHIR US Core / HIPAA）构建，但核心架构和模式可迁移至中国市场——中国正在推进 FHIR China IG 标准化进程。
+**不是什么：** 它不替代 FHIR 服务器，不是完整的 EHR，也不是 FHIR 服务器"引擎"或中间件平台。它本身不提供经认证的 HIPAA 或 ONC 合规。请把它当作一组模式与起点，而不是开箱即用或经过认证的产品。
+
+**中文说明：** 本项目基于美国医疗标准（US Core / SMART on FHIR / HIPAA）构建，但核心模式和代码可以迁移至中国市场 —— 中国正在推进 FHIR China IG 标准化进程。
+
+**稳定性：** 当前版本 **v1.3.5**。项目处于**早期阶段**，公开 API 在 minor 版本之间仍可能变化。建议仅在非关键或概念验证（PoC）场景中使用 `HealthData.Interop.Fhir`，直到 2.x 稳定线。
+
+### 架构概览
 
 ```mermaid
 graph TD
@@ -25,290 +31,308 @@ graph TD
         DS2[(传统 SQL 数据库)]
     end
 
-    subgraph Core_Engine [.NET 10 互操作引擎核心]
+    subgraph This_Repo [应用层 — 本仓库]
         direction TB
-        M06[06-AI-Validator: 语义规范化]
+        M06[06-AI-Validator: 本地 LLM 规范化]
         M03[03-Resource-Validator: Firely SDK 校验]
-        M04[04-Data-Mapping-ETL: 幂等迁移]
-        
+        M04[04-Data-Mapping-ETL: 幂等 upsert]
+
         M06 --> M03
         M03 --> M04
     end
 
-    subgraph Access_Layer [安全与检索层]
-        M05[05-SMART-on-FHIR: US Core 认证]
-        M02[02-Advanced-Query: 链式查询优化]
+    subgraph Access_Layer [访问与安全示例]
+        M05[05-SMART-on-FHIR: OAuth2/OIDC 认证]
+        M02[02-Advanced-Query: 链式查询]
+        M07[07-安全示例: RBAC/授权/审计]
     end
 
     Data_Sources --> M06
     M04 --> M05
-    M05 --> FHIR_Server[(目标 FHIR 服务器)]
+    M05 --> FHIR_Server[(FHIR R4 服务器, 如 HAPI)]
     FHIR_Server <--> M02
+    FHIR_Server --> M07
+    FHIR_Server --> M08[08-Drift-Detector: 只读核对]
 ```
-
-### 🛡️ 核心价值主张
-
-* **AI 辅助数据规范化**：利用本地部署的大语言模型（不上传 PHI），解决传统 ETL 无法处理的"模糊数据"问题。
-* **合规优先架构**：严格遵循 **US Core Implementation Guide** 和 **ONC (g)(10)** 要求设计，满足联邦互操作标准。
-* **企业级 .NET 10 技术栈**：展示对 **Interceptors**、**JSON Source Generation**、**Native AOT** 等前沿技术的掌握，适用于边缘医疗设备部署。
 
 ---
 
-## 📂 系统架构与模块说明
+## 📌 本项目演示什么
 
-| 模块 | 技术重点 | 业务价值 | 状态 |
-| :--- | :--- | :--- | :--- |
-| **[07-HIPAA-Compliance-Demo](./src/07-HIPAA-Compliance-Demo)** | **HIPAA 合规框架** | **最小权限原则**：8 角色 RBAC + 患者授权验证 + 不可篡改审计日志 | ✅ **技术展示项目** |
-| **[06-AI-Data-Validator](./src/06-AI-Data-Validator)** | **AI 语义 ETL** | **数据清洗**：本地 LLM 规范化"噪声"数据，零 PHI 泄漏 | ✅ **技术展示项目** |
-| **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | **联邦合规认证** | **(g)(10) 就绪**：OAuth2/OIDC 认证 + US Core 患者资料 | ✅ **技术展示项目** |
-| **[04-Data-Mapping-ETL](./src/04-Data-Mapping-ETL)** | **传统系统集成** | **数据完整性**：幂等写入，高并发迁移防重复 | ✅ **技术展示项目** |
-| **[03-Resource-Validator](./src/03-Resource-Validator)** | **风险管理** | **临床防火墙**：Firely SDK 校验 + US Core 标准符合性检查 | ✅ **技术展示项目** |
-| **[02-Advanced-Query](./src/02-Advanced-Query)** | **搜索优化** | **性能提升**：链式参数 + `_include` 减少网络往返次数 | ✅ **技术展示项目** |
+一组可运行的互操作模式示例，涉及 **US Core** 与 **SMART on FHIR**，以及基于 Firely .NET SDK 的日常 FHIR 集成模式：
 
----
+| 模块 | 演示内容 | 关键 API |
+| :--- | :--- | :--- |
+| **[01 Basic FHIR Client](./src/1-Basic-Client)** | 在 FHIR R4 服务器上创建患者 + 按姓名搜索 | `FhirBasicService` |
+| **[02 Advanced Query](./src/02-Advanced-Query)** | 链式参数搜索；`_include`/`_revinclude` 一次查询取回关联资源 | `AdvancedQueryService` |
+| **[03 FHIR Resource Validation](./src/03-Resource-Validator)** | Firely SDK 按 FHIR R4 规范校验；US Core profile 声明检查 | `ResourceValidationService`、`UsCoreConformanceChecker` |
+| **[04 Data Mapping / ETL](./src/04-Data-Mapping-ETL)** | CSV→FHIR 映射 + 幂等 upsert（先查后 Conditional PUT、事务 Bundle） | `EtlPipelineService`、`FhirPatientMapper` |
+| **[05 SMART on FHIR](./src/05-SMART-on-FHIR)** | OAuth2/OIDC client-credentials 流程 + 令牌缓存；SMART ETL 导入 | `SmartOnFhirAuthService`、`SmartFhirEtlService` |
+| **[06 AI-Assisted Data Mapping](./src/06-AI-Data-Validator)** | 本地 LLM（Ollama）规范化"噪声"记录 + 确定性护栏 | `AiValidatorService`、`ClinicalGuardrails` |
+| **[07 HIPAA Technical Safeguards Demo](./src/07-HIPAA-Technical-Safeguards-Demo)** | RBAC、授权校验、审计日志、PHI 脱敏 —— HIPAA 安全规则取向的示例 | `HipaaComplianceOrchestrator`、`RbacAuth`、`ConsentManager`、`AuditLog` |
+| **[08 Data Drift Detector](./src/08-Data-Drift-Detector)** | 传统源与已同步 FHIR 副本之间的只读核对 | `DriftDetectionService` |
 
-## 🚀 技术深度解析：应对 2026 年医疗 IT 挑战
-
-### 🧩 模块 07：HIPAA 合规框架演示
-
-随着数据互操作成为联邦法规要求，确保 HIPAA 合规是保护受保护健康信息（PHI）的底线。本模块展示了生产级合规框架，结合基于角色的访问控制（RBAC）和患者授权验证，满足 HIPAA 最小必要原则和 ONC (g)(10) 要求。
-
-#### 🔴 合规痛点分析
-* **过度宽松的访问权限**：通用认证系统往往授予过宽的 PHI 访问权，违反最小权限原则
-* **审计追踪缺失**：PHI 访问/拒绝操作的日志不完整，导致合规审计困难
-* **授权管理混乱**：未验证患者同意即使用 PHI，引发监管违规和信任危机
-* **PHI 暴露失控**：缺少字段级脱敏，敏感数据（社保号、病史）可能泄露
-
-#### 🟢 本模块的解决方案
-```
-RBAC 引擎 (8 角色) → 权限矩阵验证 → 审计日志记录 → 不可篡改存储
-         ↓
-患者授权检查 → 同意状态验证 → 最小必要过滤 → PHI 安全访问
-```
-
-**关键技术实现：**
-- **8 角色 RBAC 矩阵**：覆盖医师、护士、管理员、研究员、医保审核员、患者、系统审计员、数据管家
-- **不可篡改审计日志**：SHA-256 链式哈希，每个记录与前一条链接
-- **患者授权验证器**：细粒度同意管理（治疗/支付/运营分别控制）
-
-### 🧩 模块 06：AI 驱动的数据质量验证
-
-医疗数据清洗是互操作工程的核心挑战。本模块使用本地部署的 LLM（Ollama），在不将 PHI 上传到云端的条件下，对"噪声"临床数据进行语义规范化。
-
-#### 🔴 数据质量问题
-- **拼写与缩写不一致**：不同医疗机构用词差异大
-- **编码映射缺失**：SNOMED CT / LOINC 等标准编码无法自动映射
-- **数据类型混用**：自由文本、结构化数据混合存储
-- **缺失值与冗余数据并存**
-
-#### 🟢 AI 辅助解决方案
-```
-脏数据输入 → Ollama (本地 LLM) → 语义规范化 → FHIR 标准化输出
-                    ↑
-           PHI 脱敏保护（不出本地）
-```
-
-### 🧩 模块 05：SMART on FHIR 认证集成
-
-本模块演示了如何通过 SMART on FHIR 协议实现 EHR 系统的合规数据访问，包括 OAuth2/OIDC 身份验证和 US Core 患者资料支持。
-
-#### 🔴 认证接入挑战
-- **EHR 厂商碎片化**：不同系统使用不同的认证机制
-- **作用域管理复杂**：需要精细化控制数据访问权限
-- **令牌生命周期管理**：刷新、撤销、轮换策略需精心设计
-
-#### 🟢 标准化解决方案
-```
-OAuth2 授权码流程 → OIDC 身份验证 → 令牌管理 → US Core 数据检索
-                      ↓
-              作用域最小化（只请求必要权限）
-```
-
-### 🧩 模块 04：数据映射 ETL 管道
-
-将传统 CSV/JSON/SQL 数据迁移到 FHIR 标准格式，需要保证数据的完整性、幂等性和高性能。本模块展示了完整的数据迁移流水线。
-
-#### 🔴 ETL 挑战
-- **数据映射复杂**：源格式与 FHIR R4 资源结构差异大
-- **重复数据风险**：高并发场景下容易出现资源重复创建
-- **数据类型转换**：性别、地址、联系方式等需要规范化处理
-
-#### 🟢 本模块方案
-```
-提取 (CSV/JSON) → 映射 (FHIR Patient/Observation) → 幂等写入 (Conditional PUT)
-                           ↓
-                   Mapperly 编译时代码生成
-```
-
-### 🧩 模块 03：FHIR 资源验证器
-
-使用 Firely SDK 对 FHIR 资源进行全面验证，包括结构校验和 US Core 标准符合性检查。
-
-#### 🔴 验证必要性
-- **FHIR 规范庞大**：数千页的文档，手动验证不现实
-- **互操作依赖标准**：不符合标准的资源会导致系统间交换失败
-- **合规要求严格**：US Core 是联邦法规强制要求
-
-### 🧩 模块 02：高级查询优化
-
-通过链式参数（Chained Parameters）和 `_include`/`_revinclude` 优化 FHIR 搜索性能。
-
-#### 🔴 查询性能问题
-- **多次往返请求**：传统方式需要多次 API 调用获取关联数据
-- **大数据集分页**：海量资源的分页处理影响用户体验
-- **复杂过滤条件**：多条件组合搜索效率低
+所有共享逻辑都在 [`src/HealthDataInteropSharedLibrary`](./src/HealthDataInteropSharedLibrary)（以 `HealthData.Interop.Fhir` NuGet 包发布）；每个编号目录都是一个演示不同场景的小型控制台应用。
 
 ---
 
-## 📦 HealthDataInteropSharedLibrary 共享库
+## 📂 示例
 
-本库是项目的核心可复用组件，所有演示模块都引用它。设计目标是：**让其他人直接通过 NuGet 引用即可获得生产级医疗数据互操作能力**。
+### 01 — Basic FHIR Client
 
-> 医疗数据互操作是现代软件工程中最具挑战性的问题之一。本库解决了以下真实痛点：
+在 FHIR R4 服务器上创建 `Patient` 并按姓名搜索。
 
-| 问题 | 解决方案 |
-|---------|----------|
-| **FHIR 规范数千页文档** | 封装了 Patient CRUD、搜索和验证服务，开箱即用 |
-| **HIPAA 合规编码需谨慎** | 内置 RBAC、PHI 脱敏（日志前）、不可篡改审计追踪、加密工具 |
-| **ONC 认证需符合 US Core** | 资源提交生产环境前自动校验联邦标准 |
-| **传统 CSV/SQL 到 FHIR 迁移繁琐** | ETL 流水线自动化映射、性别规范化、幂等更新（Mapperly 编译时生成） |
-| **杂乱临床数据无法通过传统验证** | 本地 AI（Ollama）规范化模糊文本，PHI 不出本地网络 |
-| **公共 FHIR 服务器连接不稳定** | 每个模块都有优雅降级：网络异常、规范下载失败、资源重复均能处理 |
+```bash
+dotnet run --project src/1-Basic-Client
+```
 
-*本库是生产级医疗互操作模式的参考实现和教育资源——详见下方 License 条款。*
+- 默认指向公共演示服务器 `http://server.fire.ly`；修改 `Program.cs` 中的 URL 指向你自己的服务器。
+- 服务器不可达时，程序打印网络提示并优雅退出 —— 不会崩溃。
+
+### 02 — Advanced Query
+
+链式参数搜索：按医师姓名查找 `Encounter`，用 `_include`/`_revinclude` 让关联资源在一次查询中返回。
+
+```bash
+dotnet run --project src/02-Advanced-Query
+```
+
+### 03 — FHIR Resource Validation
+
+使用 `Firely.Fhir.Validation.R4` 按 R4 规范校验 FHIR 资源。示例刻意构造了*无效* Patient（如 `BirthDate = "1990-13-45"`）以展示真实的诊断输出。
+
+```bash
+dotnet run --project src/03-Resource-Validator
+```
+
+- FHIR R4 规范（约 6MB）随包内置，离线也能做完整规范校验；规范不可用时自动降级为基本结构校验。
+- US Core：`UsCoreConformanceChecker.CheckPatientConformance(patient)` 检查 `Patient` 的 `Meta.Profile` 是否声明了 US Core profile URI —— 这是 **profile 声明检查**，不是完整的 US Core IG 符合性测试，也不意味着 ONC 认证。
+
+### 04 — Data Mapping / ETL (CSV → FHIR)
+
+将 `Data/legacy_patients.csv` 映射为 FHIR `Patient` 并 upsert，**重跑任务时更新已有记录而不是重复创建**：
+
+1. **提取** — 读取 CSV 行为类型化 `LegacyPatientRecord`（CsvHelper）。
+2. **转换** — `FhirPatientMapper`（Mapperly 源码生成器）映射为 `Patient`，包含性别规范化（`male`/`female`/`f`/`m` → FHIR `AdministrativeGender`）。
+3. **加载** — 先按业务标识搜索，再 Conditional PUT（ETag）更新或创建；结果打包进 `BundleType.Transaction` 保证原子性。
+
+```bash
+dotnet run --project src/04-Data-Mapping-ETL
+```
+
+### 05 — SMART on FHIR
+
+两部分：
+
+- **`SmartOnFhirAuthService`**（共享库）— OAuth2/OIDC **client-credentials** 流程，带令牌缓存与刷新，`CreateAuthenticatedFhirClientAsync(url)` 直接返回可用的已认证 `FhirClient`。
+- **`SmartFhirEtlService`** — SMART 风格 ETL 导入，每次运行使用独立 identifier system，避免公共测试服务器上的标识符冲突。
+
+```bash
+dotnet run --project src/05-SMART-on-FHIR
+```
+
+- 演示 SMART on FHIR 中的作用域访问模式（如 `openid profile patient/*.read`）。
+
+### 06 — AI-Assisted Data Mapping（本地 LLM）
+
+用**本地 LLM（Ollama，`llama3`）**把"噪声"记录（如 `"Mmale, Jhon Doe, 1990-13-45"`）规范化为 FHIR 就绪的 `Patient` —— **为本地推理而设计，不向云端 LLM 发送数据**。流程刻意分两步：
+
+1. **LLM 环节** — 模型把原始行映射为小型 JSON DTO（`PatientDto`）。
+2. **确定性护栏** — `ClinicalGuardrails.Validate(dto)` 拒绝逻辑上无效的输出（如未来出生日期、不可解析的日期）。无效行被报告为拒绝，而不是静默写入。
+
+```bash
+dotnet run --project src/06-AI-Data-Validator
+```
+
+- 需要本地运行 [Ollama](https://ollama.com/) 并拉取 `llama3`（`ollama pull llama3`）。
+- LLM 输出非确定性：护栏能降低但不能保证正确性。
+- AI provider 以普通 `Func<string, Task<string>>` 注入，可替换为任何本地模型端点。
+
+### 07 — HIPAA Technical Safeguards Demo
+
+> ⚠️ **这是一个技术保障演示，不是合规产品。** 它展示 HIPAA 安全规则风格的控制如何在代码中实现。实际合规取决于你的部署、运营和组织上下文 —— 本仓库不认证、不保证 HIPAA 合规。
+
+把一次模拟的 PHI 访问请求走完整流程：**RBAC 检查 → 患者授权校验（使用目的）→ 审计日志**，控制台输出全部经过 PHI 脱敏（`SafeConsole` / `PhiMasker`）。
+
+```bash
+dotnet run --project src/07-HIPAA-Technical-Safeguards-Demo
+```
+
+关键 API：`HipaaComplianceOrchestrator.ExecutePhiAccessRequest(...)`、`RbacAuth.CanAccessFullPHI(role)`、`ConsentManager.CheckConsent(patientId, purpose)`、`AuditLog.Record(...)`、`PhiEncryptionService`（AES-256-GCM）。
+
+#### 本演示建模的安全控制（45 CFR §164.312 风格）
+
+| 控制项 | HIPAA 安全规则（45 CFR） | 代码位置 | 状态 |
+| :------ | :---------------- | :-------------- | :----- |
+| 访问控制 | §164.312(a)(1) | `RbacAuth` — 8 角色矩阵，默认最小权限 | 代码中演示 |
+| 身份鉴别 | §164.312(a)(2)(iii) | `SmartOnFhirAuthService` — OAuth2/OIDC client-credentials | 代码中演示 |
+| 静态加密 | §164.312(a)(2)(iv) | `PhiEncryptionService` — AES-256-GCM | 代码中演示 |
+| 审计控制 | §164.312(b) | `AuditLog` — UTC 时间戳 JSON 条目 | 代码中演示 |
+| 完整性控制 | §164.312(c)(1) | `ResourceValidationService` + ETL 路径中的 Conditional PUT（ETag） | 代码中演示 |
+| 传输安全 | §164.312(e)(1) | 强制 TLS 1.2+；默认严格证书校验（见安全声明） | 配置强制 |
+| 授权管理 | §164.508 | `ConsentManager` — 使用目的检查 | 代码中演示 |
+
+### 08 — Data Drift Detector
+
+面向混合架构的只读核对：逐字段（姓名、性别、出生日期、电话）比较传统源（CSV）与 FHIR 服务器上实际存储的内容。每条记录得到三种显式结果之一：
+
+- **同步**
+- **字段级漂移** — 展示旧值 vs 新值
+- **服务器上缺失** — 从未同步，或被删除
+
+只检测不写入：模块 08 从不写 FHIR 副本；对账是单独、刻意的步骤（重跑模块 04 或手动修复）。
+
+```bash
+dotnet run --project src/08-Data-Drift-Detector
+```
+
+- 默认指向 `https://hapi.fhir.org/baseR4`；修改 `Program.cs` 指向你自己的服务器。
+
+---
+
+## 🛠 如何运行
+
+**前置条件**
+
+- **.NET 10 SDK** — `global.json` 固定 `10.0.302`；如需其他 10.0.x SDK 请调整 `rollForward`。示例应用目标 `net10.0`；共享库目标 `net8.0`（可在 .NET 8/9/10 应用中引用）。
+- **网络访问** — 模块 01/02/04/05/08 会访问公共 FHIR 测试服务器。
+- **[Ollama](https://ollama.com/) + `llama3`**（模块 06）。
+- （可选）一个支持 client-credentials 的 OIDC provider，用于真实走一遍模块 05 的认证流程。
+
+**运行模块**
+
+```bash
+git clone https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git
+cd HealthData-Interoperability-Csharp
+
+dotnet run --project src/1-Basic-Client
+dotnet run --project src/02-Advanced-Query
+dotnet run --project src/03-Resource-Validator
+dotnet run --project src/04-Data-Mapping-ETL
+dotnet run --project src/05-SMART-on-FHIR
+dotnet run --project src/06-AI-Data-Validator
+dotnet run --project src/07-HIPAA-Technical-Safeguards-Demo
+dotnet run --project src/08-Data-Drift-Detector
+```
+
+**运行测试**
+
+```bash
+dotnet test
+```
+
+180 个单元测试（MSTest v3 + FluentAssertions）覆盖共享库服务 —— RBAC 矩阵、授权检查、审计日志结构、PHI 加密往返、性别规范化、US Core 检查、SMART 认证选项校验、漂移比较、FHIR 患者映射器。
+
+---
+
+## ⚠️ 局限性
+
+- **早期阶段。** 公开 API 在 minor 版本之间仍可能变化。在 2.x 稳定线之前，请仅用于非关键或 PoC 场景。
+- **未经生产认证。** 本仓库不包含经认证的 HIPAA 方案、ONC 认证产品，或完整的 US Core 符合性实现。
+- **没有性能基准。** 仓库中没有可复现的时延/分配基准，也不主张任何性能数字。
+- **公共测试服务器。** 模块 01/02/04/05/08 默认指向公共 FHIR 测试服务器（`server.fire.ly`、`hapi.fhir.org`），可能会在那里创建记录。运行前请检查各 `Program.cs` 中的 URL，切勿不加检查地指向生产数据。
+- **本地 AI 模块（06）。** 输出质量取决于本地模型；护栏会拒绝明显无效的结果，但不能保证临床正确性。
+- **范围。** 这些是针对特定场景（以 Patient 为中心）的参考示例，不是通用 FHIR 框架。
+
+---
+
+## 📦 依赖
+
+| 包 | 版本 | 用途 |
+| :--- | :--- | :--- |
+| [Hl7.Fhir.R4](https://www.nuget.org/packages/Hl7.Fhir.R4/) | 6.0.2 | FHIR R4 客户端与资源模型（Firely .NET SDK） |
+| [Firely.Fhir.Validation.R4](https://www.nuget.org/packages/Firely.Fhir.Validation.R4/) | 3.1.0 | FHIR R4 资源校验 |
+| [CsvHelper](https://www.nuget.org/packages/CsvHelper/) | 33.1.0 | ETL / 漂移模块中的 CSV 读取 |
+| [Riok.Mapperly](https://www.nuget.org/packages/Riok.Mapperly/) | 4.1.1 | 编译时映射（CSV → FHIR） |
+| [IdentityModel](https://www.nuget.org/packages/IdentityModel/) | 7.0.0 | OAuth2/OIDC client-credentials（SMART on FHIR） |
+| [Polly](https://www.nuget.org/packages/Polly/) | 8.4.2 | 弹性原语 |
+| [Serilog](https://www.nuget.org/packages/Serilog/) | 4.3.0 | 结构化日志 |
+| [Microsoft.Extensions.Configuration.Json](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/) | 10.0.2 | 模块 05 的 `appsettings.json` 配置 |
+| Ollama + `llama3` | — | 模块 06 的本地 LLM（可选） |
+
+测试栈：MSTest 3.8.3、FluentAssertions 8.5.0。
+
+---
+
+## 🔐 安全声明
+
+- **TLS 证书校验默认严格。** 仅存在一个本地开发用的校验绕过（如自签名 MITM 代理场景），**默认关闭** —— 只有显式设置环境变量 `HEALTHDATA_INSECURE_SKIP_TLS=1` 才会生效。切勿在生产环境设置；禁用 TLS 校验与 HIPAA §164.312(e)(1) 传输安全要求冲突。
+- **PHI 脱敏日志。** 控制台/日志输出经过 `PhiMasker`：SSN、患者姓名、出生日期、电话、邮箱在到达控制台或日志 sink 前被替换为占位符。
+- **本地 AI（模块 06）** 为本地推理而设计，不向云端 LLM 发送数据。"本地"降低了暴露面，但不是保证 —— 处理真实 PHI 前请自行评估威胁模型。
 
 ---
 
 ## 📦 NuGet 包
 
-**包 ID**: `HealthData.Interop.Fhir`  
-**版本**: [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Fhir)](https://www.nuget.org/packages/HealthData.Interop.Fhir/)  
-**许可证**: MIT | **作者**: Rong(Rex) Fan
-
-生产级 .NET 10 医疗数据互操作库，功能包括：
-- 🔷 **FHIR R4 客户端工具** - 资源搜索、检索、创建
-- 🛡️ **HIPAA 合规辅助** - RBAC、PHI 加密、不可篡改审计日志
-- ⚖️ **US Core 标准校验器** - 验证资源是否符合联邦标准
-- 🤖 **AI 数据验证** - 本地 LLM 驱动的语义规范化（Ollama）
-- 🔄 **ETL 流水线** - CSV/JSON 到 FHIR 迁移，支持幂等写入
-- 🔐 **SMART on FHIR 认证** - EHR 系统 OAuth2/OIDC 接入
-
-### 安装
+**包 ID:** `HealthData.Interop.Fhir` · **许可证:** MIT · **目标:** .NET 8.0（可用于 .NET 9/10+）
 
 ```bash
-# 方式一：.NET CLI
 dotnet add package HealthData.Interop.Fhir
-
-# 方式二：Package Manager Console
-Install-Package HealthData.Interop.Fhir
 ```
 
-### 快速开始
+快速开始（与当前公开 API 核对过）：
 
 ```csharp
 using HealthDataInteropSharedLibrary.BasicClient;
 using HealthDataInteropSharedLibrary.ResourceValidator;
 
-// 1. 初始化 FHIR 客户端服务
-var fhirService = new FhirBasicService("https://your-fhir-server.com");
+// 1. 指向一个 FHIR R4 服务器，按姓名搜索患者。
+var service = new FhirBasicService("https://your-fhir-server.com/fhir");
+var patients = await service.SearchPatientsByNameAsync("Doe");
 
-// 2. 按姓名搜索患者
-var patients = await fhirService.SearchPatientsByNameAsync("John");
+foreach (var p in patients)
+    Console.WriteLine(FhirBasicService.FormatPatientName(p));
 
-// 3. 验证资源是否符合 US Core 标准
+// 2. 按内置 FHIR R4 规范校验一个 Patient 资源。
 var validator = new ResourceValidationService();
-bool isValid = validator.Validate(patients.First());
-
-// 4. HIPAA 合规检查（访问 PHI 前）
-using HealthDataInteropSharedLibrary.Compliance;
-var orchestrator = new HipaaComplianceOrchestrator();
-bool canRead = await orchestrator.ExecutePhiAccessRequest(
-    userId: "u-1001",
-    role: FhirUserRole.Physician,
-    ipAddress: "10.0.0.5",
-    patientId: "123",
-    accessPurpose: "Clinical review");
-
-if (canRead) {
-    Console.WriteLine("✓ PHI 访问已授权，审计日志已记录");
+if (patients.Count > 0)
+{
+    var ok = validator.Validate(patients[0]);
+    Console.WriteLine(ok ? "Patient 符合 FHIR R4。" : "校验发现问题。");
 }
 ```
 
 ---
 
-## 📖 快速开始
-
-1. **环境准备**
-   - 安装 **.NET 10 SDK 或更高版本**（类库包基于 .NET 8 LTS 以兼容更广泛环境；演示应用运行在 .NET 10）
-   - （模块 06 可选）安装 [Ollama](https://ollama.com/) 并运行 `ollama run llama3`
-
-2. **FHIR 规范验证说明**
-   - 模块 03（资源验证器）使用 Firely SDK，首次运行时会下载 FHIR R4 规范文件（约 40MB）
-   - 若网络不可用，自动降级为基本结构校验
-   - NuGet 用户在离线环境下也能优雅降级
-
-3. **运行测试**
-```bash
-dotnet test
-```
-
----
-
-## ⚠️ 安全声明
-
-**TLS 证书验证状态：**
-- 模块 05（SMART on FHIR）在开发环境中**绕过了 HTTPS 证书验证**（因网络环境问题）
-- **这是仅限开发的临时方案**，会引入中间人攻击风险，违反 HIPAA §164.312(e)(1) 传输安全规定
-- **生产部署必须执行以下操作：**
-  1. 移除 `RemoteCertificateValidationCallback = ... => true`
-  2. 所有 FHIR 客户端端点**强制 HTTPS 连接**（不允许 HTTP 降级）
-  3. 配置服务器端 HSTS 头部
-  4. 最低 TLS 1.2+
-
-详见 `src/05-SMART-on-FHIR/Program.cs` 中的内联警告。
-
----
-
 ## 🌏 中美医疗数据标准对照（开发者参考）
 
-本库基于美国标准构建，但核心架构可迁移至中国市场：
+本项目基于美国标准构建，但核心模式可迁移至中国市场：
 
 | 维度 | 🇺🇸 美国体系 | 🇨🇳 中国体系 |
 |------|-------------|-------------|
-| **互操作标准** | HL7 FHIR R4/R5 (主导) | HL7 FHIR（推进中），WS/T 系列规范 |
+| **互操作标准** | HL7 FHIR R4/R5（主导） | HL7 FHIR（推进中）、WS/T 系列规范 |
 | **安全合规** | HIPAA Privacy & Security Rules | 《个人信息保护法》PIPL、等保2.0三级 |
 | **编码体系** | ICD-10-CM, SNOMED CT, LOINC | ICD-10/11, 国家临床版3.0 |
-| **互操作认证** | ONC (g)(10), US Core IG | 互联互通成熟度测评（四甲） |
+| **互操作认证** | US Core IG / SMART on FHIR | 互联互通成熟度测评（四甲） |
 
-> 中国市场适用场景：本库中的 ETL 管道、AI 数据验证、资源校验等模块可复用于 FHIR China IG 项目。安全合规模块需按 PIPL/等保2.0 重新适配。
+> 中国市场适用场景：本仓库中的 ETL 管道、AI 数据规范化、资源校验等模式可复用于 FHIR China IG 项目；安全示例需按 PIPL/等保2.0 重新适配。
 
 ---
 
-## 🔗 相关项目
+## 🔗 相关项目 / Related projects
 
 | 项目 | 简介 |
 |------|------|
-| [Quant.Infra.Net](https://github.com/memoryfraction/Quant.Infra.Net) | 一站式 .NET 量化交易基础设施 —— 多源数据接入、统一券商执行、组合分析 |
-| [LLSDA](https://github.com/memoryfraction/LLSDA-Lightning-Location-System-Data-Analyzer) | 开源闪电定位系统数据分析类库 —— 已发布 NuGet 包，并被 TechRxiv 预印本引用 |
+| [Clinic FHIR Server](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/) | 面向诊所与社区健康中心的多租户 FHIR R4 服务器：租户隔离存储、RBAC、审计日志、PHI 加密。 |
+| [XBridge](https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/) | 事前授权（Prior Authorization）工具包：按 payer Companion Guide 规则校验 X12 278 交易，并在 X12 与 FHIR R4 之间转换，完全在浏览器本地运行。 |
+| [Quant.Infra.Net](https://github.com/memoryfraction/Quant.Infra.Net) | 一站式 .NET 量化交易基础设施 —— 多源数据接入、统一券商执行、组合分析。 |
+| [LLSDA](https://github.com/memoryfraction/LLSDA-Lightning-Location-System-Data-Analyzer) | 开源闪电定位系统（LLS）数据分析类库 —— 已发布 NuGet 包，并被 TechRxiv 预印本引用。 |
 
 > 同一作者的更多项目：[github.com/memoryfraction](https://github.com/memoryfraction)
 
 ---
 
-## 👤 联系与合作
+## 👤 联系
 
-**Rong(Rex) Fan** - 10+ 年 .NET/C# 经验 | AI 与医疗数据互操作（FHIR/HL7）
-* **LinkedIn**: [Rex Linkedin](https://www.linkedin.com/in/rongfan1031/)
-* **Medium 专栏**: [rex.fan18@medium.com](https://medium.com/@rex.fan18)
-* **咨询预约**: [Schedule a 30-min Call](https://calendly.com/rex-fan18/30min)
-* **专注方向**：构建高性能、合规的医疗信息系统 | 美国无赞助需求
+**Rong (Rex) Fan** — .NET/C# · 医疗数据互操作（FHIR/HL7）· AI 工程
+
+- **LinkedIn**: [Rong Fan](https://www.linkedin.com/in/rexfan18/)
+- **GitHub**: [memoryfraction](https://github.com/memoryfraction)
 
 ---
 
 ## ⚖️ License
 
-MIT License — 详见 [LICENSE](./LICENSE) 文件。
+[MIT](./LICENSE) — 本仓库定位为参考实现与教育资源。你可以自由阅读、复制和改写代码；完整条款见 LICENSE 文件。不提供任何形式的保证。
 
 > **免责声明**：本项目按"现状"提供，不提供任何形式的质保或维护承诺。使用者需自行评估其生产环境的适用性并独立承担相关风险。作者不对因使用本代码而导致的任何直接或间接损失负责。
-
-This project is provided as-is without warranty, maintenance, or support. Use at your own risk.

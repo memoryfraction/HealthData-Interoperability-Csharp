@@ -1,32 +1,26 @@
-# AI-Driven-FHIR-Interoperability-Engine-DotNet10
+# HealthData Interoperability for .NET
 
-### *Empowering 2026 Healthcare Data Ecosystems with High-Performance .NET 10 & Private AI*
+**A runnable reference implementation for HL7 FHIR R4 interoperability on .NET, built on the Firely .NET SDK — with a set of working examples you can read, run, and adapt.**
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
-[![Architecture: MedTech-Middleware](https://img.shields.io/badge/Architecture-MedTech--Middleware-green.svg)](#)
 [![Version](https://img.shields.io/badge/Version-1.3.5-blue.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir/1.3.5)
 [![Tests](https://img.shields.io/badge/Tests-180%20Passed-success.svg)](./src/tests/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
-## 📌 Scope & Stability
+## 📌 What this project is (and is not)
 
-**What this library is:** An application-layer toolkit for HL7 FHIR R4 interoperability on .NET. It builds on [Hl7.Fhir.R4](https://www.nuget.org/packages/Hl7.Fhir.R4/) (FHIR client/model) and [Firely.Fhir.Validation.R4](https://www.nuget.org/packages/Firely.Fhir.Validation.R4/) (resource validation), and adds ready-to-use services on top: patient CRUD, advanced/chained search, FHIR resource validation, CSV→FHIR ETL, SMART on FHIR auth, and HIPAA compliance helpers (RBAC, PHI encryption, audit log, PHI-masked logging).
+**What it is:** An application-layer toolkit and reference implementation for HL7 FHIR R4 interoperability on .NET. It builds on the [Firely .NET SDK](https://github.com/FirelyTeam/firely-net-sdk) — [Hl7.Fhir.R4](https://www.nuget.org/packages/Hl7.Fhir.R4/) (FHIR client/model) and [Firely.Fhir.Validation.R4](https://www.nuget.org/packages/Firely.Fhir.Validation.R4/) (resource validation) — and adds small, testable services on top: patient CRUD, advanced search, FHIR resource validation, CSV→FHIR ETL, SMART on FHIR auth, AI-assisted data mapping (local LLM), HIPAA-oriented security examples (RBAC, consent, audit, PHI masking), and data drift detection.
 
-**What it is not:** It does not replace a FHIR server, is not a full EHR, and does not by itself provide US Core / ONC certified compliance. It is a starting point for building interoperability logic, not a turnkey certified product.
+**What it is not:** It does not replace a FHIR server, it is not a full EHR, and it is not a FHIR server "engine" or middleware platform. It does not by itself provide certified HIPAA or ONC compliance. Treat it as a starting point and a collection of patterns, not a turnkey or certified product.
 
-**Where this fits architecturally:** this toolkit's modules assemble the components a *hybrid* FHIR architecture needs around a FHIR server (data mapping/ETL in module 04, drift detection in module 08, validation in module 03, auth in module 05, RBAC/consent/audit in module 07) — the FHIR server itself remains the copy, and the legacy/CSV source stays the system of record. It is not a facade (no dynamic per-request translation) and not FHIR-native (nothing here claims the FHIR server as source of truth). If your project needs a different model, treat these modules as a reference for what to build, not a drop-in fit.
+**Where this fits architecturally:** this toolkit's modules assemble the components a *hybrid* FHIR architecture needs around a FHIR server (data mapping/ETL in module 04, drift detection in module 08, validation in module 03, auth in module 05, RBAC/consent/audit in module 07) — the FHIR server holds the copy, and the legacy/CSV source stays the system of record. It is not a facade (no dynamic per-request translation) and not FHIR-native (nothing here claims the FHIR server as source of truth). If your project needs a different model, treat these modules as a reference for what to build, not a drop-in fit.
 
 **Stability:** Current version **v1.3.5**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
-**🏥 More Healthcare IT Sample Projects by me**
-* **[Clinic FHIR Server](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/)** — a multi-tenant FHIR R4 server for clinics and community health centers: tenant-isolated FHIR storage, role-based access control, audit logging, and PHI encryption.
-* **[XBridge](https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/)** — a Prior Authorization toolkit that validates X12 278 transactions against payer Companion Guide rules and converts between X12 and FHIR R4, running entirely in your browser locally.
 
----
-
-## 📌 Strategic Mission & Industry Context
-In the 2026 healthcare landscape, data interoperability is no longer an option but a federal mandate under the **21st Century Cures Act**. This project is a reference implementation of a **Healthcare Interoperability Engine** — early-stage, not production-ready (see "Scope & Stability" above) — built to demonstrate how to bridge fragmented legacy clinical data with the standardized **HL7 FHIR R4/R5** ecosystem.
+### Architecture overview
 
 ```mermaid
 graph TD
@@ -35,396 +29,305 @@ graph TD
         DS2[(Legacy SQL DB)]
     end
 
-    subgraph Core_Engine [.NET 10 Interoperability Engine]
+    subgraph This_Repo [Application Layer — this repository]
         direction TB
-        M06[06-AI-Validator: Semantic Normalization]
-        M03[03-Resource-Validator: Firely SDK]
-        M04[04-Data-Mapping-ETL: Idempotent Migration]
-        
+        M06[06-AI-Validator: local-LLM normalization]
+        M03[03-Resource-Validator: Firely SDK validation]
+        M04[04-Data-Mapping-ETL: idempotent upsert]
+
         M06 --> M03
         M03 --> M04
     end
 
-    subgraph Access_Layer [Security & Retrieval]
-        M05[05-SMART-on-FHIR: US Core Auth]
-        M02[02-Advanced-Query: Chained Search]
+    subgraph Access_Layer [Access & Security Examples]
+        M05[05-SMART-on-FHIR: OAuth2/OIDC auth]
+        M02[02-Advanced-Query: chained search]
+        M07[07-Safeguards Demo: RBAC/consent/audit]
     end
 
     Data_Sources --> M06
     M04 --> M05
-    M05 --> FHIR_Server[(Target FHIR Server)]
+    M05 --> FHIR_Server[(FHIR R4 Server, e.g. HAPI)]
     FHIR_Server <--> M02
+    FHIR_Server --> M07
+    FHIR_Server --> M08[08-Drift-Detector: read-only reconciliation]
 ```
 
-### 🛡️ Professional Value Proposition
-* **AI Assisted Data Normalization:** Solves the "Fuzzy Data" problem where traditional ETL fails, using privacy-preserving Local LLMs.
-* **Regulatory-First Architecture:** Built strictly against **US Core Implementation Guides** and **ONC (g)(10)** requirements.
-* **Enterprise .NET 10 Stack:** Demonstrates mastery of high-throughput features like **Interceptors**, **JSON Source Generation**, and **Native AOT compatibility** for edge medical devices.
+## 📌 What this project demonstrates
 
----
+A set of working, runnable examples of interoperability patterns related to **US Core** and **SMART on FHIR**, plus everyday FHIR integration patterns on top of the Firely .NET SDK:
 
-## 📂 System Architecture & Solution Roadmap
-
-| Module | Technical Focus | Strategic Business Value | Status |
+| Module | Demonstrates | Entry point | Key API |
 | :--- | :--- | :--- | :--- |
-| **[08-Data-Drift-Detector](./src/08-Data-Drift-Detector)** | **Data Reconciliation** | **Trust**: Detects field-level drift and missing records between the legacy source of truth and the synced FHIR copy before it causes a production incident. | ✅ **Technical Demonstration Project** |
-| **[07-HIPAA-Compliance-Demo](./src/07-HIPAA-Compliance-Demo)** | **HIPAA Compliance** | **Least Privilege**: 8-role RBAC + Consent validation + Immutable audit logs per HIPAA Audit Controls. | ✅ **Technical Demonstration Project** |
-| **[06-AI-Data-Validator](./src/06-AI-Data-Validator)** | **AI Semantic ETL** | **Data Cleansing**: Uses Local LLMs to normalize "noisy" legacy data with zero-PII leakage. | ✅ **Technical Demonstration Project** |
-| **[05-SMART-on-FHIR](./src/05-SMART-on-FHIR)** | **Federal Compliance** | **(g)(10) Readiness**: OAuth2/OIDC auth + US Core Patient Profiles for certified EHR access. | ✅ **Technical Demonstration Project** |
-| **[04-Data-Mapping-ETL](./src/04-Data-Mapping-ETL)** | **Legacy Integration** | **Data Integrity**: Uses Conditional PUT to prevent duplicates in high-concurrency migrations. | ✅ **Technical Demonstration Project** |
-| **[03-Resource-Validator](./src/03-Resource-Validator)** | **Risk Management** | **Clinical Firewall**: Firely SDK validation + US Core profile conformance checking. | ✅ **Technical Demonstration Project** |
-| **[02-Advanced-Query](./src/02-Advanced-Query)** | **Search Optimization** | **Performance**: Reduces network round-trips via Chained Parameters & `_include` logic. | ✅ **Technical Demonstration Project** |
+| [**01 Basic FHIR Client**](./src/1-Basic-Client) | Patient create + search against a FHIR R4 server | `src/1-Basic-Client` | `FhirBasicService` |
+| [**02 Advanced Query**](./src/02-Advanced-Query) | Chained search; `_include`/`_revinclude` to fetch related resources in one query | `src/02-Advanced-Query` | `AdvancedQueryService` |
+| [**03 FHIR Resource Validation**](./src/03-Resource-Validator) | Firely SDK validation against the FHIR R4 spec; US Core profile-declaration checks | `src/03-Resource-Validator` | `ResourceValidationService`, `UsCoreConformanceChecker` |
+| [**04 Data Mapping / ETL**](./src/04-Data-Mapping-ETL) | CSV→FHIR mapping with idempotent upserts (search-then-Conditional-PUT, transaction bundles) | `src/04-Data-Mapping-ETL` | `EtlPipelineService`, `FhirPatientMapper` |
+| [**05 SMART on FHIR**](./src/05-SMART-on-FHIR) | OAuth2/OIDC client-credentials flow with token caching; SMART ETL import | `src/05-SMART-on-FHIR` | `SmartOnFhirAuthService`, `SmartFhirEtlService` |
+| [**06 AI-Assisted Data Mapping**](./src/06-AI-Data-Validator) | Local-LLM (Ollama) normalization of messy records + deterministic guardrails | `src/06-AI-Data-Validator` | `AiValidatorService`, `ClinicalGuardrails` |
+| [**07 HIPAA Technical Safeguards Demo**](./src/07-HIPAA-Technical-Safeguards-Demo) | RBAC, consent validation, audit logging, PHI masking — HIPAA Security Rule–oriented examples | `src/07-HIPAA-Technical-Safeguards-Demo` | `HipaaComplianceOrchestrator`, `RbacAuth`, `ConsentManager`, `AuditLog` |
+| [**08 Data Drift Detector**](./src/08-Data-Drift-Detector) | Read-only reconciliation between a legacy source and the synced FHIR copy | `src/08-Data-Drift-Detector` | `DriftDetectionService` |
 
----
+All shared logic lives in [`src/HealthDataInteropSharedLibrary`](./src/HealthDataInteropSharedLibrary) (published as the `HealthData.Interop.Fhir` NuGet package); each numbered folder is a small console app that exercises a different scenario.
 
-## 🚀 Technical Deep Dive: Solving 2026's MedTech Challenges
-### 🧩 07: 07-HIPAA-Compliance-Demo
-As healthcare data interoperability becomes a federal mandate under the 21st Century Cures Act, ensuring HIPAA compliance is non-negotiable for protecting Protected Health Information (PHI). This module demonstrates a compliance reference framework, combining role-based access control (RBAC) and patient consent validation to meet HIPAA’s Minimum Necessary Standard and ONC (g)(10) requirements.
+## 📂 Examples
 
-#### 🔴 The Compliance Pain Points
-* **Overly Permissive Access**: Generic auth systems often grant broad PHI access, violating HIPAA’s least privilege principle and increasing breach risk.
-* **Missing Audit Trails**: Inadequate logging of PHI access/denial actions makes compliance audits difficult and exposes organizations to penalties.
-* **Consent Mismanagement**: Failure to validate patient consent for PHI use leads to regulatory violations and erosion of patient trust.
-* **Uncontrolled PHI Exposure**: Lack of field-level redaction exposes sensitive data (e.g., social security numbers, medical history) to unauthorized roles.
+### 01 — Basic FHIR Client
 
-#### 💡The Compliance Solution: HIPAA-Centric Access Control
-* **Granular 8-Role RBAC Model**:  Tailored to clinical workflows, including SysAdmin, Physician, Nurse, FrontDesk, Biller, Insurance, Patient, and Auditor—each with strictly bounded access scopes.
-* **Least Privilege Enforcement**: No super-admin accounts, bulk PHI export/delete functionality is hard-disabled, and access is limited to only the data needed for job functions.
-* **Field-Level PHI Redaction**:  Sensitive fields (e.g., PHI, financial data) are automatically hidden for roles without authorization, ensuring only necessary data is visible.
-* **Patient Consent Validation**: Tightly integrated with FHIR Consent resources to verify patient authorization for PHI access, including purpose-of-use validation.
-* **Immutable Audit Logging**:    Every PHI access, denial, and modification is recorded with timestamp, user identity, and action details, implementing the technical audit-trail elements of HIPAA §164.312(b) — actual compliance depends on how it's deployed and operated, not on this library alone.
+Create a `Patient` on a FHIR R4 server and search for patients by name.
+
+```bash
+dotnet run --project src/1-Basic-Client
+```
+
+- Targets the public demo server `http://server.fire.ly` by default; change the URL in `Program.cs` to point at your own server.
+- If the server is unreachable, the app prints a network hint and exits gracefully — no crash.
+- Key API: `FhirBasicService.CreatePatientAsync(...)`, `FhirBasicService.SearchPatientsByNameAsync("Doe")`.
 
 **Execution Result:**
 
+![01 Basic FHIR Client](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/01-Basic-FHIR-Client-printscreen.jpg?raw=true)
 
-![07-Compliance Demo Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/07%20Compliance%20demo%20result.jpg?raw=true)
+### 02 — Advanced Query
 
+Chained-parameter search: find `Encounter` resources by practitioner name, using `_include`/`_revinclude` so related resources come back in a single query instead of extra round-trips.
 
-The following is the patient data Consent (Authorization) process design diagram:
+```bash
+dotnet run --project src/02-Advanced-Query
+```
+
+- Key API: `AdvancedQueryService.SearchEncountersByPractitionerNameAsync("Smith")`.
+- Targets `https://server.fire.ly` by default; edit `Program.cs` for your own server.
+
+**Execution Result:**
+
+![02 Advanced Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02%20Advanced%20Query-result.jpg?raw=true)
+
+### 03 — FHIR Resource Validation
+
+Validate FHIR resources against the R4 specification using `Firely.Fhir.Validation.R4`. The sample intentionally builds an *invalid* Patient (e.g. `BirthDate = "1990-13-45"`) so you can see real `OperationOutcome`-style diagnostics.
+
+```bash
+dotnet run --project src/03-Resource-Validator
+```
+
+- The FHIR R4 specification (~6MB) is bundled with the library, so full spec validation works offline; if the spec is unavailable, the service falls back to basic structural validation automatically.
+- Key API: `ResourceValidationService.Validate(patient)`, `.GetValidationIssues(patient)`.
+- US Core: `UsCoreConformanceChecker.CheckPatientConformance(patient)` checks that a `Patient` declares a US Core profile URI in `Meta.Profile` (see [US Core support below](#-us-core-profile-support-demo-scope)).
+
+**Execution Result:**
+
+![03 Resource Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/03-Resource-Validator-result.jpg?raw=true)
+
+### 04 — Data Mapping / ETL (CSV → FHIR)
+
+Maps `Data/legacy_patients.csv` into FHIR `Patient` resources and upserts them, so **re-running the job updates existing records instead of creating duplicates**:
+
+1. **Extract** — read CSV rows into typed `LegacyPatientRecord` records (CsvHelper).
+2. **Transform** — `FhirPatientMapper` (Mapperly source generator) maps them to `Patient` resources, including gender normalization (`male`/`female`/`f`/`m` → FHIR `AdministrativeGender`, unknown → `Unknown`).
+3. **Load** — search by business identifier first, then update via Conditional PUT (ETag) or create; results are grouped into a `BundleType.Transaction` bundle for atomicity.
+
+```bash
+dotnet run --project src/04-Data-Mapping-ETL
+```
+
+- Targets the public test server `https://hapi.fhir.org/baseR4` by default and adds test-name markers to imported names; edit `Program.cs` for your own server.
+- Key API: `EtlPipelineService.RunAsync(csvPath)` → `(Created, Updated)` counts.
+
+**Execution Result:**
+
+![04 Data Mapping ETL](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/04-Data-Mapping-ETL-result.jpg?raw=true)
+
+### 05 — SMART on FHIR
+
+Two pieces:
+
+- **`SmartOnFhirAuthService`** (shared library) — OAuth2/OIDC **client-credentials** flow with token caching and refresh, plus `CreateAuthenticatedFhirClientAsync(url)` which returns a ready-to-use authenticated `FhirClient`.
+- **`SmartFhirEtlService`** — a SMART-style ETL import of `data/data.csv` with a per-run identifier system to avoid duplicate-identifier collisions on shared test servers.
+
+```bash
+dotnet run --project src/05-SMART-on-FHIR
+```
+
+- The entry point reads `appsettings.json` (`MeldRx:FhirServerUrl`, default `https://hapi.fhir.org/baseR4`) and performs the ETL import.
+- To exercise the OAuth flow itself, register a client-credentials app with your OIDC provider and use `SmartOnFhirAuthService` — see `src/tests/SmartOnFhirAuthServiceTests.cs` for the expected `OidcOptions` configuration.
+- Demonstrates scope-based access patterns (e.g. `openid profile patient/*.read`) as used in SMART on FHIR launches.
+
+**Execution Result:**
+
+![05 SMART on FHIR](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/05%20SMART%20ON%20FHIR%20RESULT.jpg?raw=true)
+
+### 06 — AI-Assisted Data Mapping (local LLM)
+
+Turns human-typed "noisy" records (e.g. `"Mmale, Jhon Doe, 1990-13-45"`) into FHIR-ready `Patient` resources using a **local LLM (Ollama, `llama3`)** — designed for local inference without sending data to a cloud LLM. The pipeline is deliberately two-stage:
+
+1. **LLM pass** — the model maps the raw line into a small JSON DTO (`PatientDto`).
+2. **Deterministic guardrails** — `ClinicalGuardrails.Validate(dto)` rejects logically invalid output (e.g. a future date of birth, non-parseable dates) before anything becomes a FHIR resource. Invalid rows are reported as rejected, not silently written.
+
+```bash
+dotnet run --project src/06-AI-Data-Validator
+```
+
+- Requires [Ollama](https://ollama.com/) running locally with the `llama3` model (`ollama pull llama3`), reachable at `http://localhost:11434`.
+- LLM output is non-deterministic: guardrails reduce, but do not guarantee, correctness. Output quality depends on the local model you deploy.
+- The AI provider is injected as a plain `Func<string, Task<string>>`, so you can swap Ollama for any other local model endpoint (see `AiValidatorService`'s constructor).
+
+**Execution Result:**
+
+![06 AI Data Validator](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/06-AI-Data-Validator_result.jpg?raw=true)
+
+### 07 — HIPAA Technical Safeguards Demo
+
+> ⚠️ **This is a technical-safeguards demo, not a compliance product.** It shows how HIPAA Security Rule–style controls can be implemented in code. Actual compliance depends on your deployment, operations, and organizational context — nothing in this repository certifies or guarantees HIPAA compliance.
+
+Walks one simulated PHI access request through the full workflow: **RBAC check → patient consent validation (purpose of use) → audit log entry**, with all console output PHI-masked (`SafeConsole` / `PhiMasker`).
+
+```bash
+dotnet run --project src/07-HIPAA-Technical-Safeguards-Demo
+```
+
+Key APIs: `HipaaComplianceOrchestrator.ExecutePhiAccessRequest(...)`, `RbacAuth.CanAccessFullPHI(role)`, `ConsentManager.CheckConsent(patientId, purpose)`, `AuditLog.Record(...)`, `PhiEncryptionService` (AES-256-GCM).
+
+**Execution Result:**
+
+![07 Safeguards Demo Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/07%20Compliance%20demo%20result.jpg?raw=true)
+
+Patient consent (authorization) flow shown in the demo:
+
 ```mermaid
-flowchart TD 
-A["User requests FHIR PHI access"] 
-B{"Check JWT role & identity scope"} 
+flowchart TD
+A["User requests FHIR PHI access"]
+B{"Check JWT role & identity scope"}
 
-A --> B 
-B -->|Clinic Staff| C["Load Patient FHIR Consent Resource"] 
-B -->|Patient Self| Z["Verify JWT patientId match owner"] 
+A --> B
+B -->|Clinic Staff| C["Load Patient FHIR Consent Resource"]
+B -->|Patient Self| Z["Verify JWT patientId match owner"]
 
-C --> D{"Validate consent status & use purpose"} 
-D -->|Approved & Valid Purpose| E["Allow full PHI access"] 
-D -->|Denied/Expired/Mismatch| F["Reject & block PHI access"] 
+C --> D{"Validate consent status & use purpose"}
+D -->|Approved & Valid Purpose| E["Allow full PHI access"]
+D -->|Denied/Expired/Mismatch| F["Reject & block PHI access"]
 
-E --> G["Write HIPAA access audit log"] 
-F --> H["Write HIPAA denial audit log"] 
+E --> G["Write access audit log"]
+F --> H["Write denial audit log"]
 
-Z --> I["Enforce self-only data isolation rule"] 
+Z --> I["Enforce self-only data isolation rule"]
 I --> E
 ```
 
----
+#### Safeguards modeled in this demo (45 CFR §164.312-style)
 
-### 🧩 06: AI-Assisted Semantic Validation (Privacy-First)
-Traditional Regex-based ETL often fails when encountering human-typed "noisy" data (e.g., "Mmale", "Jhon Doe"). This module implements a **Hybrid AI Pipeline** to bridge the gap between unstructured legacy records and FHIR R4 resources.
-
-#### 🔴 The Industry Pain Points
-* **The Privacy Paradox**: Standard Cloud AI (GPT-4) risks leaking **Protected Health Information (PHI)**, violating HIPAA/GDPR.
-* **Semantic Ambiguity**: Deterministic code cannot resolve inconsistent medical coding or typos.
-* **Model Instability**: LLMs can "hallucinate" invalid JSON or clinical facts.
-
-#### 💡 The Innovation: Localized Hybrid AI
-* **Local Inference**: Powered by **Ollama (Llama 3 8B)** running entirely on-premise. PHI never leaves the secure clinical network.
-* **Orchestration**: Uses **Microsoft Semantic Kernel** to intelligently map messy strings into structured FHIR-ready DTOs.
-* **Deterministic Guardrails**:
-    * **Regex Shielding**: Automatically strips AI "chatter" to extract pure JSON payloads.
-    * **Logic Verification**: C# hard-coded rules validate AI output (e.g., checking for logical date-of-birth) before resource creation.
-
-**Execution Result:**
-
-![06-AI-Data-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/06-AI-Data-Validator_result.jpg?raw=true)
-
----
-
-### ⚖️ 05: US Core & SMART Compliance (Cures Act Standards)
-Under the **21st Century Cures Act**, interoperability is a legal requirement. This module demonstrates technical readiness for:
-* **Profile-Strict Validation**: Resources are cross-referenced against **US Core 6.1.0/7.0.0** Implementation Guides.
-* **Granular Auth Architecture**: Prepared for **SMART App Launch** protocols, demonstrating scope-based access (e.g., `patient/Patient.read`).
-
-**Execution Result:**
-
-![05-SMART-on-FHIR Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/05%20SMART%20ON%20FHIR%20RESULT.jpg?raw=true)
-
----
-
-### 🔄 04: Legacy-to-FHIR Migration (Data Integrity)
-In large-scale data migrations, standard `POST` operations often create fragmented duplicates.
-* **Idempotency Engine**: Implements **Conditional PUT** logic to ensure that re-running migration jobs updates existing records instead of polluting the registry.
-* **Transaction Bundles**: Uses `BundleType.Transaction` to ensure "Atomic" operations—if one clinical resource fails, the entire set rolls back, maintaining system-wide consistency.
-
-**Execution Result:**
-
-![04-Data-Mapping-ETL Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/04-Data-Mapping-ETL-result.jpg?raw=true)
-
----
-
-### 🛡️ 03: Resource Validator (The Clinical Firewall)
-Ensuring clinical data quality at the point of entry is critical for patient safety.
-* **Firely SDK Integration**: Utilizing the industry-standard SDK for deep validation of base FHIR profiles and custom business invariants.
-* **OperationOutcome Generation**: Automated generation of detailed error logs, allowing clinical admins to debug malformed data in real-time.
-
-**Execution Result:**
-
-![03-Resource-Validator Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/03-Resource-Validator-result.jpg?raw=true)
-
----
-
-### 🔍 02: Advanced Query (Search Optimization)
-Complex clinical retrieval requires more than basic CRUD.
-* **Chained Parameters**: Querying resources based on the properties of related resources (e.g., Find Patients based on Encounter status).
-* **Payload Optimization**: Leveraging `_include` and `_revinclude` to reduce API round-trips by up to 60%, critical for mobile health apps.
-
-**Execution Result:**
-![02-Advanced-Query Result](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02-Advanced-Query-result.jpg?raw=true)
-
----
-
-### 🩺 08: Data Drift Detection (Hybrid Model Reconciliation)
-Hybrid FHIR architectures — like module 04's CSV→FHIR sync — always carry one silent risk: the FHIR copy quietly falls out of sync with the legacy system that still owns the data. Nothing on the FHIR server itself signals staleness, so drift is the failure mode most likely to reach production unnoticed.
-
-#### 🔴 The Hybrid-Model Pain Points
-* **Silent drift**: once the legacy source changes after a sync, the FHIR copy goes stale and every consumer downstream acts on wrong data — until someone notices.
-* **Late discovery**: without an explicit reconciliation step, drift is typically discovered only when a clinical workflow or report surfaces the inconsistency, not before.
-
-#### 💡 The Module 08 Solution
-* **Read-only reconciliation check**: DriftDetectionService compares the current legacy source of truth field-by-field against what is actually stored on the FHIR server (name, gender, birth date, phone).
-* **Three explicit outcomes per record**: in sync, field-level drift (with old vs. new values shown), or missing entirely (never synced or deleted on the server).
-* **Detection only, no writes**: reconciliation (re-running module 04's ETL or a manual fix) remains a separate, deliberate step — module 08 never mutates the FHIR copy.
-
----
-
-## 🛠 Tech Stack (2026 Enterprise Standards)
-* **Language**: C# 12/13 (.NET 10 LTS)
-* **AI Orchestration**: [Microsoft Semantic Kernel](https://github.com/microsoft/semantic-kernel)
-* **Inference Engine**: [Ollama](https://ollama.com/) (Local Llama 3 8B)
-* **FHIR Standard**: HL7 FHIR R4
-* **SDK**: [Firely SDK (Hl7.Fhir.R4)](https://github.com/FirelyTeam/firely-net-sdk)
-* **Security**: SMART on FHIR / OAuth2 (JWT-Ready Architecture)
-
----
-
-## 🧠 Engineering Challenges & Solutions
-
-### Challenge 1: LLM Non-Determinism in Medical Data
-**Problem**: LLMs can sometimes "hallucinate" or produce conversational chatter instead of clean JSON.
-**Solution**: Implemented a **Regex Shield** to extract pure JSON payloads and added a **Deterministic Validator** layer in C# to ensure clinical logic (e.g., date of birth cannot be in the future).
-
-### Challenge 2: Memory Pressure during Bulk ETL
-**Problem**: Processing millions of FHIR resources can lead to high GC (Garbage Collection) overhead.
-**Solution**: Optimized the pipeline using **.NET 10 JSON Source Generation** and `ReadOnlySpan<char>`, reducing memory allocation by approximately 40% compared to traditional reflection-based serialization.
-
----
-
----
-
-## 🛡️ HIPAA Technical Safeguards Implementation (45 CFR §164.312)
-
-| Control | HIPAA Requirement | Implementation | Status |
+| Control | HIPAA Security Rule (45 CFR) | Where to look | Status |
 | :------ | :---------------- | :-------------- | :----- |
-| **Access Control** | §164.312(a)(1) | `RbacAuth.cs` — 8-role RBAC matrix with least-privilege enforcement | ✅ Complete |
-| **Authentication** | §164.312(a)(2)(iii) | `SmartOnFhirAuthService.cs` — OAuth2/OIDC Client Credentials flow, token caching + auto-refresh | ✅ Complete |
-| **Encryption at Rest** | §164.312(a)(2)(iv) | `PhiEncryptionService.cs` — AES-256-GCM with 12-byte nonce, authentication tag, key rotation support | ✅ Complete |
-| **Audit Controls** | §164.312(b) | `AuditLog.cs` — UTC-timestamped JSON audit entries with immutable structure | ✅ Complete |
-| **Integrity Controls** | §164.312(c)(1) | `ResourceValidationService.cs` + Conditional PUT (ETag) — prevents silent data corruption | ✅ Complete |
-| **Transmission Security** | §164.312(e)(1) | TLS 1.2+ enforced via `SocketsHttpHandler` configuration in all FHIR client factories | ⚠️ Configured |
-| **Consent Management** | §164.508 / (g)(10) | `ConsentManager.cs` — Purpose-of-use validation tied to FHIR Consent resources | ✅ Complete |
+| Access control | §164.312(a)(1) | `RbacAuth` — 8-role matrix (SysAdmin, Physician, Nurse, FrontDesk, Biller, Insurance, Patient, Auditor), least-privilege defaults | Demonstrated in code |
+| Authentication | §164.312(a)(2)(iii) | `SmartOnFhirAuthService` — OAuth2/OIDC client-credentials, token caching + refresh | Demonstrated in code |
+| Encryption at rest | §164.312(a)(2)(iv) | `PhiEncryptionService` — AES-256-GCM, 12-byte nonce, 16-byte auth tag | Demonstrated in code |
+| Audit controls | §164.312(b) | `AuditLog` — UTC-timestamped JSON entries (who/when/what/where) | Demonstrated in code |
+| Integrity controls | §164.312(c)(1) | `ResourceValidationService` + Conditional PUT (ETag) in the ETL path | Demonstrated in code |
+| Transmission security | §164.312(e)(1) | TLS 1.2+ required; strict certificate validation by default (see Security Notice) | Enforced by configuration |
+| Consent management | §164.508 | `ConsentManager` — purpose-of-use checks | Demonstrated in code |
 
----
+### 🏥 US Core profile support (demo scope)
 
-## 🏥 US Core IG v7.1.0 Compliance Status
+This project demonstrates selected interoperability patterns related to **US Core** and **SMART on FHIR**:
 
-This project targets **HL7 US Core Implementation Guide Release 4 / v7.1.0** profiles as mandated by ONC (g)(10) for certified EHR systems:
+- `UsCoreProfiles` recognizes these profile URIs: `us-core-patient`, `us-core-observation-lab`, `us-core-observation-vital-signs`, `us-core-encounter`, `us-core-condition`, `us-core-medication-request`, `us-core-allergyintolerance`.
+- `UsCoreConformanceChecker.CheckPatientConformance(patient)` verifies that a `Patient` declares one of the expected US Core profile URIs in `Meta.Profile`; `EnsureUsCoreProfile(patient)` can attach the Patient profile during ETL.
+- **Scope note:** this is *profile-declaration checking* (does the resource carry the right `Meta.Profile` URI?), not full US Core IG conformance testing, and it does not imply ONC certification.
 
-| US Core Profile | StructureDefinition URI | Code Support | Validation |
-| :-------------- | :---------------------- | :----------- | :--------- |
-| **Patient** | `us-core-patient` | ✅ `FhirPatientMapper` + `UsCoreProfiles` | ✅ Conformance checked |
-| **Observation (Lab)** | `us-core-observation-lab` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
-| **Observation (Vital Signs)** | `us-core-vital-signs` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
-| **Encounter** | `us-core-encounter` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
-| **Condition** | `us-core-condition` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
-| **MedicationRequest** | `us-core-medication-request` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
-| **AllergyIntolerance** | `us-core-allergyintolerance` | ✅ `UsCoreProfiles` | ✅ Conformance checked |
+### 08 — Data Drift Detector
 
-The `UsCoreConformanceChecker` validates that each FHIR resource declares its expected US Core profile URI in `Meta.Profile`, and `EnsureUsCoreProfile()` can automatically attach the correct profile to Patient resources during ETL.
+Read-only reconciliation for hybrid architectures: compares the current legacy source of truth (CSV) field-by-field (name, gender, birth date, phone) against what is actually stored on the FHIR server. Each record ends up as one of three explicit outcomes:
 
----
+- **In sync**
+- **Field-level drift** — with old vs. new values shown
+- **Missing on server** — never synced, or deleted
 
-## 📚 Medium Series Reference Matrix
-
-| # | Medium Article | Module Folder | Service Class(es) | Key Features |
-|:-:|---------------|--------------|------------------|-------------|
-| 1 | [Build Your First FHIR Client](https://medium.com/@rex.fan18) | `src/01-Basic-Client/` | `FhirBasicService` | Patient read, basic search, Create/Update/Delete |
-| 2 | [Advanced Query](https://medium.com/@rex.fan18) | `src/02-Advanced-Query/` | `AdvancedQueryService` | Chained parameters, `_include`, `_revinclude`, token/prefix filtering |
-| 3 | [Resource Validator](https://medium.com/@rex.fan18) | `src/03-Resource-Validator/` | `ResourceValidationService`, `UsCoreConformanceChecker` | Firely SDK validation, US Core profile conformance |
-| 4 | [Data Mapping ETL](https://medium.com/@rex.fan18) | `src/04-Data-Mapping-ETL/` | `EtlPipelineService`, `FhirPatientMapper` | CSV extraction, Mapperly source-gen, Conditional PUT idempotency |
-| 5 | [SMART on FHIR](https://medium.com/@rex.fan18) | `src/05-SMART-on-FHIR/` | `SmartOnFhirAuthService`, `SmartFhirEtlService` | OAuth2/OIDC auth, token cache/refresh, US Core ETL pipeline |
-| 6 | [AI Data Validator](https://medium.com/@rex.fan18) | `src/06-AI-Data-Validator/` | `AiValidatorService`, `ClinicalGuardrails` | Ollama local LLM, regex JSON shield, deterministic guardrails |
-| 7 | [Compliance Demo](https://medium.com/@rex.fan18) | `src/07-HIPAA-Compliance-Demo/` | `HipaaComplianceOrchestrator`, `RbacAuth` | 8-role RBAC, consent validation, audit logging |
-| 8 | (draft/TBD) | src/08-Data-Drift-Detector/ | DriftDetectionService | Field-level drift detection, missing-record detection, hybrid-model reconciliation |
-
----
-
-## Changelog and Version History
-### v1.3.5 - 2026-09-07 (Data Drift Detection, Hybrid Model Reconciliation)
-* **New module 08** (src/08-Data-Drift-Detector): read-only reconciliation tool that compares the current legacy source-of-truth CSV against the FHIR resources synced by module 04, reporting per-record drift (missing / field-level drift / in sync)
-* **New DriftDetectionService** in the shared library (HealthDataInteropSharedLibrary.DriftDetection namespace): Compare() for single-record comparison, DriftReport.Summarize() for batch reporting — purely additive public API, no existing types or method signatures changed
-* **README `Scope & Stability`** now states explicitly which FHIR architectural model (facade / hybrid / FHIR-native) this toolkit assumes, and where each module fits
-* **Test suite expanded** from 169 to 180 passing tests (11 new, DriftDetectionServiceTests.cs), covering field-drift detection, missing-record detection, test-name-marker stripping, and a gender-comparison regression guard
-* **Backward-compatible, purely additive change** — a PATCH bump (1.3.4 → 1.3.5) rather than minor: this project's own Stability note already treats minor-version bumps on the 1.x line as carrying possible API changes, and this addition is a small, self-contained new demo module and shared-library namespace rather than a change to the library's core surface
-
-### v1.3.4 - 2026-09-02 (Security Hardening, PHI-Masked Logging)
-* **TLS certificate validation now STRICT by default** across the library and all demo modules
-* **Breaking change:** the `enableHttps` constructor flag on `FhirBasicService` and `AdvancedQueryService` was removed — certificate validation is now always enforced unless you opt in via the environment variable below
-* **Dev-only TLS bypass is opt-in** via HEALTHDATA_INSECURE_SKIP_TLS=1 (OFF by default) — never enable in production
-* **Application logging is PHI-masked** (SSN / name / DOB / phone / email) before reaching the Serilog sink
-* Fixed the broken README quick-start example and stale pages-site API samples
-
-### v1.3.4 - 2026-08-11 (Codebase Upgrades, Stability Improvements)
-* **Code improvements**: Various code quality and stability enhancements across the shared library
-* **Bug fixes**: Minor issues resolved based on integration testing feedback
-* **NuGet package size optimized**: Streamlined transitive dependencies for faster restore times
-
-### v1.3.2 - 2026-08-11 (Dependency Cleanup, Security Hardening)
-* **Removed Microsoft.SemanticKernel alpha dependency**: Eliminated known critical vulnerability warning (NU1904/GHSA-2ww3-72rp-wpp4) and NuGet NU5104 stable-release warning
-* **Native HttpClient for Ollama**: Replaced heavy SemanticKernel framework with lightweight native HttpClient — smaller NuGet package, zero alpha dependencies
-* **NuGet package size reduced** by removing unnecessary transitive dependencies
-### v1.3.1 - 2026-08-11 (Embedded FHIR R4 Specification, Validation Fix)
-* **FHIR R4 Spec Embedded**: Bundled specification.zip (~6MB) via ContentFiles for reliable offline validation
-* **ResourceValidationService Rewritten**: Removed ineffective Polly retry logic. Clean init/fallback pattern now
-* **README Images Fixed**: Replaced untrusted GitHub blob URLs with raw.githubusercontent.com CDN links
-* **Module 04 Fix**: Use HttpClientHandler for consistent SSL bypass behavior across all demo modules
-### v1.3.0 - 2026-08-11 (Portfolio Improvements, HIPAA Security Hardening, US Core Conformance)
-
-**What Changed:**
-
-* **SMART on FHIR Authentication Service** (Module 05): Added `SmartOnFhirAuthService` implementing OAuth2/OIDC Client Credentials flow with token caching, automatic refresh, and authenticated FhirClient factory per HIPAA §164.312(a)(2)(iii). Closes the gap between Article 5 claims and actual implementation.
-* **PHI Encryption Service** (Shared-Library): Added `PhiEncryptionService` using AES-256-GCM (256-bit key, 12-byte nonce, 16-byte authentication tag) for HIPAA-compliant encryption at rest per §164.312(a)(2)(iv).
-* **US Core Profile Conformance** (Module 03): Added `UsCoreConformanceChecker` and `UsCoreProfiles` — validates that FHIR resources declare expected US Core IG v7.1.0 StructureDefinition URIs in `Meta.Profile`. Supports Patient, Observation, Encounter, Condition, MedicationRequest, AllergyIntolerance profiles.
-* **ILogger Abstraction Layer** (Shared-Library): Added `IApplicationLogger` interface and `ConsoleLogger` implementation with UTC timestamped log levels (Info/Warn/Error/Critical) for HIPAA audit trail readiness.
-* **Duplicate DTO Consolidation**: Removed duplicate `LegacyPatientRecord` from Module 04 — now exclusively uses Shared-Library version.
-* **Test Suite Expanded**: From **163** to **169** passing MSTest v3 tests (cleaned up redundant SDK-level boundary checks while retaining core business logic coverage) covering encryption, authentication, US Core conformance, and logging abstraction.
-
----
-
-
-### v1.2.0 - 2026-08-09 (Service Abstraction, Code Standard Refactoring, Mapperly Source Generator)
-
-**What Changed:**
-
-* **Service Class Extraction** (Modules 01-07): Extracted functional logic into reusable, unit-testable service classes:
-  - FhirBasicService (Module 01) - Basic FHIR Patient CRUD operations
-  - AdvancedQueryService (Module 2) - Chained search and _include/_revinclude queries
-  - ResourceValidationService (Module 3) - Firely SDK FHIR resource validation
-  - EtlPipelineService (Module 04) - CSV extraction, transformation, transaction bundle loading
-  - SmartFhirEtlService (Module 05) - SMART-on-FHIR ETL pipeline with US Core profile support
-  - AiValidatorService + ClinicalGuardrails (Module 06) - AI-assisted data cleaning with guard validation
-  - HipaaComplianceOrchestrator (Module 07) - HIPAA compliance workflow orchestration
-
-* **Mapperly Source Generator**: Fixed and configured Mapperly (Riok.Mapperly v4.1.1) for compile-time mapping:
-  - Resolved ObjectFactory signature errors (RMG022) and abstract member issues (CS0621)
-  - Gender normalization via [UserMapping] with centralized GenderNormalizer (fixes Module 05 female→Male mapping bug)
-  - Static helpers (BuildHumanName, BuildTelecom) for inline Name/Telecom construction
-
-* **Guard Helper Unification**: Consolidated parameter validation across Shared-Library using internal Guard class (NotNull, NotNullOrEmpty) per CodeStandard.md requirements
-
-* **Shared-Library Enhancement**: Added Hl7.Fhir.R4 and Riok.Mapperly package references; moved DTO models (LegacyPatientRecord, RawPatientData) and mapper to shared library for cross-module reuse
-
-* **Project Reference Updates**: Updated csproj files (Modules 04, 05) with proper Shared-Library project references
-
-**Behavior Notes (intentional, review-highlighted):**
-
-* **Data-integrity fix (Module 05 gender)**: The pre-refactor `record.Gender?.ToLower().Contains("male")` check matched the substring in "female" (fe-"male") and imported female patients as `Male`. Centralized `GenderNormalizer` now maps `female`/`f`/`woman` → `Female` and unrecognized/empty values → `Unknown`. This is a deliberate bug fix, not a regression.
-
-* **Module 05 output parity**: Pre-refactor Module 05 created Patients without a business Identifier. `MapRaw` now attaches an Identifier only when enabled (default), and Module 05 passes `addIdentifier: false` so created resources match pre-refactor output.
-
-* Everything else: business logic preserved; Program.cs entry points delegate to service classes without behavioral changes.
-
----
-
-
-### v1.1.0 - 2026-08-07 (TDD, Code Standard Compliance, and .NET 10 Unification)
-
-**What Changed:**
-
-* **TDD Unit Test Suite**: Added comprehensive MSTest v3 + FluentAssertions test suite with **163 passing tests** across 6 test files covering:
-  - RbacAuthTests.cs - Full permission matrix for all 8 FHIR user roles, enum validation, boundary conditions
-  - ConsentManagerTests.cs - Consent verification, parameter validation (null/empty throws), idempotency, console output capture
-  - AuditLogTests.cs - HIPAA audit log structure, UTC timestamp validation, JSON format, static method testing
-  - ParameterValidationTests.cs - Guard clause testing, invalid enum rejection, end-to-end HIPAA workflow integration
-  - FhirPatientModelTests.cs - FHIR Patient model serialization/deserialization, gender mapping, round-trip validation, special character handling, malformed JSON resilience
-  - LegacyPatientRecordTests.cs - Record equality, copy-with semantics, nullable properties, hash code consistency
-
-* **Test Coverage**: Tests cover expected scenarios (happy path), error scenarios (exception throwing for null/empty inputs), and boundary conditions (enum edge values, whitespace inputs, special characters)
-
-* **.NET 10 Unification**: Unified all 9 project target frameworks to net10.0 (previously Shared-Library and 07-HIPAA-Compliance-Demo were on net8.0)
-
-* **Code Standard Compliance** (per docs/CodeStandard.md):
-  - Added bilingual XML doc comments on all public classes, methods, and properties in Shared-Library
-  - Added parameter validation guards in AuditLog, ConsentManager, and RbacAuth
-  - Added bilingual XML comments to RawPatientData model (05-SMART-on-FHIR)
-  - All console output messages remain in English for encoding safety
-
-* **Code Cleanup**: Removed unnecessary using System and using System.IO directives from source files and test files (covered by ImplicitUsings)
-
-**No Breaking Changes:** All business logic preserved. No code behavior changes.
-
----
-
----
-
----
-## Why Use This Library?
-
-Healthcare data interoperability is one of the most challenging problems in modern software engineering. This library addresses real-world pain points:
-
-| Problem | Solution |
-|---------|----------|
-| **FHIR specification has thousands of pages** | Clean, testable services wrap patient CRUD, search, and validation so you do not reinvent the wheel |
-| **HIPAA compliance requires careful coding** | RBAC, PHI masking before logging, immutable audit trails, and encryption helpers are built in |
-| **ONC certification needs US Core conformance** | Validates your resources against federal standards before they hit production |
-| **Legacy CSV/SQL to FHIR migration is tedious** | ETL pipeline automates mapping, gender normalization, and idempotent upserts with compile-time code generation (Mapperly) |
-| **Messy clinical data fails traditional validation** | Local AI (Ollama) normalizes fuzzy text without sending PHI to the cloud |
-| **Public FHIR servers cause unpredictable errors** | Each module has graceful fallbacks for network issues, spec downloads, and duplicate resource handling |
-
-*This library demonstrates healthcare interoperability patterns. It is intended as a reference implementation and educational resource - see the License section below.*
-
----
-
-## 📦 NuGet Package
-
-**Package ID**: `HealthData.Interop.Fhir`  
-**Version**: [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Fhir)](https://www.nuget.org/packages/HealthData.Interop.Fhir/)  
-**License**: MIT | **Author**: Rong(Rex) Fan
-
-A .NET 10 reference library for Healthcare Data Interoperability, featuring:
-- 🔷 **FHIR R4 Client Utilities** - Search, retrieve, and create resources
-- 🛡️ **HIPAA Compliance Helpers** - RBAC, PHI Encryption, Immutable Audit Logs
-- ⚖️ **US Core Conformance Checker** - Validates resources against federal standards
-- 🤖 **AI Data Validator** - Local LLM-powered semantic normalization (Ollama)
-- 🔄 **ETL Pipeline** - CSV/JSON to FHIR migration with idempotency
-- 🔐 **SMART on FHIR Auth** - OAuth2/OIDC authentication for EHR access
-
-### Installation
+Detection only: module 08 never writes to the FHIR copy; reconciliation is a separate, deliberate step (re-run module 04 or fix manually).
 
 ```bash
-# Via .NET CLI
-dotnet add package HealthData.Interop.Fhir
-
-# Via Package Manager Console
-Install-Package HealthData.Interop.Fhir
+dotnet run --project src/08-Data-Drift-Detector
 ```
 
-### Quick Start Example
+- Run module 04 first so the server has a baseline to compare against.
+- Targets `https://hapi.fhir.org/baseR4` by default; edit `Program.cs` for your own server.
+- Key API: `DriftDetectionService.Compare(legacyRecord, fhirPatient)`, `DriftReport.Summarize(results)`.
 
-Minimal example: read a Patient by name, then validate it against the FHIR R4 spec.
+## 🛠 How to run
+
+**Prerequisites**
+
+- **.NET 10 SDK** — `global.json` pins `10.0.302`; any 10.0.x SDK works if you adjust `rollForward`. Sample apps target `net10.0`; the shared library targets `net8.0` (usable from .NET 8/9/10 apps).
+- **Internet access** for the modules that talk to public FHIR test servers (01, 02, 04, 05, 08).
+- **[Ollama](https://ollama.com/) + `llama3`** for module 06 (`ollama pull llama3`).
+- (Optional) An OIDC provider with a client-credentials app, if you want to exercise module 05's `SmartOnFhirAuthService` against a real identity server.
+
+**Run a module**
+
+```bash
+git clone https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git
+cd HealthData-Interoperability-Csharp
+
+dotnet run --project src/1-Basic-Client
+dotnet run --project src/02-Advanced-Query
+dotnet run --project src/03-Resource-Validator
+dotnet run --project src/04-Data-Mapping-ETL
+dotnet run --project src/05-SMART-on-FHIR
+dotnet run --project src/06-AI-Data-Validator
+dotnet run --project src/07-HIPAA-Technical-Safeguards-Demo
+dotnet run --project src/08-Data-Drift-Detector
+```
+
+**Run the tests**
+
+```bash
+dotnet test
+```
+
+180 unit tests (MSTest v3 + FluentAssertions) cover the shared library services — RBAC matrix, consent checks, audit log shape, PHI encryption round-trip, gender normalization, US Core conformance checks, SMART auth option validation, drift comparison, and the FHIR patient mapper.
+
+**FHIR spec validation note (module 03):** the R4 specification is embedded in the package, so full validation works offline; if it is ever missing, basic structural validation is used as an automatic fallback (no crash).
+
+## ⚠️ Limitations
+
+- **Early-stage.** The public API may still change between minor versions. Use it in non-critical or proof-of-concept work until a stable 2.x line.
+- **Not production-certified.** Nothing here is a certified HIPAA solution, an ONC-certified product, or a full US Core conformance implementation.
+- **No performance benchmarks.** There are no reproducible latency/allocation benchmarks in this repository; no performance figures are claimed.
+- **Public test servers.** Modules 01/02/04/05/08 default to public FHIR test servers (`server.fire.ly`, `hapi.fhir.org`) and may create records there. Review the URLs in each `Program.cs` before running, and never point them at production data without care.
+- **Local AI module (06).** Output quality depends on the local model; guardrails reject obviously invalid results but cannot guarantee clinical correctness.
+- **Scope.** These are reference examples for specific scenarios (Patient-centric). They are not a general-purpose FHIR framework.
+
+## 📦 Dependencies
+
+| Package | Version | Used for |
+| :--- | :--- | :--- |
+| [Hl7.Fhir.R4](https://www.nuget.org/packages/Hl7.Fhir.R4/) | 6.0.2 | FHIR R4 client & resource model (Firely .NET SDK) |
+| [Firely.Fhir.Validation.R4](https://www.nuget.org/packages/Firely.Fhir.Validation.R4/) | 3.1.0 | FHIR R4 resource validation |
+| [CsvHelper](https://www.nuget.org/packages/CsvHelper/) | 33.1.0 | CSV reading in ETL / drift modules |
+| [Riok.Mapperly](https://www.nuget.org/packages/Riok.Mapperly/) | 4.1.1 | Compile-time mapping (CSV → FHIR) |
+| [IdentityModel](https://www.nuget.org/packages/IdentityModel/) | 7.0.0 | OAuth2/OIDC client-credentials (SMART on FHIR) |
+| [Polly](https://www.nuget.org/packages/Polly/) | 8.4.2 | Resilience primitives |
+| [Serilog](https://www.nuget.org/packages/Serilog/) | 4.3.0 (+ console/file sinks) | Structured logging |
+| [Microsoft.Extensions.Configuration.Json](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/) | 10.0.2 | `appsettings.json` config in module 05 |
+| Ollama + `llama3` | — | Local LLM for module 06 (optional) |
+
+Test stack: MSTest 3.8.3, FluentAssertions 8.5.0.
+
+## 🔐 Security notes
+
+- **TLS certificate validation is STRICT by default.** A certificate-validation bypass exists **only** for local development (e.g. self-signed MITM proxy) and is **off by default** — it activates only if you explicitly set `HEALTHDATA_INSECURE_SKIP_TLS=1` before starting the process. Never set it in production; disabling TLS validation conflicts with HIPAA §164.312(e)(1) transmission-security requirements.
+- **PHI-masked logging.** Console/log output passes through `PhiMasker`: SSN, patient names, dates of birth, phone numbers, and emails are replaced with placeholders before they reach the console or log sinks (`SafeConsole`, `SafeInformation/SafeWarning/SafeError` extensions).
+- **Local AI (module 06)** is designed for local inference without sending data to a cloud LLM. "Local" reduces exposure but is not a guarantee — validate your own threat model before handling real PHI.
+
+## 📦 NuGet package
+
+**Package ID:** `HealthData.Interop.Fhir` · **License:** MIT · **Target:** .NET 8.0 (works on .NET 9/10+)
+
+```bash
+dotnet add package HealthData.Interop.Fhir
+```
+
+Quick start (verified against the current public API):
+
 ```csharp
 using HealthDataInteropSharedLibrary.BasicClient;
 using HealthDataInteropSharedLibrary.ResourceValidator;
@@ -445,63 +348,69 @@ if (patients.Count > 0)
 }
 ```
 
----
-## 📖 Getting Started
+## 🗂 Repository structure
 
-1.  **Environment Setup**
-    * Install **.NET 10 SDK or later** (the library package ships on .NET 8 LTS for broad compatibility; all demo apps run on .NET 10).
-    * (Optional for Module 06) Install [Ollama](https://ollama.com/) and run ollama run llama3.
-3.  **FHIR Spec Validation Note**
-    * Module 03 (Resource Validator) uses the Firely SDK which downloads the FHIR R4 specification (~40MB) on first run.
-    * If network is unavailable, basic structural validation is used as fallback automatically.
-    * NuGet consumers experience a smooth offline fallback without crashes.
-
-2.  **Run Validation Tests**
-```bash
-dotnet test
+```
+HealthData-Interoperability-Csharp/
+├── src/
+│   ├── 1-Basic-Client/                     # 01: patient create + search
+│   ├── 02-Advanced-Query/                  # 02: chained search / _include
+│   ├── 03-Resource-Validator/              # 03: FHIR R4 spec validation
+│   ├── 04-Data-Mapping-ETL/                # 04: CSV → FHIR upsert
+│   ├── 05-SMART-on-FHIR/                   # 05: OAuth2/OIDC + ETL
+│   ├── 06-AI-Data-Validator/               # 06: local-LLM normalization
+│   ├── 07-HIPAA-Technical-Safeguards-Demo/ # 07: RBAC/consent/audit demo
+│   ├── 08-Data-Drift-Detector/             # 08: read-only reconciliation
+│   ├── HealthDataInteropSharedLibrary/     # shared services (NuGet package)
+│   └── tests/                              # MSTest v3 unit tests (180 tests)
+├── docs/                                   # CodeStandard, RBAC design doc, CN readme
+├── pages/                                  # GitHub Pages documentation site
+└── images/                                 # execution screenshots
 ```
 
----
-## ⚠️ Security Notice
+## 📝 Changelog
 
-**[EN] TLS Certificate Validation:**
-- **STRICT by default.** The library and all demo apps enforce TLS certificate validation out of the box.
-- **DEV-only bypass (opt-in, OFF by default):** A certificate-validation bypass is available ONLY for local development (e.g. behind a proxy/firewall with a self-signed MITM cert). It is enabled **only** when you explicitly set the environment variable `HEALTHDATA_INSECURE_SKIP_TLS=1` before starting the process.
-- **Production:** Do **not** set `HEALTHDATA_INSECURE_SKIP_TLS`. Disabling TLS validation violates HIPAA §164.312(e)(1) transmission security. For production, enforce HTTPS-only endpoints, HSTS, and TLS 1.2+ minimum.
+See [CHANGELOG.md](./CHANGELOG.md) for version history.
 
-**[CN] TLS 证书验证说明：**
-- **默认严格开启。** 库与所有示例默认都会验证 TLS 证书。
-- **仅开发调试可选开关（默认关闭）：** 证书校验绕过仅用于本地开发（如企业代理/防火墙的自签名证书），仅当你在启动进程前显式设置环境变量 `HEALTHDATA_INSECURE_SKIP_TLS=1` 时才生效。
-
-**安全日志：** 库内输出的日志会经过 `PhiMasker` 脱敏（SSN、姓名、出生日期、电话、邮箱等自动置为占位符），降低 PHI 泄露风险。
-
-
----
-
-> 📢 **Building FHIR interoperability?** I made a free checklist of the [12 pitfalls teams hit before Cures Act certification](https://mailchi.mp/83cafe450eef/rex-landing-page).
-
-## 🔗 Related Projects / 相关项目
+## 🔗 Related projects / 相关项目
 
 | Project | Description |
 |---------|-------------|
-| [Quant.Infra.Net](https://github.com/memoryfraction/Quant.Infra.Net) | One-stop .NET quantitative trading infrastructure — multi-source data ingestion, unified broker execution, portfolio analytics. 一站式 .NET 量化交易基础设施 —— 多源数据接入、统一券商执行、组合分析。 |
-| [LLSDA](https://github.com/memoryfraction/LLSDA-Lightning-Location-System-Data-Analyzer) | Open-source lightning location system (LLS) data analysis library — published on NuGet, cited in a TechRxiv preprint. 开源闪电定位系统数据分析类库 —— 已发布 NuGet 包，并被 TechRxiv 预印本引用。 |
+| [Clinic FHIR Server](https://clinic-fhir-server-app.blackdesert-8e20099d.eastasia.azurecontainerapps.io/) | A multi-tenant FHIR R4 server for clinics and community health centers: tenant-isolated FHIR storage, role-based access control, audit logging, and PHI encryption. |
+| [XBridge](https://fhir-converter.greengrass-8e23c1df.westus.azurecontainerapps.io/) | A Prior Authorization toolkit that validates X12 278 transactions against payer Companion Guide rules and converts between X12 and FHIR R4, running entirely in your browser locally. |
+| [Quant.Infra.Net](https://github.com/memoryfraction/Quant.Infra.Net) | One-stop .NET quantitative trading infrastructure — multi-source data ingestion, unified broker execution, portfolio analytics. |
+| [LLSDA](https://github.com/memoryfraction/LLSDA-Lightning-Location-System-Data-Analyzer) | Open-source lightning location system (LLS) data analysis library — published on NuGet, cited in a TechRxiv preprint. |
 
 > More projects by the same author: [github.com/memoryfraction](https://github.com/memoryfraction)
 
----
+## ☕ Collaboration
 
-## 👤 Contact & Collaboration
-**Rong(Rex) Fan** - 10+ Yrs .NET/C# | AI & Healthcare Interoperability (FHIR/HL7)
-* **LinkedIn**: [Rex Linkedin](https://www.linkedin.com/in/rongfan1031/)
-* **Upwork**: [Rex Upwork](upwork.com/freelancers/~0130de8f5f5eeebb0f)
-* **Consultation**: [Schedule a 30-min Call](https://calendly.com/rex-fan18/30min)
-* **Focus**: Building High-Performance, Compliant Healthcare Systems. no sponsorship needed in US
+Working on FHIR / healthcare interoperability and think we could help each other? Reach out by email or book a meeting.
 
----
+### 🎁 Free: The FHIR R4/R5 Compliance Checklist
 
+*The 12 pitfalls teams hit on the road to 21st Century Cures Act certification — in one printable PDF.*
+*Get the checklist, plus occasional deep-dives on healthcare interoperability. No spam, unsubscribe anytime.*
 
+**[📧 Subscribe — Get the Free US Healthcare Checklist](https://mailchi.mp/83cafe450eef/rex-landing-page)**
 
+## 👤 Contact
 
+**Rong (Rex) Fan** — .NET/C# · healthcare interoperability (FHIR/HL7) · AI engineering
 
+- **Email**: [rex.fan18@gmail.com](mailto:rex.fan18@gmail.com)
+- **LinkedIn**: [Rong Fan](https://www.linkedin.com/in/rongfan1031/)
+- **GitHub**: [memoryfraction](https://github.com/memoryfraction)
+- **Book a meeting**: [Schedule a 30-min call](https://calendly.com/rex-fan18/30min)
 
+## 📄 License
+
+[MIT](./LICENSE) — this repository is intended as a reference implementation and educational resource. You are free to read, copy, and adapt the code; see the LICENSE file for the full terms. No warranty of any kind.
+
+## 🙌 Support this work
+
+If this work is helpful to you, feel free to send a small gift — it helps support my work and keep the project maintained.
+
+- **GitHub Sponsors**: [github.com/sponsors/memoryfraction](https://github.com/sponsors/memoryfraction)
+- **Venmo** (Rong Fan): [venmo.com/code?user_id=1873693978394624136](https://venmo.com/code?user_id=1873693978394624136)
+- **PayPal** (Rong Fan): [paypal.com/qrcodes/p2pqrc/EN4HJNCRZC5ZS](https://www.paypal.com/qrcodes/p2pqrc/EN4HJNCRZC5ZS)

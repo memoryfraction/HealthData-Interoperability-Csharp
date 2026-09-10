@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthData.Interop.Fhir - Healthcare Interoperability Library by Rong(Rex) Fan</title>
+    <title>HealthData.Interop.Fhir - HealthData Interoperability for .NET</title>
     <style>
         :root { --primary: #2563eb; --secondary: #475569; --success: #16a34a; --bg: #f8fafc; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,12 +44,12 @@
 <header>
     <div class="container">
         <h1>HealthData.Interop.Fhir</h1>
-        <p>A .NET 10 reference library for Healthcare Data Interoperability, FHIR R4 client utilities, HIPAA compliance helpers, and US Core conformance checking.</p>
+        <p>A runnable reference implementation for HL7 FHIR R4 interoperability on .NET, built on the Firely .NET SDK — with working examples you can read, run, and adapt: FHIR R4 client utilities, HIPAA Security Rule–oriented security examples (RBAC, consent, audit, PHI masking), and US Core profile checks.</p>
         <div class="badges">
-            <span class="badge">.NET 10</span>
+            <span class="badge">.NET 8 library / .NET 10 samples</span>
             <span class="badge">FHIR R4</span>
-            <span class="badge">HIPAA Compliant</span>
-            <span class="badge">US Core IG</span>
+            <span class="badge">HIPAA Security Rule examples</span>
+            <span class="badge">US Core profile checks</span>
             <a class="badge" href="https://www.nuget.org/packages/HealthData.Interop.Fhir/1.3.5" target="_blank" rel="noopener">v1.3.5</a>
             </div>
     </div>
@@ -59,7 +59,7 @@
     <div class="container">
         <a href="#install">Install</a>
         <a href="#quick-start">Quick Start</a>
-        <a href="#modules">Modules & Value</a>
+        <a href="#modules">Modules</a>
         <a href="#api">API Reference</a>
         <a href="#sample">More Projects</a>
         <a href="#license">License</a>
@@ -125,82 +125,94 @@ paket add HealthData.Interop.Fhir</code></pre>
 
 <section id="quick-start">
     <h2>Quick Start</h2>
-    <p>Get up and running in minutes with FHIR R4 client operations:</p>
+    <p>Get up and running with FHIR R4 client operations:</p>
     <pre><code>using HealthDataInteropSharedLibrary.BasicClient;
 using HealthDataInteropSharedLibrary.ResourceValidator;
-using Hl7.Fhir.Model;
 
-var client = new FhirBasicService("https://r4.ontoserver.cignacorp.org/fhir");
+var client = new FhirBasicService("https://your-fhir-server/fhir");
 
 // Search patients by name
-var results = await client.SearchPatientsByNameAsync("John");
+var results = await client.SearchPatientsByNameAsync("Doe");
 foreach (var patient in results)
 {
     Console.WriteLine($"Patient: {FhirBasicService.FormatPatientName(patient)}");
 }
 
+// Create a patient
+var created = await client.CreatePatientAsync(
+    new[] { "John" }, "Doe", "male", "1985-01-15", "MRN-1234");
+
 // Validate a Patient resource against the R4 specification
 var validator = new ResourceValidationService();
-bool valid = validator.Validate(patient);</code></pre>
+if (results.Count > 0)
+{
+    bool valid = validator.Validate(results[0]);
+    Console.WriteLine(valid ? "Valid against FHIR R4." : "Validation found issues.");
+}</code></pre>
 </section>
 
-
 <section id="why">
-    <h2>Why Use This Library?</h2>
-    <p>Healthcare data interoperability is one of the most challenging problems in modern software engineering. This library addresses real-world pain points:</p>
+    <h2>What This Project Demonstrates</h2>
+    <p>This repository is an application-layer toolkit and reference implementation for HL7 FHIR R4 interoperability on .NET, built on the Firely .NET SDK. It does <strong>not</strong> replace a FHIR server, and it does not by itself provide certified HIPAA or ONC compliance. It is a set of working patterns you can read, run, and adapt:</p>
     <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-        <li><strong>FHIR Complexity Made Simple</strong> — The FHIR specification has thousands of pages. This library wraps the most commonly used operations (patient CRUD, search, validation) into clean, testable services so you don't have to reinvent the wheel.</li>
-        <li><strong>HIPAA Compliance by Design</strong> — Role-Based Access Control (RBAC), PHI masking before logging, immutable audit trails, and encryption helpers are built in. You shouldn't need a compliance consultant to write safe healthcare code.</li>
-        <li><strong>US Core Conformance Checking</strong> — ONC certification requires US Core profile conformance. This library validates your resources against federal standards before they hit production.</li>
-        <li><strong>ETL Without the Headache</strong> — Migrating legacy CSV/SQL data to FHIR is tedious. The ETL pipeline automates mapping, gender normalization, and idempotent upserts with compile-time code generation (Mapperly).</li>
-        <li><strong>Local AI Validation</strong> — Normalize messy clinical data using a local LLM (Ollama). No PHI leaves your network because inference runs entirely on-premise.</li>
-        <li><strong>Battle-Tested Against Public Servers</strong> — Each module is designed to run against real public FHIR servers (hapi.fhir.org, sandbox.smarte.onhealth.it) with graceful fallbacks for network issues, spec downloads, and duplicate resource handling.</li>
+        <li><strong>FHIR client patterns</strong> — Patient create/search and chained-parameter search with <code>_include</code>/<code>_revinclude</code>, wrapped in small testable services on top of the Firely .NET SDK.</li>
+        <li><strong>FHIR resource validation</strong> — Firely SDK validation against the FHIR R4 specification, plus a US Core profile-declaration check (<code>Meta.Profile</code>) — not full US Core IG conformance.</li>
+        <li><strong>CSV → FHIR ETL</strong> — legacy CSV to <code>Patient</code> mapping with idempotent upserts (search-then-Conditional-PUT), compile-time mapping via Mapperly.</li>
+        <li><strong>SMART on FHIR</strong> — OAuth2/OIDC client-credentials flow with token caching, plus a SMART-style ETL import.</li>
+        <li><strong>Local LLM normalization</strong> — a local model (Ollama) normalizes messy records, with deterministic guardrails rejecting invalid output; designed for local inference without sending data to a cloud LLM.</li>
+        <li><strong>HIPAA Security Rule–oriented examples</strong> — RBAC, consent validation, audit logging, PHI masking (45 CFR §164.312-style controls) — illustrative examples, not a compliance certification.</li>
+        <li><strong>Data drift detection</strong> — read-only reconciliation between a legacy source and the synced FHIR copy.</li>
     </ul>
-    <p><em>This library demonstrates healthcare interoperability patterns. It is intended as a reference implementation and educational resource — see the License section below.</em></p>
+    <p><em>It is intended as a reference implementation and educational resource — see the License section below.</em></p>
 </section>
 
 <section id="modules">
-    <h2>Modules & Business Value</h2>
-    <p>Each module solves a specific healthcare interoperability challenge. Here is why you need them:</p>
+    <h2>Modules &amp; What They Demonstrate</h2>
+    <p>Each numbered module is a small console app exercising one scenario:</p>
     <table>
         <thead>
-            <tr><th style="width: 15%;">Module</th><th style="width: 30%;">What it does</th><th class="why-col" style="width: 40%;">Why use this module?</th></tr>
+            <tr><th style="width: 20%;">Module</th><th style="width: 32%;">What it does</th><th class="why-col" style="width: 48%;">What it demonstrates</th></tr>
         </thead>
         <tbody>
             <tr>
-                <td><strong>BasicClient</strong></td>
-                <td>FHIR R4 REST client for Patient/CareProvider operations</td>
-                <td class="why-col">Don't reinvent the wheel. It handles FHIR search parameters and resource parsing out of the box, saving you from writing raw HttpClient boilerplate.</td>
+                <td><strong>01 Basic FHIR Client</strong></td>
+                <td>Patient create + search against a FHIR R4 server</td>
+                <td class="why-col">The basic pattern: point a <code>FhirClient</code> at a server, create and search <code>Patient</code> resources.</td>
             </tr>
             <tr>
-                <td><strong>AdvancedQuery</strong></td>
-                <td>Chained parameters, _include, _summary search strategies</td>
-                <td class="why-col">Basic queries are often slow and return too much data. This optimizes network round-trips and reduces payload size by fetching only what you need.</td>
+                <td><strong>02 Advanced Query</strong></td>
+                <td>Chained search; <code>_include</code>/<code>_revinclude</code></td>
+                <td class="why-col">Fetching related resources in a single query instead of multiple round-trips.</td>
             </tr>
             <tr>
-                <td><strong>ResourceValidator</strong></td>
-                <td>Firely SDK validation + US Core conformance checker</td>
-                <td class="why-col">Clinical data is often messy. This acts as a "clinical firewall," ensuring resources strictly adhere to HL7 FHIR R4 rules and federal US Core requirements before storage.</td>
+                <td><strong>03 FHIR Resource Validation</strong></td>
+                <td>Firely SDK validation + US Core profile check</td>
+                <td class="why-col">Validation against the FHIR R4 specification (works offline), and checking that a <code>Patient</code> declares a US Core profile URI in <code>Meta.Profile</code> — profile-declaration checking, not full IG conformance.</td>
             </tr>
             <tr>
-                <td><strong>Etl</strong></td>
-                <td>CSV to FHIR Patient mapping pipeline with Mapperly</td>
-                <td class="why-col">Most healthcare data exists in legacy databases or Excel. This bridges the gap, migrating legacy CSV/SQL data into standardized FHIR resources automatically.</td>
+                <td><strong>04 Data Mapping / ETL</strong></td>
+                <td>CSV → FHIR <code>Patient</code> mapping pipeline</td>
+                <td class="why-col">Idempotent upserts: search by business identifier first, then Conditional PUT (ETag) or create, batched in a transaction bundle — re-running updates instead of duplicating.</td>
             </tr>
             <tr>
-                <td><strong>AIDataValidator</strong></td>
-                <td>Local LLM (Ollama) semantic data normalization</td>
-                <td class="why-col">Traditional ETL fails on "fuzzy" data. AI semantic analysis can normalize messy text (e.g., different gender formats) where regex falls short, without sending PHI to the cloud.</td>
+                <td><strong>05 SMART on FHIR</strong></td>
+                <td>OAuth2/OIDC client-credentials + SMART-style ETL</td>
+                <td class="why-col">Token acquisition with caching/refresh, an authenticated <code>FhirClient</code>, and scope-based access patterns (<code>openid profile patient/*.read</code>).</td>
             </tr>
             <tr>
-                <td><strong>SmartOnFHIR</strong></td>
-                <td>OAuth2/OIDC SMART on FHIR authentication</td>
-                <td class="why-col">Accessing an EHR is impossible without proper auth. This implements the industry-standard SMART on FHIR protocol for secure, token-based patient access.</td>
+                <td><strong>06 AI-Assisted Data Mapping</strong></td>
+                <td>Local LLM (Ollama) record normalization</td>
+                <td class="why-col">A local model normalizes messy records into a small DTO; deterministic guardrails reject invalid output. Designed for local inference — data does not need to go to a cloud LLM.</td>
             </tr>
             <tr>
-                <td><strong>Compliance</strong></td>
-                <td>HIPAA RBAC, PHI encryption, audit logging</td>
-                <td class="why-col">HIPAA is non-negotiable. This provides out-of-the-box Role-Based Access Control (RBAC) and immutable audit trails to protect you from compliance penalties.</td>
+                <td><strong>07 HIPAA Technical Safeguards Demo</strong></td>
+                <td>RBAC, consent, audit, PHI masking</td>
+                <td class="why-col">Walks one simulated PHI access request through RBAC → consent (purpose of use) → audit log, with PHI-masked console output. A technical-safeguards demo, not a compliance product.</td>
+            </tr>
+            <tr>
+                <td><strong>08 Data Drift Detector</strong></td>
+                <td>Read-only reconciliation, legacy source vs. FHIR copy</td>
+                <td class="why-col">Field-by-field comparison with explicit outcomes: in sync / field-level drift / missing on server. Detection only — it never writes.</td>
             </tr>
         </tbody>
     </table>
@@ -210,12 +222,13 @@ bool valid = validator.Validate(patient);</code></pre>
     <h2>API Reference</h2>
     
     <h3>BasicClient.FhirBasicService</h3>
-    <pre><code>// Constructor: base FHIR server URL
-var service = new FhirBasicService("https://your-fhir-server");
+    <pre><code>// Constructor: FHIR server base URL
+var service = new FhirBasicService("https://your-fhir-server/fhir");
 
 // Key methods:
-var patients = await service.SearchPatientsByNameAsync("John");
-var created  = await service.CreatePatientAsync("John","Doe","male","1985-01-15","MRN-1234");
+var patients = await service.SearchPatientsByNameAsync("Doe");
+var created  = await service.CreatePatientAsync(
+    new[] { "John" }, "Doe", "male", "1985-01-15", "MRN-1234");
 Console.WriteLine(FhirBasicService.FormatPatientName(patients[0]));</code></pre>
 
     <h3>ResourceValidator.ResourceValidationService</h3>
@@ -224,56 +237,61 @@ bool isValid = validator.Validate(patient);
 var issues = validator.GetValidationIssues(patient);</code></pre>
 
     <h3>ResourceValidator.UsCoreConformanceChecker</h3>
-    <pre><code>// Check if a Patient resource conforms to US Core profile
+    <pre><code>// Check if a Patient resource declares a US Core profile
 var result = UsCoreConformanceChecker.CheckPatientConformance(patient);
 Console.WriteLine(result.IsUsCoreConformant); // true or false
 
-// Ensure Patient has US Core profile in Meta
+// Ensure Patient has a US Core profile in Meta
 bool added = UsCoreConformanceChecker.EnsureUsCoreProfile(patient);</code></pre>
 
     <h3>Compliance.HipaaComplianceOrchestrator</h3>
-    <pre><code>// RBAC PHI access check (8 roles)
+    <pre><code>// RBAC PHI access check (8 roles) — synchronous, returns bool
 var orchestrator = new HipaaComplianceOrchestrator();
-bool canRead = await orchestrator.ExecutePhiAccessRequest(
+bool allowed = orchestrator.ExecutePhiAccessRequest(
     userId: "u-1001",
     role: FhirUserRole.Physician,
     ipAddress: "10.0.0.5",
     patientId: "123",
     accessPurpose: "Clinical review");
 
-// PHI encryption service
-var encrypted = PhiEncryptionService.Encrypt(sensitiveData);
-var decrypted = PhiEncryptionService.Decrypt(encrypted);
+// PHI encryption service (AES-256-GCM; supply your own 32-byte key)
+var key = new byte[32]; // key management is your responsibility
+var phi = new PhiEncryptionService(key);
+var (ciphertext, nonce, tag) = phi.Encrypt(sensitiveData);
+var plaintext = phi.Decrypt(ciphertext, nonce, tag);
 
-// Immutable audit log
-AuditLog.LogAccess(username, resourceId, action, success);</code></pre>
+// Audit log
+AuditLog.Record(
+    userId: "u-1001", role: "Physician", ipAddress: "10.0.0.5",
+    resourceType: "Patient", resourceId: "123", action: "READ");</code></pre>
 
     <h3>Etl.EtlPipelineService</h3>
     <pre><code>// CSV to FHIR Patient mapping pipeline
-await EtlPipelineService.RunEtlPipelineAsync("data.csv", outputDir, logger);</code></pre>
+var mapper = new FhirPatientMapper(addTestDataTag: true, testNameMarkers: true);
+var service = new EtlPipelineService(fhirClient, mapper);
+var (created, updated) = await service.RunAsync("data/legacy_patients.csv");</code></pre>
 
     <h3>AIDataValidator.AiValidatorService</h3>
-    <pre><code>// Requires Ollama running locally with llama3 model
-var validator = new AiValidatorService(
-    "http://localhost:11434",
-    "llama3");
-
-var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pre>
+    <pre><code>// Requires Ollama running locally with the llama3 model.
+// The AI provider is injected as a plain Func&lt;string, Task&lt;string&gt;&gt;,
+// so you can point it at any local model endpoint.
+var validator = new AiValidatorService(prompt => OllamaChatAsync(prompt));
+var patient = await validator.ProcessRawRecordAsync("Mmale, Jhon Doe, 1990-05-14");</code></pre>
 </section>
 
 <section id="security">
     <h2>Security Notice</h2>
     <div class="warning">
-        <strong>Production Requirement:</strong> TLS certificate validation is <strong>strict by default</strong> on all FHIR client connections. A development-only bypass exists for local self-signed test setups and is <em>OFF by default</em> — enable it only for local development by setting the environment variable <code>HEALTHDATA_INSECURE_SKIP_TLS=1</code>. This must <em>never</em> be enabled in production (violates HIPAA §164.312(e)(1)). Application logging is PHI-masked: SSN, patient name, DOB, phone and email are redacted before reaching the log sink. Always use valid certificates and enforce TLS 1.2+ for all FHIR server connections.
+        <strong>Development vs. production:</strong> TLS certificate validation is <strong>strict by default</strong> on all FHIR client connections. A development-only bypass exists for local self-signed test setups and is <em>OFF by default</em> — enable it only for local development by setting the environment variable <code>HEALTHDATA_INSECURE_SKIP_TLS=1</code>. It must <em>never</em> be enabled in production (conflicts with HIPAA §164.312(e)(1) transmission-security requirements). Application logging is PHI-masked: SSN, patient name, DOB, phone and email are redacted before reaching the log sink. Always use valid certificates and enforce TLS 1.2+ for all FHIR server connections.
     </div>
 </section>
 
 <section id="license">
     <h2>License &amp; Disclaimer</h2>
-    <p>This library is licensed under the <strong>MIT License</strong>.</p>
+    <p>This project is licensed under the <strong>MIT License</strong>.</p>
     <div class="warning">
         <p><strong>NO WARRANTY / NO MAINTENANCE:</strong></p>
-        <p>This project is provided as a static portfolio snapshot to demonstrate technical competence. The author provides <strong>NO FUTURE MAINTENANCE, bug fixes, feature updates, or support</strong>. You are expected to use this code entirely at your own risk.</p>
+        <p>This project is provided as a reference implementation and educational resource. The author provides <strong>NO FUTURE MAINTENANCE, bug fixes, feature updates, or support</strong>. You are expected to use this code entirely at your own risk.</p>
         <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.</p>
     </div>
 </section>
@@ -282,7 +300,7 @@ var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pr
 
 <footer>
     <div class="container">
-        <p>&copy; 2026 Rong (Rex) Fan | Healthcare Data Interoperability with .NET 10 &amp; FHIR R4</p>
+        <p>&copy; 2026 Rong (Rex) Fan | Healthcare Data Interoperability with .NET &amp; FHIR R4</p>
         <p>
             <a href="https://github.com/memoryfraction/HealthData-Interoperability-Csharp" style="color: var(--primary);">GitHub Repository</a> |
             <a href="https://memoryfraction.github.io/HealthData-Interoperability-Csharp/" style="color: var(--primary);">GitHub Pages</a> |
@@ -295,7 +313,3 @@ var cleanedData = await validator.NormalizePatientDataAsync(rawData);</code></pr
 <script src="https://cdn.counter.dev/script.js" data-id="9ed3aabb-f776-4e0b-93ed-a1bab7799a56" data-utcoffset="8"></script>
   </body>
 </html>
-
-
-
-

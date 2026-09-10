@@ -3,11 +3,11 @@ using System.Text.RegularExpressions;
 namespace HealthDataInteropSharedLibrary.Shared;
 
 /// <summary>
-/// [EN] HIPAA-compliant PHI masking utility that automatically sanitizes Protected Health Information from log messages.
+/// [EN] PHI masking utility that automatically sanitizes Protected Health Information from log messages (HIPAA Security Rule-oriented).
 /// Prevents accidental exposure of SSN, Patient Names, DOB, Medical Records, Phone Numbers, Email Addresses in logs.
 /// Usage: PhiMasker.Mask("Patient John Smith SSN 123-45-6789") → "Patient [PATIENT_NAME] SSN ***-**-****"
 /// 
-/// [CN] 符合HIPAA标准的PHI脱敏实用工具，自动从日志消息中清除受保护的健康信息。防止意外泄露SSN、患者姓名、出生日期、医疗记录、电话号码、电子邮件地址等敏感数据。使用方法：PhiMasker.Mask("患者John Smith SSN 123-45-6789") → "患者[患者姓名] SSN ***-**-*"
+/// [CN] PHI脱敏实用工具（HIPAA安全规则取向），自动从日志消息中清除受保护的健康信息。防止意外泄露SSN、患者姓名、出生日期、医疗记录、电话号码、电子邮件地址等敏感数据。使用方法：PhiMasker.Mask("患者John Smith SSN 123-45-6789") → "患者[患者姓名] SSN ***-**-*"
 /// </summary>
 public static class PhiMasker
 {

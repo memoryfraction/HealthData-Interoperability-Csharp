@@ -1,11 +1,11 @@
-# RBAC & HIPAA Compliance Permission Design
-## 07-HIPAA-Compliance-Demo
+# RBAC & HIPAA-Oriented Access Control Design
+## 07-HIPAA-Technical-Safeguards-Demo
 
 ---
 
 ## 1. Overview (HIPAA Minimum Necessary Principle)
 This document defines role-based access control (RBAC) for a FHIR-based healthcare application.
-All designs strictly comply with HIPAA requirements:
+The designs are oriented around HIPAA Security Rule (45 CFR §164.312) concepts — illustrative, not a compliance certification:
 - Least privilege access control
 - Independent patient data isolation
 - Field-level sensitive PHI redaction

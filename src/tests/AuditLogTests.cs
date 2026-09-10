@@ -54,7 +54,7 @@ public sealed class AuditLogTests
             captured.Should().Contain("Action", "Output should contain Action field name");
             captured.Should().Contain("Resource", "Output should contain Resource field name");
             captured.Should().Contain("AuditMessage", "Output should contain AuditMessage field name");
-            captured.Should().Contain("HIPAA compliance", "Output should contain HIPAA compliance message");
+            captured.Should().Contain("HIPAA Security Rule", "Output should contain the audit message referencing the HIPAA Security Rule");
         }
         finally
         {
