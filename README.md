@@ -407,10 +407,15 @@ Working on FHIR / healthcare interoperability and think we could help each other
 
 [MIT](./LICENSE) — this repository is intended as a reference implementation and educational resource. You are free to read, copy, and adapt the code; see the LICENSE file for the full terms. No warranty of any kind.
 
-## 🙌 Support this work
+## 🙌 打赏 / Support this work
 
 If this work is helpful to you, feel free to send a small gift — it helps support my work and keep the project maintained.
+如果这个项目对您有帮助，欢迎小额打赏，谢谢支持！
 
-- **GitHub Sponsors**: [github.com/sponsors/memoryfraction](https://github.com/sponsors/memoryfraction)
+- **支付宝 · Alipay**:
+  <img src="pages/images/alipay-qr.jpg" alt="支付宝打赏收款码" width="160"/>
+  （打开支付宝「扫一扫」即可支付）
 - **Venmo** (Rong Fan): [venmo.com/code?user_id=1873693978394624136](https://venmo.com/code?user_id=1873693978394624136)
+  <img src="pages/images/venmo-qr.jpg" alt="Venmo 打赏收款码" width="160"/>
 - **PayPal** (Rong Fan): [paypal.com/qrcodes/p2pqrc/EN4HJNCRZC5ZS](https://www.paypal.com/qrcodes/p2pqrc/EN4HJNCRZC5ZS)
+- **GitHub Sponsors**: [github.com/sponsors/memoryfraction](https://github.com/sponsors/memoryfraction)
