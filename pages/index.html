@@ -38,6 +38,13 @@
         .author-name { font-size: 1.3rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; }
         .author-links a { color: var(--primary); text-decoration: none; margin: 0 0.5rem; font-size: 0.95rem; }
         .author-links a:hover { text-decoration: underline; }
+        /* 打赏 / donation cards */
+        .donate-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.2rem; text-align: center; }
+        .donate-card { display: block; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; text-decoration: none; color: inherit; transition: transform .15s ease, box-shadow .15s ease; }
+        .donate-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); border-color: var(--primary); }
+        .donate-card img { max-width: 160px; max-height: 160px; width: 100%; border-radius: 6px; background: white; }
+        .donate-card .donate-name { display: block; margin-top: .5rem; font-weight: 600; color: var(--secondary); }
+        .donate-card .donate-hint { display: block; font-size: .8rem; color: #64748b; margin-top: .2rem; }
     </style>
 </head>
 <body>
@@ -63,6 +70,7 @@
         <a href="#api">API Reference</a>
         <a href="#sample">More Projects</a>
         <a href="#license">License</a>
+        <a href="#support">打赏</a>
     </div>
 </nav>
 
@@ -293,6 +301,38 @@ var patient = await validator.ProcessRawRecordAsync("Mmale, Jhon Doe, 1990-05-14
         <p><strong>NO WARRANTY / NO MAINTENANCE:</strong></p>
         <p>This project is provided as a reference implementation and educational resource. The author provides <strong>NO FUTURE MAINTENANCE, bug fixes, feature updates, or support</strong>. You are expected to use this code entirely at your own risk.</p>
         <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.</p>
+    </div>
+</section>
+
+<section id="support" style="text-align: center;">
+    <h2>🙌 打赏 / Support this work</h2>
+    <p>If this work is helpful to you, feel free to send a small gift — it helps support my work and keep the project maintained.</p>
+    <p style="color: var(--secondary); font-size: .95rem;">如果这个项目对您有帮助，欢迎小额打赏（支付宝 / Venmo / PayPal / GitHub Sponsors），谢谢支持！</p>
+    <div class="donate-grid">
+        <div class="donate-card" title="支付宝收款码（扫码打赏）">
+            <img src="images/alipay-qr.jpg" alt="支付宝打赏收款码" loading="lazy">
+            <span class="donate-name">支付宝 · Alipay</span>
+            <span class="donate-hint">打开支付宝扫码即付</span>
+        </div>
+        <div class="donate-card" title="Venmo 收款码（扫码打赏）">
+            <img src="images/venmo-qr.jpg" alt="Venmo 打赏收款码" loading="lazy">
+            <span class="donate-name">Venmo</span>
+            <span class="donate-hint"><a href="https://venmo.com/code?user_id=1873693978394624136" target="_blank" rel="noopener" style="color: var(--primary); text-decoration: none;">或点击打开 Venmo ↗</a></span>
+        </div>
+        <div class="donate-card" title="PayPal 打赏">
+            <a href="https://www.paypal.com/qrcodes/p2pqrc/EN4HJNCRZC5ZS" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit;">
+                <div style="width:160px;height:160px;margin:0 auto;border-radius:6px;background:linear-gradient(135deg,#ffc431,#003087);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.4rem;letter-spacing:.02em;">PayPal</div>
+                <span class="donate-name">PayPal</span>
+                <span class="donate-hint">点击打开 PayPal 收款页 ↗</span>
+            </a>
+        </div>
+        <div class="donate-card" title="GitHub Sponsors">
+            <a href="https://github.com/sponsors/memoryfraction" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit;">
+                <div style="width:160px;height:160px;margin:0 auto;border-radius:6px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:2.6rem;">💜</div>
+                <span class="donate-name">GitHub Sponsors</span>
+                <span class="donate-hint">点击打开 GitHub Sponsors ↗</span>
+            </a>
+        </div>
     </div>
 </section>
 
