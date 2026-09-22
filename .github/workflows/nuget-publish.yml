@@ -1,20 +1,3 @@
-# ============================================================================
-# HealthData.Interop NuGet — automated release via Trusted Publishing (OIDC)
-#
-# No API key. No secret in the repo.
-#
-# How it works:
-#   1. `permissions: id-token: write` tells GitHub to make the OIDC token
-#      endpoint available (ACTIONS_ID_TOKEN_REQUEST_URL + _TOKEN env vars).
-#   2. We POST to that endpoint to mint a short-lived JWT (audience:
-#      vcp.nuget.org) — this is the actual Trusted Publishing credential.
-#   3. We pass that JWT as --api-key to `dotnet nuget push`.
-#   4. nuget.org validates the JWT against our Trusted Publishing policy.
-#
-# Every release is just:
-#     git tag v1.5.0 && git push origin v1.5.0
-# ============================================================================
-
 name: NuGet Publish
 
 on:
@@ -85,49 +68,38 @@ jobs:
           name: nupkgs
           path: dist/
 
-      - name: Install .NET SDK (for dotnet nuget push)
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "10.0.x"
-
       - name: Push all packages to nuget.org (Trusted Publishing)
-        env:
-          NUGET_OIDC_JWT: ""
         run: |
-          # 1. Check OIDC env vars are available
+          # 1. Mint OIDC JWT
           if [ -z "$ACTIONS_ID_TOKEN_REQUEST_URL" ] || [ -z "$ACTIONS_ID_TOKEN_REQUEST_TOKEN" ]; then
-            echo "ERROR: ACTIONS_ID_TOKEN_REQUEST_URL or ACTIONS_ID_TOKEN_REQUEST_TOKEN is not set."
-            echo "Ensure the workflow has: permissions: id-token: write"
+            echo "ERROR: OIDC env vars not set."
             exit 1
           fi
-
-          echo "==> Requesting OIDC token from: $ACTIONS_ID_TOKEN_REQUEST_URL"
-
-          # 2. Mint a short-lived JWT with audience vcp.nuget.org
-          RESPONSE=$(curl -s -X POST "$ACTIONS_ID_TOKEN_REQUEST_URL" \
+          JWT=$(curl -s -X POST "$ACTIONS_ID_TOKEN_REQUEST_URL" \
             -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
             -H "Content-Type: application/json" \
-            -d '{"audience":"vcp.nuget.org"}')
-
-          echo "==> Response: $RESPONSE"
-
-          # 3. Extract the JWT
-          JWT=$(echo "$RESPONSE" | jq -r '.value // empty')
-          if [ -z "$JWT" ]; then
-            echo "ERROR: Could not extract JWT from response."
-            echo "Full response: $RESPONSE"
+            -d '{"audience":"vcp.nuget.org"}' | jq -r '.value')
+          if [ -z "$JWT" ] || [ "$JWT" = "null" ]; then
+            echo "ERROR: Could not mint OIDC JWT."
             exit 1
           fi
+          echo "==> JWT minted (length: ${#JWT})"
 
-          echo "==> JWT received (length: ${#JWT})"
-
-          # 4. Push all packages
+          # 2. Push each package using curl with Bearer token
           for pkg in dist/*.nupkg dist/*.snupkg; do
             echo "==> Pushing: $pkg"
-            dotnet nuget push "$pkg" \
-              --source https://api.nuget.org/v3/index.json \
-              --api-key "$JWT" \
-              --skip-duplicate
+            FILENAME=$(basename "$pkg")
+            RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT \
+              "https://api.nuget.org/v3-index/package" \
+              -H "Authorization: Bearer $JWT" \
+              -H "Content-Type: application/octet-stream" \
+              --data-binary @"$pkg")
+            HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+            BODY=$(echo "$RESPONSE" | sed '$d')
+            echo "  HTTP $HTTP_CODE: $BODY"
+            if [ "$HTTP_CODE" != "200" ] && [ "$HTTP_CODE" != "201" ] && [ "$HTTP_CODE" != "204" ]; then
+              echo "ERROR: Push failed with HTTP $HTTP_CODE"
+              exit 1
+            fi
           done
-
-          echo "==> All packages pushed successfully via Trusted Publishing."
+          echo "==> All packages pushed successfully."
