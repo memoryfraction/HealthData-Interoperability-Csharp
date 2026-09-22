@@ -1,6 +1,6 @@
 using Hl7.Fhir.Rest;
 using HealthDataInteropSharedLibrary.Etl;
-using HealthDataInteropSharedLibrary.Shared;
+using HealthDataInteropSharedLibrary.Shared; // Type-forwarded: see Shared/TypeForwarding.cs
 
 namespace _04_Data_Mapping_ETL;
 
@@ -66,3 +66,4 @@ internal static class Program
         }
     }
 }
+

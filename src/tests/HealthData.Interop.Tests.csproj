@@ -13,18 +13,18 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest" Version="3.8.3" />
     <PackageReference Include="FluentAssertions" Version="8.5.0" />
-    <!-- Explicit FHIR reference: FhirPatientModelTests uses Hl7.Fhir.Model directly rather than
-         relying on it arriving transitively through the 04-Data-Mapping-ETL project reference. -->
-    <PackageReference Include="Hl7.Fhir.R4" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.3" />
+    <PackageReference Include="Hl7.Fhir.R4" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\04-Data-Mapping-ETL\04-Data-Mapping-ETL.csproj" />
-    <!-- Added for SmartOnFhirAuthService and OidcOptions tests -->
     <ProjectReference Include="..\05-SMART-on-FHIR\05-SMART-on-FHIR.csproj" />
-    <!-- Added for UsCoreConformanceChecker tests -->
     <ProjectReference Include="..\03-Resource-Validator\03-Resource-Validator.csproj" />
-    <ProjectReference Include="..\HealthDataInteropSharedLibrary\HealthDataInteropSharedLibrary.csproj" />
+    <ProjectReference Include="..\HealthData.Interop.Fhir\HealthDataInteropSharedLibrary.csproj" />
+    <ProjectReference Include="..\Abstractions\HealthData.Interop.Abstractions\HealthData.Interop.Abstractions.csproj" />
+    <ProjectReference Include="..\Logging.Extensions\HealthData.Interop.Logging.Extensions\HealthData.Interop.Logging.Extensions.csproj" />
+    <ProjectReference Include="..\Logging.Serilog\HealthData.Interop.Logging.Serilog\HealthData.Interop.Logging.Serilog.csproj" />
   </ItemGroup>
 
 </Project>

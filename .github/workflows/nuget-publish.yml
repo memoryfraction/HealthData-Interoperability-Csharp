@@ -1,0 +1,149 @@
+# ============================================================================
+# HealthData.Interop NuGet — automated release pipeline
+#
+# Triggers:
+#   • Push tag v*           → build, test, pack, push all 4 packages to nuget.org
+#   • Manual (workflow_dispatch) → same, but tag is optional (uses version from csproj)
+#
+# Prerequisites (one-time setup):
+#   1. GitHub repo Settings → Secrets and variables → Actions:
+#        - NUGET_API_KEY   (from https://www.nuget.org/account/api)
+#   2. (Optional) Repo settings → General → Default branch → "main"
+#
+# Usage:
+#   git tag v1.4.0 && git push origin v1.4.0
+#   → GitHub Actions runs build + test + pack + push automatically.
+# ============================================================================
+
+name: NuGet Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Package version override (blank = use csproj version)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  id-token: write  # needed if you ever switch to NuGet OIDC auth
+
+concurrency:
+  group: nuget-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  NUGET_XMLDOC_MODE: skip
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. Build + Test (Linux runner, cheap)
+  # ---------------------------------------------------------------------------
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore HealthData.Interop.slnx
+
+      - name: Build
+        run: dotnet build HealthData.Interop.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test src/tests/HealthData.Interop.Tests.csproj --configuration Release --no-build
+
+      - name: Pack
+        run: |
+          mkdir -p dist
+          dotnet pack src/Abstractions/HealthData.Interop.Abstractions/HealthData.Interop.Abstractions.csproj --configuration Release --no-build -o dist
+          dotnet pack src/Logging.Extensions/HealthData.Interop.Logging.Extensions/HealthData.Interop.Logging.Extensions.csproj --configuration Release --no-build -o dist
+          dotnet pack src/Logging.Serilog/HealthData.Interop.Logging.Serilog/HealthData.Interop.Logging.Serilog.csproj --configuration Release --no-build -o dist
+          dotnet pack src/HealthData.Interop.Fhir/HealthDataInteropSharedLibrary.csproj --configuration Release --no-build -o dist
+
+      - name: List packages
+        run: ls -la dist/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkgs
+          path: dist/
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # 2. Publish to nuget.org (only on tag push)
+  # ---------------------------------------------------------------------------
+  publish:
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkgs
+          path: dist/
+
+      - name: Install .NET SDK (for dotnet nuget push)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Push all packages to nuget.org
+        run: |
+          for pkg in dist/*.nupkg dist/*.snupkg; do
+            echo "==> Pushing: $pkg"
+            dotnet nuget push "$pkg" \
+              --source nuget.org \
+              --api-key "${{ secrets.NUGET_API_KEY }}" \
+              --skip-duplicate
+          done
+
+      - name: Verify on nuget.org
+        run: |
+          echo "==> Checking versions on nuget.org"
+          for id in HealthData.Interop.Abstractions \
+                    HealthData.Interop.Logging.Extensions \
+                    HealthData.Interop.Logging.Serilog \
+                    HealthData.Interop.Fhir; do
+            echo "--- $id ---"
+            dotnet package search "$id" --exact-match --format json | \
+              python3 -c "import sys,json; d=json.load(sys.stdin); [print(f\"  {p['version']}  ({p['totalDownloads']:,} downloads)\") for p in d.get('data',[])]" 2>/dev/null || true
+          done
+
+  # ---------------------------------------------------------------------------
+  # 3. Draft a GitHub Release with release notes (optional, nice to have)
+  # ---------------------------------------------------------------------------
+  release:
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          # Use CHANGELOG entry if available, otherwise fallback
+          NOTES="Auto-released NuGet packages for tag $TAG. See CHANGELOG.md for details."
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "$NOTES" \
+            --draft \
+            --verify-tag
+          echo "==> Draft GitHub Release created for $TAG"

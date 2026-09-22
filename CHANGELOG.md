@@ -5,7 +5,34 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.5] - 2026-09-07
+## [1.4.0] - 2026-09-21
+
+### Added
+- **Package split**: the single `HealthData.Interop.Fhir` package is now layered into 4 packages:
+  - `HealthData.Interop.Abstractions` v1.0.0 — `IApplicationLogger`, `PhiMasker`, `SafeConsole`, `Guard`. **Zero third-party dependencies** (.NET BCL only).
+  - `HealthData.Interop.Logging.Extensions` v1.0.0 — `IApplicationLoggerBridge` + `ToIApplicationLogger()` extension. Bridges `IApplicationLogger` to `Microsoft.Extensions.Logging.ILogger` (NLog, Serilog, or any provider) with automatic PHI masking.
+  - `HealthData.Interop.Logging.Serilog` v1.0.0 — Serilog-backed `ConsoleLogger` with PHI masking. Depends on Abstractions + Serilog + Sinks.Console + Sinks.File.
+  - `HealthData.Interop.Fhir` v1.4.0 — **meta-package** bundling all FHIR services. Depends on Abstractions + Logging.Extensions + Logging.Serilog + Hl7.Fhir.R4 + Firely.Fhir.Validation.R4 + CsvHelper + Duende.IdentityModel + Riok.Mapperly.
+- **New solution file** `HealthData.Interop.slnx` (all 13 projects).
+- **New `publish-packages.ps1`** — one-command build + test + pack + push all 4 packages to nuget.org.
+- **New bridge tests** for `IApplicationLoggerBridge` (Information/Warning/Error/Critical mapping + PHI masking verification).
+
+### Changed
+- **Multi-targeting**: all library packages now target `net8.0` + `net10.0` (demos and tests remain `net10.0`).
+- **IdentityModel 7.0.0 → Duende.IdentityModel 8.1.0** — package rename + namespace change (`IdentityModel.Client` → `Duende.IdentityModel.Client`). `OidcOptions` public API unchanged.
+- **Hl7.Fhir.R4 6.0.2 → 6.5.0**, **Firely.Fhir.Validation.R4 3.1.0 → 3.3.1**, **Riok.Mapperly 4.1.1 → 4.3.1**, **Serilog 4.3.0 → 4.4.0**, **Serilog.Sinks.Console 6.0.0 → 6.1.1**, **Serilog.Sinks.File 6.0.0 → 7.0.0**.
+- **Type forwarding** for source compatibility: `HealthDataInteropSharedLibrary.Shared.IApplicationLogger`, `.Guard`, `.PhiMasker`, `.SafeConsole`, and `.ConsoleLogger` are all type-forwarded to their new locations. Existing code using the old FQN still compiles without changes.
+- Serilog, Serilog.Sinks.Console, Serilog.Sinks.File **removed from the meta-package** direct dependencies (now in `HealthData.Interop.Logging.Serilog`).
+- `Microsoft.Extensions.Configuration.Json` **removed** (zero usage in library code; demo 05 uses it directly).
+
+### Removed
+- **Polly 8.4.2** — zero usage across the entire codebase. Dead dependency eliminated.
+
+### Backward compatibility
+- **Source-compatible**: all existing `using HealthDataInteropSharedLibrary.Shared;` + `new ConsoleLogger()` code compiles unchanged (type forwarding).
+- **Binary-level change**: old binaries must be recompiled against the new assemblies. This is acceptable for a 1.x minor bump.
+
+ - 2026-09-07
 
 ### Added
 - **New module 08 — Data Drift Detection** (src/08-Data-Drift-Detector): read-only reconciliation tool that compares the legacy source-of-truth CSV against the FHIR resources synced by module 04, reporting per-record drift (missing / field-level drift / in sync).
@@ -98,3 +125,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.0]: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/
 [1.2.0]: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/
 [1.1.0]: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/
+

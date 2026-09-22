@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>HealthData.Interop.Logging.Serilog</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Rong(Rex) Fan</Authors>
+    <Company>Rong(Rex) Fan</Company>
+    <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
+    <Description>Serilog-backed implementation of IApplicationLogger for HIPAA audit trails. ConsoleLogger with automatic PHI masking. Depends on HealthData.Interop.Abstractions + Serilog + Serilog.Sinks.Console + Serilog.Sinks.File.</Description>
+    <PackageTags>fhir;hipaa;serilog;logging;console;file;phi;csharp;dotnet</PackageTags>
+    <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageReleaseNotes>v1.0.0 - Initial release: ConsoleLogger (Serilog adapter).</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Abstractions\HealthData.Interop.Abstractions\HealthData.Interop.Abstractions.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="4.4.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+</Project>

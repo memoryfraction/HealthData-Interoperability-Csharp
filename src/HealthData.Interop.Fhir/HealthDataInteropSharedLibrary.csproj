@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <RootNamespace>HealthDataInteropSharedLibrary</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>HealthData.Interop.Fhir</PackageId>
+    <Version>1.4.0</Version>
+    <Authors>Rong(Rex) Fan</Authors>
+    <Company>Rong(Rex) Fan</Company>
+    <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
+    <Description>Meta-package for the HealthData.Interop FHIR R4 toolkit. Bundles FHIR client services, US Core validation, SMART on FHIR auth, CSV-to-FHIR ETL, HIPAA security examples (RBAC, PHI masking, audit), and drift detection. Depends on HealthData.Interop.Abstractions, HealthData.Interop.Logging.Extensions, and HealthData.Interop.Logging.Serilog.</Description>
+    <PackageTags>fhir;hipaa;healthcare;hl7;csharp;dotnet;interoperability;us-core;smart-on-fhir;etl;r4</PackageTags>
+    <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageReleaseNotes>v1.4.0 - Split into 4 packages. IdentityModel to Duende.IdentityModel. Removed Serilog/Polly/Config.Json from core.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
+    <PackageReference Include="Duende.IdentityModel" Version="8.1.0" />
+    <PackageReference Include="Firely.Fhir.Validation.R4" Version="3.3.1" />
+    <PackageReference Include="Hl7.Fhir.R4" Version="6.5.0" />
+    <PackageReference Include="Riok.Mapperly" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\HealthData.Interop.Abstractions\HealthData.Interop.Abstractions.csproj" />
+    <ProjectReference Include="..\Logging.Extensions\HealthData.Interop.Logging.Extensions\HealthData.Interop.Logging.Extensions.csproj" />
+    <ProjectReference Include="..\Logging.Serilog\HealthData.Interop.Logging.Serilog\HealthData.Interop.Logging.Serilog.csproj" />
+  </ItemGroup>
+
+  <!-- specification.zip for FHIR R4 validation (~6MB, bundled with NuGet package) -->
+  <ItemGroup>
+    <EmbeddedResource Include="ResourceValidator\specification.zip">
+      <LogicalName>HealthDataInteropSharedLibrary.Resources.specification.zip</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="ResourceValidator\specification.zip" PackagePath="contentFiles/any/any/specification.zip">
+      <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+      <BuildAction>Content</BuildAction>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

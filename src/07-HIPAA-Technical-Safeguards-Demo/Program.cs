@@ -11,9 +11,9 @@ internal static class Program
 {
     static void Main(string[] args)
     {
-        SafeConsole.WriteLine("=============================================");
-        SafeConsole.WriteLine("      HIPAA Technical Safeguards Demo (FHIR)");
-        SafeConsole.WriteLine("=============================================\n");
+        HealthData.Interop.Abstractions.SafeConsole.WriteLine("=============================================");
+        HealthData.Interop.Abstractions.SafeConsole.WriteLine("      HIPAA Technical Safeguards Demo (FHIR)");
+        HealthData.Interop.Abstractions.SafeConsole.WriteLine("=============================================\n");
 
         var orchestrator = new HipaaComplianceOrchestrator();
 
@@ -23,11 +23,11 @@ internal static class Program
         const string patientId = "P1001";
         const string accessPurpose = "TREATMENT";
 
-        SafeConsole.WriteLine(HipaaComplianceOrchestrator.FormatUserContext(userId, role, ipAddress));
-        SafeConsole.WriteLine();
+        HealthData.Interop.Abstractions.SafeConsole.WriteLine(HipaaComplianceOrchestrator.FormatUserContext(userId, role, ipAddress));
+        HealthData.Interop.Abstractions.SafeConsole.WriteLine();
 
         // Run the safeguards workflow: RBAC -> consent -> audit log
-        SafeConsole.WriteLine("Step 1: RBAC Permission Check");
+        HealthData.Interop.Abstractions.SafeConsole.WriteLine("Step 1: RBAC Permission Check");
         var result = orchestrator.ExecutePhiAccessRequest(
             userId: userId,
             role: role,
@@ -35,12 +35,12 @@ internal static class Program
             patientId: patientId,
             accessPurpose: accessPurpose);
 
-        SafeConsole.WriteLine();
+        HealthData.Interop.Abstractions.SafeConsole.WriteLine();
         if (result)
         {
-            SafeConsole.WriteLine("=============================================");
-            SafeConsole.WriteLine(" Demo completed - simulated PHI access request was allowed (see audit log above).");
-            SafeConsole.WriteLine("=============================================");
+            HealthData.Interop.Abstractions.SafeConsole.WriteLine("=============================================");
+            HealthData.Interop.Abstractions.SafeConsole.WriteLine(" Demo completed - simulated PHI access request was allowed (see audit log above).");
+            HealthData.Interop.Abstractions.SafeConsole.WriteLine("=============================================");
         }
     }
 }
