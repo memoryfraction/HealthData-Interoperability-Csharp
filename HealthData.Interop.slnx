@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/1-Basic-Client/01-Basic-FHIR-Client.csproj" />
     <Project Path="src/02-Advanced-Query/02-Advanced-Query.csproj" />
     <Project Path="src/03-Resource-Validator/03-Resource-Validator.csproj" />
     <Project Path="src/04-Data-Mapping-ETL/04-Data-Mapping-ETL.csproj" />
@@ -7,23 +8,10 @@
     <Project Path="src/06-AI-Data-Validator/06-AI-Data-Validator.csproj" />
     <Project Path="src/07-HIPAA-Technical-Safeguards-Demo/07-HIPAA-Technical-Safeguards-Demo.csproj" />
     <Project Path="src/08-Data-Drift-Detector/08-Data-Drift-Detector.csproj" />
-  </Folder>
-  <Folder Name="/src/1-Basic-Client/">
-    <Project Path="src/1-Basic-Client/01-Basic-FHIR-Client.csproj" />
-  </Folder>
-  <Folder Name="/src/Abstractions/">
     <Project Path="src/Abstractions/HealthData.Interop.Abstractions/HealthData.Interop.Abstractions.csproj" />
-  </Folder>
-  <Folder Name="/src/HealthData.Interop.Fhir/">
     <Project Path="src/HealthData.Interop.Fhir/HealthDataInteropSharedLibrary.csproj" />
-  </Folder>
-  <Folder Name="/src/Logging.Extensions/">
     <Project Path="src/Logging.Extensions/HealthData.Interop.Logging.Extensions/HealthData.Interop.Logging.Extensions.csproj" />
-  </Folder>
-  <Folder Name="/src/Logging.Serilog/">
     <Project Path="src/Logging.Serilog/HealthData.Interop.Logging.Serilog/HealthData.Interop.Logging.Serilog.csproj" />
-  </Folder>
-  <Folder Name="/src/tests/">
     <Project Path="src/tests/HealthData.Interop.Tests.csproj" />
   </Folder>
 </Solution>
