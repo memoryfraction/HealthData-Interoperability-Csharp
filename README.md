@@ -101,7 +101,7 @@ dotnet run --project src/02-Advanced-Query
 
 **Execution Result:**
 
-![02 Advanced Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02%20Advanced%20Query-result.jpg?raw=true)
+![02 Advanced Query](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/blob/main/images/02-Advanced-Query-result.jpg?raw=true)
 
 ### 03 — FHIR Resource Validation
 
