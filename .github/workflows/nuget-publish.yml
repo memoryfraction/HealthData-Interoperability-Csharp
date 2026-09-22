@@ -4,11 +4,12 @@
 # No API key. No secret in the repo.
 #
 # How it works:
-#   1. `permissions: id-token: write` tells GitHub to mint a short-lived
-#      OIDC JWT (audience: vcp.nuget.org) into the ACTIONS_ID_TOKEN
-#      environment variable.
-#   2. We pass that JWT as `--api-key` to `dotnet nuget push`.
-#   3. nuget.org validates the JWT against our Trusted Publishing policy
+#   1. `permissions: id-token: write` tells GitHub to make the OIDC token
+#      endpoint available (ACTIONS_ID_TOKEN_REQUEST_URL + _TOKEN env vars).
+#   2. We POST to that endpoint to mint a short-lived JWT (audience:
+#      vcp.nuget.org) — this is the actual Trusted Publishing credential.
+#   3. We pass that JWT as --api-key to `dotnet nuget push`.
+#   4. nuget.org validates the JWT against our Trusted Publishing policy
 #      (owner: rong.fan, repo: memoryfraction/HealthData-Interoperability-
 #      Csharp, workflow: nuget-publish.yml, glob: HealthData.Interop.*).
 #
@@ -28,8 +29,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  # Required for Trusted Publishing: lets Actions mint an OIDC JWT
-  # that nuget.org accepts in place of an API key.
+  # Required for Trusted Publishing: enables the OIDC token endpoint.
   id-token: write
   contents: read
 
@@ -96,29 +96,45 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
-      - name: Push all packages to nuget.org (Trusted Publishing, no key)
+      - name: Mint OIDC JWT for Trusted Publishing
+        id: oidc
         env:
-          # GitHub Actions provides this OIDC JWT because of
-          # `permissions: id-token: write`. It is short-lived (~5 min)
-          # and scoped to audience vcp.nuget.org.
-          OIDC_TOKEN: ${{ github.token }}
+          REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
+          REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
         run: |
-          if [ -z "$OIDC_TOKEN" ]; then
-            echo "ERROR: OIDC token not available. Ensure 'permissions: id-token: write' is set."
+          if [ -z "$REQUEST_URL" ] || [ -z "$REQUEST_TOKEN" ]; then
+            echo "ERROR: ACTIONS_ID_TOKEN_REQUEST_URL or ACTIONS_ID_TOKEN_REQUEST_TOKEN is not set."
+            echo "Ensure the workflow has: permissions: id-token: write"
             exit 1
           fi
-
-          # Verify the token looks like a JWT
-          if [[ ! "$OIDC_TOKEN" =~ ^eyJ.*\..*\. ]] && [[ ! "$OIDC_TOKEN" =~ ^\{.*"access_token" ]]; then
-            echo "WARNING: OIDC token does not look like a standard JWT. Attempting push anyway..."
+          echo "==> Requesting OIDC token from $REQUEST_URL"
+          RESPONSE=$(curl -s -X POST "$REQUEST_URL" \
+            -H "Authorization: bearer $REQUEST_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"audience":"vcp.nuget.org"}')
+          echo "==> Response: $RESPONSE"
+          JWT=$(echo "$RESPONSE" | jq -r '.value // empty')
+          if [ -z "$JWT" ]; then
+            echo "ERROR: Could not extract JWT from response."
+            echo "Full response: $RESPONSE"
+            exit 1
           fi
+          echo "==> JWT received (length: ${#JWT})"
+          echo "jwt=$JWT" >> "$GITHUB_OUTPUT"
 
+      - name: Push all packages to nuget.org (Trusted Publishing)
+        env:
+          NUGET_OIDC_JWT: ${{ steps.oidc.outputs.jwt }}
+        run: |
+          if [ -z "$NUGET_OIDC_JWT" ]; then
+            echo "ERROR: NUGET_OIDC_JWT is empty."
+            exit 1
+          fi
           for pkg in dist/*.nupkg dist/*.snupkg; do
             echo "==> Pushing: $pkg"
             dotnet nuget push "$pkg" \
               --source https://api.nuget.org/v3/index.json \
-              --api-key "$OIDC_TOKEN" \
+              --api-key "$NUGET_OIDC_JWT" \
               --skip-duplicate
           done
-
           echo "==> All packages pushed successfully via Trusted Publishing."
