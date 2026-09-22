@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>HealthData.Interop.Abstractions</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Rong(Rex) Fan</Authors>
+    <Company>Rong(Rex) Fan</Company>
+    <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
+    <Description>Core abstractions for the HealthData.Interop FHIR toolkit: IApplicationLogger, PhiMasker (PHI sanitization), SafeConsole, Guard. Zero third-party dependencies.</Description>
+    <PackageTags>fhir;hipaa;healthcare;phi;masking;logging;csharp;dotnet</PackageTags>
+    <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageReleaseNotes>v1.0.0 - Initial release.</PackageReleaseNotes>
+  </PropertyGroup>
+</Project>

@@ -6,11 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HealthDataInteropSharedLibrary\HealthDataInteropSharedLibrary.csproj" />
+    <ProjectReference Include="..\HealthData.Interop.Fhir\HealthDataInteropSharedLibrary.csproj" />
   </ItemGroup>
   <!-- Copy specification.zip from shared library to output dir for FHIR R4 validation -->
   <ItemGroup>
-    <None Include="..\HealthDataInteropSharedLibrary\ResourceValidator\specification.zip">
+    <None Include="..\HealthData.Interop.Fhir\ResourceValidator\specification.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

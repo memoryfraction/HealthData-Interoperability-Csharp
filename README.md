@@ -4,7 +4,7 @@
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
-[![Version](https://img.shields.io/badge/Version-1.3.5-blue.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir/1.3.5)
+[![Version](https://img.shields.io/badge/Version-1.4.0-blue.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir/1.4.0)
 [![Tests](https://img.shields.io/badge/Tests-180%20Passed-success.svg)](./src/tests/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
@@ -18,7 +18,7 @@
 
 **Where this fits architecturally:** this toolkit's modules assemble the components a *hybrid* FHIR architecture needs around a FHIR server (data mapping/ETL in module 04, drift detection in module 08, validation in module 03, auth in module 05, RBAC/consent/audit in module 07) — the FHIR server holds the copy, and the legacy/CSV source stays the system of record. It is not a facade (no dynamic per-request translation) and not FHIR-native (nothing here claims the FHIR server as source of truth). If your project needs a different model, treat these modules as a reference for what to build, not a drop-in fit.
 
-**Stability:** Current version **v1.3.5**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
+**Stability:** Current version **v1.4.0**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
 
 ### Architecture overview
 
@@ -318,12 +318,29 @@ Test stack: MSTest 3.8.3, FluentAssertions 8.5.0.
 - **PHI-masked logging.** Console/log output passes through `PhiMasker`: SSN, patient names, dates of birth, phone numbers, and emails are replaced with placeholders before they reach the console or log sinks (`SafeConsole`, `SafeInformation/SafeWarning/SafeError` extensions).
 - **Local AI (module 06)** is designed for local inference without sending data to a cloud LLM. "Local" reduces exposure but is not a guarantee — validate your own threat model before handling real PHI.
 
-## 📦 NuGet package
+## 📦 NuGet packages
+
+The toolkit is published as **4 packages** on [nuget.org](https://www.nuget.org/profiles/memoryfraction):
+
+| Package | Description | When to use |
+|---|---|---|
+| [`HealthData.Interop.Fhir`](https://www.nuget.org/packages/HealthData.Interop.Fhir) | **Meta-package** — full FHIR R4 toolkit (client, validation, ETL, SMART auth, HIPAA security, drift detection) | Most users — install this one |
+| [`HealthData.Interop.Abstractions`](https://www.nuget.org/packages/HealthData.Interop.Abstractions) | Core abstractions — `IApplicationLogger`, `PhiMasker`, `SafeConsole`, `Guard`. **Zero dependencies.** | You only need PHI masking or logging abstractions |
+| [`HealthData.Interop.Logging.Extensions`](https://www.nuget.org/packages/HealthData.Interop.Logging.Extensions) | Bridge: `IApplicationLogger` ↔ `Microsoft.Extensions.Logging.ILogger` (NLog, Serilog, any provider) | You use NLog or another ILogger provider and want PHI-masked logging |
+| [`HealthData.Interop.Logging.Serilog`](https://www.nuget.org/packages/HealthData.Interop.Logging.Serilog) | Serilog-backed `ConsoleLogger` with PHI masking | You use Serilog and want the original `ConsoleLogger` |
+
+**Quick install (meta-package, includes everything):**
 
 **Package ID:** `HealthData.Interop.Fhir` · **License:** MIT · **Target:** .NET 8.0 (works on .NET 9/10+)
 
 ```bash
+# Meta-package (recommended — includes everything):
 dotnet add package HealthData.Interop.Fhir
+
+# Or install individual packages:
+dotnet add package HealthData.Interop.Abstractions          # PHI masking only, zero deps
+dotnet add package HealthData.Interop.Logging.Extensions    # NLog / ILogger bridge
+dotnet add package HealthData.Interop.Logging.Serilog       # Serilog adapter
 ```
 
 Quick start (verified against the current public API):
@@ -361,7 +378,10 @@ HealthData-Interoperability-Csharp/
 │   ├── 06-AI-Data-Validator/               # 06: local-LLM normalization
 │   ├── 07-HIPAA-Technical-Safeguards-Demo/ # 07: RBAC/consent/audit demo
 │   ├── 08-Data-Drift-Detector/             # 08: read-only reconciliation
-│   ├── HealthDataInteropSharedLibrary/     # shared services (NuGet package)
+│   ├── Abstractions/                       # HealthData.Interop.Abstractions (NuGet)
+├── Logging.Extensions/                 # HealthData.Interop.Logging.Extensions (NuGet)
+├── Logging.Serilog/                    # HealthData.Interop.Logging.Serilog (NuGet)
+├── HealthData.Interop.Fhir/            # HealthData.Interop.Fhir meta-package (NuGet)
 │   └── tests/                              # MSTest v3 unit tests (180 tests)
 ├── docs/                                   # CodeStandard, RBAC design doc, CN readme
 ├── pages/                                  # GitHub Pages documentation site
@@ -417,4 +437,5 @@ If this work is helpful to you, feel free to send a small gift — it helps supp
   <img src="pages/images/venmo-qr.jpg" alt="Venmo donation QR code" width="160"/>
 - **PayPal** (Rong Fan): [paypal.com/qrcodes/p2pqrc/EN4HJNCRZC5ZS](https://www.paypal.com/qrcodes/p2pqrc/EN4HJNCRZC5ZS)
 - **GitHub Sponsors**: [github.com/sponsors/memoryfraction](https://github.com/sponsors/memoryfraction)
+
 

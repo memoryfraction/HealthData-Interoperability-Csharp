@@ -429,3 +429,7 @@ FodyWeavers.xsd
 /temp_part2.txt
 /tmp_appendix.md
 /tmp_appendix.txt
+
+# NuGet package output
+dist/
+

@@ -1,4 +1,4 @@
-using HealthDataInteropSharedLibrary.Shared;
+using HealthDataInteropSharedLibrary.Shared; // legacy FQN - type-forwarded in 1.4.0
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +13,7 @@ public sealed class ConsoleLoggerTests
     [TestMethod]
     public void Information_ShouldNotThrow()
     {
-        var logger = new ConsoleLogger();
+        var logger = new HealthData.Interop.Logging.Serilog.ConsoleLogger();
         Action act = () => logger.Information("test info");
         act.Should().NotThrow();
     }
@@ -21,7 +21,7 @@ public sealed class ConsoleLoggerTests
     [TestMethod]
     public void Warning_ShouldNotThrow()
     {
-        var logger = new ConsoleLogger();
+        var logger = new HealthData.Interop.Logging.Serilog.ConsoleLogger();
         Action act = () => logger.Warning("test warning");
         act.Should().NotThrow();
     }
@@ -29,7 +29,7 @@ public sealed class ConsoleLoggerTests
     [TestMethod]
     public void Error_ShouldNotThrow()
     {
-        var logger = new ConsoleLogger();
+        var logger = new HealthData.Interop.Logging.Serilog.ConsoleLogger();
         Action act = () => logger.Error("test error");
         act.Should().NotThrow();
     }
@@ -37,7 +37,7 @@ public sealed class ConsoleLoggerTests
     [TestMethod]
     public void Critical_ShouldNotThrow()
     {
-        var logger = new ConsoleLogger();
+        var logger = new HealthData.Interop.Logging.Serilog.ConsoleLogger();
         Action act = () => logger.Critical("test critical");
         act.Should().NotThrow();
     }

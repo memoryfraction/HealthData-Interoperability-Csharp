@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HealthDataInteropSharedLibrary\HealthDataInteropSharedLibrary.csproj" />
+    <ProjectReference Include="..\HealthData.Interop.Fhir\HealthDataInteropSharedLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Data\legacy_patients.csv">
