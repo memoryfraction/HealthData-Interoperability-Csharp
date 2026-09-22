@@ -4,12 +4,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>HealthData.Interop.Abstractions</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
-    <Description>Core abstractions for the HealthData.Interop FHIR toolkit: IApplicationLogger, PhiMasker (PHI sanitization), SafeConsole, Guard. Zero third-party dependencies.</Description>
-    <PackageTags>fhir;hipaa;healthcare;phi;masking;logging;csharp;dotnet</PackageTags>
+    <Title>HealthData.Interop – HIPAA-aware PHI Masking &amp; Logging Abstractions</Title>
+    <Description>HIPAA-aware PHI masking and logging abstractions for FHIR / healthcare interoperability apps on .NET: IApplicationLogger, PhiMasker (PHI sanitization), SafeConsole, Guard. Zero third-party dependencies. Part of the HealthData.Interop FHIR toolkit — most users should install HealthData.Interop.Fhir. Provided as-is; does not by itself ensure HIPAA compliance.</Description>
+    <PackageTags>fhir;hl7;healthcare;interoperability;hipaa;phi;masking;logging;csharp;dotnet</PackageTags>
     <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -17,6 +18,6 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.0.0 - Initial release.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.0.2 - Package metadata: added Title, HIPAA-aware description wording with an as-is disclaimer, and healthcare/interoperability tags. No code changes.</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
