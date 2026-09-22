@@ -5,6 +5,20 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2026-09-21
+
+### Changed
+- **NuGet package metadata** for all 4 packages (no code changes):
+  - Added a `<Title>` to each package ("HealthData.Interop – …").
+  - Descriptions now lead with the domain ("HIPAA-aware … for FHIR / healthcare
+    interoperability apps") so the sub-packages are recognizable in nuget.org search,
+    and point readers to `HealthData.Interop.Fhir` as the package most users want.
+  - Wording standardized on "HIPAA-aware"; each description ends with
+    "Provided as-is; does not by itself ensure HIPAA compliance."
+  - Sub-package tags now include `fhir;hl7;healthcare;interoperability;hipaa;phi`.
+- Versions: `HealthData.Interop.Fhir` **1.4.3**; `HealthData.Interop.Abstractions`,
+  `HealthData.Interop.Logging.Extensions`, `HealthData.Interop.Logging.Serilog` **1.0.2**.
+
 ## [1.4.2] - 2026-09-21
 
 ### Fixed

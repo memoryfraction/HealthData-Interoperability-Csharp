@@ -4,12 +4,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>HealthData.Interop.Logging.Extensions</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
-    <Description>Bridge between IApplicationLogger (HealthData.Interop.Abstractions) and Microsoft.Extensions.Logging.ILogger. Provides IApplicationLoggerBridge and ToIApplicationLogger() extension. Supports NLog, Serilog, or any ILogger provider with automatic PHI masking.</Description>
-    <PackageTags>fhir;hipaa;logging;bridge;extensions;serilog;nlog;csharp;dotnet</PackageTags>
+    <Title>HealthData.Interop – HIPAA-aware Logging Bridge for Microsoft.Extensions.Logging</Title>
+    <Description>HIPAA-aware logging bridge for FHIR / healthcare interoperability apps: connects IApplicationLogger (HealthData.Interop.Abstractions) to Microsoft.Extensions.Logging.ILogger via IApplicationLoggerBridge and the ToIApplicationLogger() extension. Works with NLog, Serilog, or any ILogger provider, with automatic PHI masking. Part of the HealthData.Interop FHIR toolkit — most users should install HealthData.Interop.Fhir. Provided as-is; does not by itself ensure HIPAA compliance.</Description>
+    <PackageTags>fhir;hl7;healthcare;interoperability;hipaa;phi;logging;bridge;extensions;serilog;nlog;csharp;dotnet</PackageTags>
     <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -17,7 +18,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.0.0 - Initial release: IApplicationLoggerBridge, ToIApplicationLogger extension.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.0.2 - Package metadata: added Title, HIPAA-aware description wording with an as-is disclaimer, and healthcare/interoperability tags. No code changes.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Abstractions\HealthData.Interop.Abstractions\HealthData.Interop.Abstractions.csproj" />

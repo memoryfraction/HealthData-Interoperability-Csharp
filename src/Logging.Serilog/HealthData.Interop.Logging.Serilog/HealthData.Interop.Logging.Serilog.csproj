@@ -4,12 +4,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>HealthData.Interop.Logging.Serilog</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
-    <Description>Serilog-backed implementation of IApplicationLogger for HIPAA audit trails. ConsoleLogger with automatic PHI masking. Depends on HealthData.Interop.Abstractions + Serilog + Serilog.Sinks.Console + Serilog.Sinks.File.</Description>
-    <PackageTags>fhir;hipaa;serilog;logging;console;file;phi;csharp;dotnet</PackageTags>
+    <Title>HealthData.Interop – HIPAA-aware Serilog Logger</Title>
+    <Description>HIPAA-aware Serilog logger for FHIR / healthcare interoperability apps: a Serilog-backed IApplicationLogger (ConsoleLogger) for audit logging with automatic PHI masking. Depends on HealthData.Interop.Abstractions + Serilog + Serilog.Sinks.Console + Serilog.Sinks.File. Part of the HealthData.Interop FHIR toolkit — most users should install HealthData.Interop.Fhir. Provided as-is; does not by itself ensure HIPAA compliance.</Description>
+    <PackageTags>fhir;hl7;healthcare;interoperability;hipaa;phi;serilog;logging;audit;console;file;csharp;dotnet</PackageTags>
     <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -17,7 +18,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.0.0 - Initial release: ConsoleLogger (Serilog adapter).</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.0.2 - Package metadata: added Title, HIPAA-aware description wording with an as-is disclaimer, and healthcare/interoperability tags. No code changes.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Abstractions\HealthData.Interop.Abstractions\HealthData.Interop.Abstractions.csproj" />

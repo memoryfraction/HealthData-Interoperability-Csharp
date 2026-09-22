@@ -6,11 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>HealthData.Interop.Fhir</PackageId>
-    <Version>1.4.2</Version>
+    <Version>1.4.3</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
-    <Description>Meta-package for the HealthData.Interop FHIR R4 toolkit. Bundles FHIR client services, US Core validation, SMART on FHIR auth, CSV-to-FHIR ETL, HIPAA security examples (RBAC, PHI masking, audit), and drift detection. Depends on HealthData.Interop.Abstractions, HealthData.Interop.Logging.Extensions, and HealthData.Interop.Logging.Serilog.</Description>
+    <Title>HealthData.Interop – FHIR R4 Healthcare Interoperability Toolkit</Title>
+    <Description>Meta-package for the HealthData.Interop FHIR R4 toolkit. Bundles FHIR client services, US Core validation, SMART on FHIR auth, CSV-to-FHIR ETL, HIPAA-aware security examples (RBAC, PHI masking, audit), and drift detection. Depends on HealthData.Interop.Abstractions, HealthData.Interop.Logging.Extensions, and HealthData.Interop.Logging.Serilog. Provided as-is; does not by itself ensure HIPAA compliance.</Description>
     <PackageTags>fhir;hipaa;healthcare;hl7;csharp;dotnet;interoperability;us-core;smart-on-fhir;etl;r4</PackageTags>
     <PackageProjectUrl>https://memoryfraction.github.io/HealthData-Interoperability-Csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/memoryfraction/HealthData-Interoperability-Csharp.git</RepositoryUrl>
@@ -20,7 +21,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>v1.4.0 - Split into 4 packages. IdentityModel to Duende.IdentityModel. Removed Serilog/Polly/Config.Json from core.</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.4.3 - Package metadata: added Title, HIPAA-aware description wording with an as-is disclaimer, and healthcare/interoperability tags. No code changes.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
