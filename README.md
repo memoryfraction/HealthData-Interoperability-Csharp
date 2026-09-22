@@ -4,7 +4,7 @@
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512bd4)](https://dotnet.microsoft.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-flame.svg)](https://hl7.org/fhir/R4/)
-[![Version](https://img.shields.io/badge/Version-1.4.1-blue.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir/1.4.1)
+[![Version](https://img.shields.io/badge/Version-1.4.2-blue.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir/1.4.2)
 [![Tests](https://img.shields.io/badge/Tests-180%20Passed-success.svg)](./src/tests/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
@@ -18,7 +18,7 @@
 
 **Where this fits architecturally:** this toolkit's modules assemble the components a *hybrid* FHIR architecture needs around a FHIR server (data mapping/ETL in module 04, drift detection in module 08, validation in module 03, auth in module 05, RBAC/consent/audit in module 07) — the FHIR server holds the copy, and the legacy/CSV source stays the system of record. It is not a facade (no dynamic per-request translation) and not FHIR-native (nothing here claims the FHIR server as source of truth). If your project needs a different model, treat these modules as a reference for what to build, not a drop-in fit.
 
-**Stability:** Current version **v1.4.1**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
+**Stability:** Current version **v1.4.2**. The project is **early-stage**; the public API may still change between minor versions. Use `HealthData.Interop.Fhir` in non-critical or proof-of-concept work until it reaches a stable 2.x line.
 
 ### Architecture overview
 

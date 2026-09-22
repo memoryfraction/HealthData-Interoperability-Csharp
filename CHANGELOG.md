@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2026-09-21
+
+### Fixed
+- **NuGet Trusted Publishing**: the publish workflow now exchanges the GitHub OIDC
+  token for a short-lived nuget.org API key via the official `NuGet/login@v1` action,
+  then pushes with `dotnet nuget push`. The previous approach tried to use the raw
+  GitHub OIDC JWT directly as a Bearer token against the push endpoint, which
+  nuget.org rejected with `HTTP 403 AuthenticationFailed`.
+- Meta-package `HealthData.Interop.Fhir` bumped to **1.4.2** (first successful
+  keyless publish of the 4-package layout).
+
 ## [1.4.0] - 2026-09-21
 
 ### Added

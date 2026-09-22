@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>HealthData.Interop.Fhir</PackageId>
-    <Version>1.4.1</Version>
+    <Version>1.4.2</Version>
     <Authors>Rong(Rex) Fan</Authors>
     <Company>Rong(Rex) Fan</Company>
     <Copyright>(c) Rong(Rex) Fan. All rights reserved.</Copyright>
