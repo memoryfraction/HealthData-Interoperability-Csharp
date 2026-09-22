@@ -112,22 +112,56 @@
 
 <section id="install">
     <h2>Installation</h2>
-    <p>Install the <a href="https://www.nuget.org/packages/HealthData.Interop.Fhir" target="_blank"><code>HealthData.Interop.Fhir</code></a> NuGet package into your .NET project:</p>
-    <div style="margin-bottom: 1rem; margin-top: 0.5rem;">
+    <p>The toolkit ships as <strong>four NuGet packages</strong>. Most users only need the
+    meta-package <a href="https://www.nuget.org/packages/HealthData.Interop.Fhir" target="_blank"><code>HealthData.Interop.Fhir</code></a> —
+    it pulls in the other three automatically. The lower-level packages are available on their own
+    if you only want PHI-masked logging without the full FHIR stack.</p>
+
+    <table>
+        <thead>
+            <tr><th style="width: 34%;">Package</th><th style="width: 20%;">Version</th><th class="why-col" style="width: 46%;">When to use</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Fhir" target="_blank"><code>HealthData.Interop.Fhir</code></a> <span style="color:var(--primary);font-weight:600;">(meta)</span></td>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Fhir" target="_blank"><img src="https://img.shields.io/nuget/v/HealthData.Interop.Fhir.svg" alt="NuGet version"></a></td>
+                <td class="why-col"><strong>Most users — install this one.</strong> Full FHIR R4 toolkit: client, validation, ETL, SMART on FHIR auth, HIPAA security examples, drift detection.</td>
+            </tr>
+            <tr>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Abstractions" target="_blank"><code>HealthData.Interop.Abstractions</code></a></td>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Abstractions" target="_blank"><img src="https://img.shields.io/nuget/v/HealthData.Interop.Abstractions.svg" alt="NuGet version"></a></td>
+                <td class="why-col">Core abstractions — <code>IApplicationLogger</code>, <code>PhiMasker</code>, <code>SafeConsole</code>, <code>Guard</code>. <strong>Zero third-party dependencies.</strong> Use when you only need PHI masking or logging abstractions.</td>
+            </tr>
+            <tr>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Logging.Extensions" target="_blank"><code>HealthData.Interop.Logging.Extensions</code></a></td>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Logging.Extensions" target="_blank"><img src="https://img.shields.io/nuget/v/HealthData.Interop.Logging.Extensions.svg" alt="NuGet version"></a></td>
+                <td class="why-col">Bridge between <code>IApplicationLogger</code> and <code>Microsoft.Extensions.Logging.ILogger</code> (NLog, Serilog, any provider) with automatic PHI masking.</td>
+            </tr>
+            <tr>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Logging.Serilog" target="_blank"><code>HealthData.Interop.Logging.Serilog</code></a></td>
+                <td><a href="https://www.nuget.org/packages/HealthData.Interop.Logging.Serilog" target="_blank"><img src="https://img.shields.io/nuget/v/HealthData.Interop.Logging.Serilog.svg" alt="NuGet version"></a></td>
+                <td class="why-col">Serilog-backed <code>ConsoleLogger</code> with PHI masking, for apps already using Serilog.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-bottom: 1rem; margin-top: 1rem;">
         <a href="https://www.nuget.org/packages/HealthData.Interop.Fhir" target="_blank" style="background: #004880; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold;">
             📦 Download on NuGet.org
         </a>
     </div>
-    <pre><code># Via .NET CLI
+    <pre><code># Recommended — meta-package, includes everything:
 dotnet add package HealthData.Interop.Fhir
 
-# Via Package Manager Console
-Install-Package HealthData.Interop.Fhir
+# Or install only what you need:
+dotnet add package HealthData.Interop.Abstractions          # PHI masking only, zero deps
+dotnet add package HealthData.Interop.Logging.Extensions    # NLog / ILogger bridge
+dotnet add package HealthData.Interop.Logging.Serilog       # Serilog adapter
 
-# Via Paket
-paket add HealthData.Interop.Fhir</code></pre>
+# Package Manager Console (meta-package):
+Install-Package HealthData.Interop.Fhir</code></pre>
     <div class="warning">
-        <strong>Note:</strong> This package targets .NET 8.0 LTS. Compatible with .NET 9, .NET 10 and later versions due to forward compatibility of the .NET platform.
+        <strong>Note:</strong> All four packages multi-target <strong>.NET 8.0</strong> and <strong>.NET 10.0</strong>, so they work from .NET 8, 9, and 10 apps. The numbered sample apps in the repo target .NET 10.
     </div>
 </section>
 

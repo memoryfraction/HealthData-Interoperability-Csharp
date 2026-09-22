@@ -322,12 +322,14 @@ Test stack: MSTest 3.8.3, FluentAssertions 8.5.0.
 
 The toolkit is published as **4 packages** on [nuget.org](https://www.nuget.org/profiles/memoryfraction):
 
-| Package | Description | When to use |
-|---|---|---|
-| [`HealthData.Interop.Fhir`](https://www.nuget.org/packages/HealthData.Interop.Fhir) | **Meta-package** — full FHIR R4 toolkit (client, validation, ETL, SMART auth, HIPAA security, drift detection) | Most users — install this one |
-| [`HealthData.Interop.Abstractions`](https://www.nuget.org/packages/HealthData.Interop.Abstractions) | Core abstractions — `IApplicationLogger`, `PhiMasker`, `SafeConsole`, `Guard`. **Zero dependencies.** | You only need PHI masking or logging abstractions |
-| [`HealthData.Interop.Logging.Extensions`](https://www.nuget.org/packages/HealthData.Interop.Logging.Extensions) | Bridge: `IApplicationLogger` ↔ `Microsoft.Extensions.Logging.ILogger` (NLog, Serilog, any provider) | You use NLog or another ILogger provider and want PHI-masked logging |
-| [`HealthData.Interop.Logging.Serilog`](https://www.nuget.org/packages/HealthData.Interop.Logging.Serilog) | Serilog-backed `ConsoleLogger` with PHI masking | You use Serilog and want the original `ConsoleLogger` |
+| Package | Version | Description | When to use |
+|---|---|---|---|
+| [`HealthData.Interop.Fhir`](https://www.nuget.org/packages/HealthData.Interop.Fhir) | [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Fhir.svg)](https://www.nuget.org/packages/HealthData.Interop.Fhir) | **Meta-package** — full FHIR R4 toolkit (client, validation, ETL, SMART auth, HIPAA security, drift detection). Pulls in the three packages below automatically. | Most users — install this one |
+| [`HealthData.Interop.Abstractions`](https://www.nuget.org/packages/HealthData.Interop.Abstractions) | [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Abstractions.svg)](https://www.nuget.org/packages/HealthData.Interop.Abstractions) | Core abstractions — `IApplicationLogger`, `PhiMasker`, `SafeConsole`, `Guard`. **Zero dependencies.** | You only need PHI masking or logging abstractions |
+| [`HealthData.Interop.Logging.Extensions`](https://www.nuget.org/packages/HealthData.Interop.Logging.Extensions) | [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Logging.Extensions.svg)](https://www.nuget.org/packages/HealthData.Interop.Logging.Extensions) | Bridge: `IApplicationLogger` ↔ `Microsoft.Extensions.Logging.ILogger` (NLog, Serilog, any provider) | You use NLog or another ILogger provider and want PHI-masked logging |
+| [`HealthData.Interop.Logging.Serilog`](https://www.nuget.org/packages/HealthData.Interop.Logging.Serilog) | [![NuGet](https://img.shields.io/nuget/v/HealthData.Interop.Logging.Serilog.svg)](https://www.nuget.org/packages/HealthData.Interop.Logging.Serilog) | Serilog-backed `ConsoleLogger` with PHI masking | You use Serilog and want the original `ConsoleLogger` |
+
+> All four packages multi-target **`net8.0`** and **`net10.0`**, so they work from .NET 8, 9, and 10 apps. The meta-package version tracks the toolkit release; the three lower-level packages version independently.
 
 **Quick install (meta-package, includes everything):**
 
