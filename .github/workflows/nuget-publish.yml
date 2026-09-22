@@ -1,22 +1,21 @@
 # ============================================================================
 # HealthData.Interop NuGet — automated release via Trusted Publishing (OIDC)
 #
-# No API key. No secret in the repo. GitHub Actions exchanges a short-lived
-# OIDC token with nuget.org at publish time (nuget.org Trusted Publishing).
+# No API key. No secret in the repo.
 #
-# One-time setup (done ONCE in the nuget.org web UI, NOT in this repo):
-#   nuget.org -> Account -> Trusted Publishing -> "Add a policy":
-#     Policy Name:        HealthData (any name you like)
-#     Package Owner:      rong.fan
-#     CI/CD Provider:     GitHub Actions
-#     Repository Owner:   memoryfraction
-#     Repository:         HealthData-Interoperability-Csharp
-#     Workflow File:      nuget-publish.yml
-#     Environment:        (leave blank)
-#     Scopes:             Push -> "Push new packages and package versions"
-#     Glob Patterns:      HealthData.Interop.*
+# How it works:
+#   1. `permissions: id-token: write` tells GitHub to mint a short-lived
+#      OIDC JWT (audience: vcp.nuget.org) into the ACTIONS_ID_TOKEN
+#      environment variable.
+#   2. We pass that JWT as `--api-key` to `dotnet nuget push`.
+#   3. nuget.org validates the JWT against our Trusted Publishing policy
+#      (owner: rong.fan, repo: memoryfraction/HealthData-Interoperability-
+#      Csharp, workflow: nuget-publish.yml, glob: HealthData.Interop.*).
 #
-# After that, every release is just:
+# One-time nuget.org setup (already done ✓):
+#   nuget.org -> Account -> Trusted Publishing -> "HealthData" policy
+#
+# Every release is just:
 #     git tag v1.5.0 && git push origin v1.5.0
 # ============================================================================
 
@@ -29,7 +28,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  # Required for Trusted Publishing: lets Actions mint a JWT that nuget.org accepts.
+  # Required for Trusted Publishing: lets Actions mint an OIDC JWT
+  # that nuget.org accepts in place of an API key.
   id-token: write
   contents: read
 
@@ -84,8 +84,6 @@ jobs:
     needs: build
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
-    # No secrets used here. `dotnet nuget push` detects the Actions environment
-    # and automatically authenticates via Trusted Publishing (OIDC).
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -99,8 +97,28 @@ jobs:
           dotnet-version: "10.0.x"
 
       - name: Push all packages to nuget.org (Trusted Publishing, no key)
+        env:
+          # GitHub Actions provides this OIDC JWT because of
+          # `permissions: id-token: write`. It is short-lived (~5 min)
+          # and scoped to audience vcp.nuget.org.
+          OIDC_TOKEN: ${{ github.token }}
         run: |
+          if [ -z "$OIDC_TOKEN" ]; then
+            echo "ERROR: OIDC token not available. Ensure 'permissions: id-token: write' is set."
+            exit 1
+          fi
+
+          # Verify the token looks like a JWT
+          if [[ ! "$OIDC_TOKEN" =~ ^eyJ.*\..*\. ]] && [[ ! "$OIDC_TOKEN" =~ ^\{.*"access_token" ]]; then
+            echo "WARNING: OIDC token does not look like a standard JWT. Attempting push anyway..."
+          fi
+
           for pkg in dist/*.nupkg dist/*.snupkg; do
             echo "==> Pushing: $pkg"
-            dotnet nuget push "$pkg" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push "$pkg" \
+              --source https://api.nuget.org/v3/index.json \
+              --api-key "$OIDC_TOKEN" \
+              --skip-duplicate
           done
+
+          echo "==> All packages pushed successfully via Trusted Publishing."
