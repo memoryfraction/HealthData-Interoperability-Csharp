@@ -14,7 +14,7 @@
 >
 > [![Report a bug](https://img.shields.io/badge/🐞_Report_a_bug-d73a4a?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=bug_report.yml)
 > [![Request a feature](https://img.shields.io/badge/✨_Request_a_feature-a2eeef?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=feature_request.yml)
-> [![Ask a question](https://img.shields.io/badge/💬_Ask_a_question-d876e3?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=question.yml)
+> [![Ask a question](https://img.shields.io/badge/💬_Ask_a_question-d876e3?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/discussions/new?category=q-a)
 >
 > Prefer private contact? [Email me](mailto:rex.fan18@gmail.com) or [book a 30-min call](https://calendly.com/rex-fan18/30min). Please never post real patient data (PHI) in public issues.
 
@@ -413,12 +413,13 @@ See [CHANGELOG.md](./CHANGELOG.md) for version history.
 
 ## 💬 Get help / Request a feature
 
-Run into a problem, or need something this library doesn't support yet? Open an issue — it's the fastest way to reach me:
+Run into a problem, or need something this library doesn't support yet? Bugs and feature requests go to Issues; questions and open-ended ideas go to Discussions:
 
 - 🐞 **[Report a bug](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=bug_report.yml)**
 - ✨ **[Request a feature](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=feature_request.yml)**
-- 💬 **[Ask a question](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=question.yml)**
+- 💬 **[Ask a question](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/discussions/new?category=q-a)**
 - 📋 **[Browse existing issues](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues)**
+- 🗨️ **[Join the discussion](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/discussions)** — ideas, show-and-tell, general chat
 
 For private or commercial inquiries, see [Contact](https://github.com/memoryfraction/HealthData-Interoperability-Csharp#-contact) below. Please use synthetic or redacted data only — never post real PHI.
 
