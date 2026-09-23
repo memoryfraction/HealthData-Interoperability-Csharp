@@ -10,6 +10,14 @@
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
+> **💬 Hit a problem or need a feature? Contact me — I read every issue.**
+>
+> [![Report a bug](https://img.shields.io/badge/🐞_Report_a_bug-d73a4a?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=bug_report.yml)
+> [![Request a feature](https://img.shields.io/badge/✨_Request_a_feature-a2eeef?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=feature_request.yml)
+> [![Ask a question](https://img.shields.io/badge/💬_Ask_a_question-d876e3?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=question.yml)
+>
+> Prefer private contact? [Email me](mailto:rex.fan18@gmail.com) or [book a 30-min call](https://calendly.com/rex-fan18/30min). Please never post real patient data (PHI) in public issues.
+
 ## 📌 What this project is (and is not)
 
 **What it is:** An application-layer toolkit and reference implementation for HL7 FHIR R4 interoperability on .NET. It builds on the [Firely .NET SDK](https://github.com/FirelyTeam/firely-net-sdk) — [Hl7.Fhir.R4](https://www.nuget.org/packages/Hl7.Fhir.R4/) (FHIR client/model) and [Firely.Fhir.Validation.R4](https://www.nuget.org/packages/Firely.Fhir.Validation.R4/) (resource validation) — and adds small, testable services on top: patient CRUD, advanced search, FHIR resource validation, CSV→FHIR ETL, SMART on FHIR auth, AI-assisted data mapping (local LLM), HIPAA-oriented security examples (RBAC, consent, audit, PHI masking), and data drift detection.
@@ -402,6 +410,17 @@ See [CHANGELOG.md](./CHANGELOG.md) for version history.
 | [LLSDA](https://github.com/memoryfraction/LLSDA-Lightning-Location-System-Data-Analyzer) | Open-source lightning location system (LLS) data analysis library — published on NuGet, cited in a TechRxiv preprint. |
 
 > More projects by the same author: [github.com/memoryfraction](https://github.com/memoryfraction)
+
+## 💬 Get help / Request a feature
+
+Run into a problem, or need something this library doesn't support yet? Open an issue — it's the fastest way to reach me:
+
+- 🐞 **[Report a bug](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=bug_report.yml)**
+- ✨ **[Request a feature](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=feature_request.yml)**
+- 💬 **[Ask a question](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=question.yml)**
+- 📋 **[Browse existing issues](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues)**
+
+For private or commercial inquiries, see [Contact](https://github.com/memoryfraction/HealthData-Interoperability-Csharp#-contact) below. Please use synthetic or redacted data only — never post real PHI.
 
 ## ☕ Collaboration
 
