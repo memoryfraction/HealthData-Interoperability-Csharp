@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📧 Private or commercial inquiry
+    url: https://calendly.com/rex-fan18/30min
+    about: Book a 30-min call for consulting, collaboration, or anything you can't post publicly.
+  - name: 💬 Question / help
+    url: https://github.com/memoryfraction/HealthData-Interoperability-Csharp/discussions/new?category=q-a
+    about: Ask how to use something in Discussions (Q&A).

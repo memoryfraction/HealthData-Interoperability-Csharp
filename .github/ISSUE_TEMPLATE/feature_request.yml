@@ -1,0 +1,21 @@
+name: ✨ Feature request
+description: Ask for a new capability, FHIR resource, workflow, or integration.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you need?
+      description: Describe the use case — e.g. a FHIR resource/profile, US Core / SMART flow, ETL source, or API you'd like supported.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it matter?
+      description: How would you use it? Any deadlines or constraints we should know about?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or workarounds you've tried
