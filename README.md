@@ -10,6 +10,8 @@
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
+[📬 **Get the free FHIR Compliance Checklist and .NET FHIR notes**](https://northpine.dev/newsletter/?utm_source=github&utm_medium=readme)
+
 > **💬 Hit a problem or need a feature? Contact me — I read every issue.**
 >
 > [![Report a bug](https://img.shields.io/badge/🐞_Report_a_bug-d73a4a?style=for-the-badge)](https://github.com/memoryfraction/HealthData-Interoperability-Csharp/issues/new?template=bug_report.yml)
