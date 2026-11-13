@@ -10,7 +10,7 @@
 
 [🌐 **Documentation & API Reference: Visit GitHub Pages**](https://memoryfraction.github.io/HealthData-Interoperability-Csharp)
 
-[📬 **Get the free FHIR Compliance Checklist and .NET FHIR notes**](https://northpine.dev/newsletter/?utm_source=github&utm_medium=readme)
+[📬 **Get two free FHIR checklists (Conformance + Architecture Decisions) and .NET FHIR notes**](https://northpine.dev/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=healthdata-interop)
 
 > **💬 Hit a problem or need a feature? Contact me — I read every issue.**
 >
@@ -434,7 +434,7 @@ Working on FHIR / healthcare interoperability and think we could help each other
 *The 12 pitfalls teams hit on the road to 21st Century Cures Act certification — in one printable PDF.*
 *Get the checklist, plus occasional deep-dives on healthcare interoperability. No spam, unsubscribe anytime.*
 
-**[📧 Subscribe — Get the Free US Healthcare Checklist](https://mailchi.mp/83cafe450eef/rex-landing-page)**
+**[📧 Get two free FHIR checklists — Conformance and Architecture Decisions](https://northpine.dev/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=healthdata-interop-footer)** · More .NET FHIR notes at [northpine.dev](https://northpine.dev/?utm_source=github&utm_medium=readme&utm_campaign=healthdata-interop-footer)
 
 ## 👤 Contact
 
